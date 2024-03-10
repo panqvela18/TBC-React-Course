@@ -8,8 +8,8 @@ function App() {
   return (
     <>
       <Header />
-      <section className="px-[4%] mt-20 flex items-center justify-between">
-        <div className="w-[45%] flex flex-col">
+      <section className="px-[4%] mt-20 flex items-center justify-between md:flex-col md:mt-4">
+        <div className="w-[45%] flex flex-col md:w-full">
           <p
             className="text-blue-500 font-bold mb-4"
             style={{ fontSize: "clamp(1rem, 0.5385rem + 2.0513vw, 3rem)" }}
@@ -26,12 +26,12 @@ function App() {
             culpa qui officia deserunt mollit anim id est laborum.
           </p>
         </div>
-        <img className="w-[45%]" src={image1} alt="image1" />
+        <img className="w-[45%] md:w-full" src={image1} alt="image1" />
       </section>
-      <section className="px-[4%] my-20 flex items-center justify-between">
-        <img className="w-[45%]" src={image2} alt="image1" />
+      <section className="px-[4%] my-20 flex items-center justify-between md:flex-col-reverse">
+        <img className="w-[45%] md:w-full" src={image2} alt="image1" />
 
-        <div className="w-[45%] flex flex-col">
+        <div className="w-[45%] flex flex-col md:w-full">
           <p
             style={{ fontSize: "clamp(1rem, 0.5385rem + 2.0513vw, 3rem)" }}
             className="text-blue-500 text-5xl font-bold mb-4"

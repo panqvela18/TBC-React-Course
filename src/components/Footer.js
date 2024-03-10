@@ -3,11 +3,11 @@ import logo from "../images/icons8-logo.svg";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-between items-start  bg-blue-500 pt-10 px-[4%]">
+    <footer className="flex justify-between items-start  bg-blue-500 pt-10 px-[4%] md:flex-col md:items-center">
       <div className="flex items-center">
-        <img src={logo} alt="logo" />
+        <img className="md:mb-4" src={logo} alt="logo" />
       </div>
-      <nav className="flex items-center flex-col">
+      <nav className="flex items-center flex-col md:mb-4">
         <a href="/" className="text-white text-sm mb-4 hover:text-gray-200">
           Terms and Conditions
         </a>
@@ -20,7 +20,7 @@ const Footer = () => {
         <a href="/" className="text-white text-sm hover:text-gray-200">
           Privacy policy
         </a>
-        <p className="text-white text-sm mb-4 mt-10">
+        <p className="text-white text-sm mb-4 mt-10 md:hidden">
           © 2024.All rights reserved.
         </p>
       </nav>
@@ -38,6 +38,9 @@ const Footer = () => {
           type="submit"
         />
       </div>
+      <p className="hidden text-white text-sm mb-4 mt-10 md:block">
+        © 2024.All rights reserved.
+      </p>
     </footer>
   );
 };

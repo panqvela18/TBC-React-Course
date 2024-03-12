@@ -1,4 +1,6 @@
 import "./App.css";
+import { blogData } from "./Data/BlogData";
+import Blog from "./components/Blog";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ImgWithTextSection from "./components/ImgWithTextSection";
@@ -33,6 +35,29 @@ function App() {
         culpa qui officia deserunt mollit anim id est laborum."
         flex="flex-row-reverse"
       />
+      <div className="flex items-center justify-center py-16">
+        <h1
+          style={{
+            fontSize: "clamp(1rem, 0.5385rem + 2.0513vw, 3rem)",
+          }}
+          className="inline-block border-b-2 pb-2 text-blue-500 font-bold"
+        >
+          BLOGS
+        </h1>
+      </div>
+      <section className="grid grid-cols-3 grid-rows-2 gap-4 px-[4%] pb-20">
+        {blogData.map((blog) => {
+          return (
+            <Blog
+              key={blog.id}
+              id={blog.id}
+              img={blog.img}
+              title={blog.title}
+              description={blog.description}
+            />
+          );
+        })}
+      </section>
       <Footer />
     </>
   );

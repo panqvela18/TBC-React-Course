@@ -3,27 +3,29 @@ import logo from "../images/icons8-logo.svg";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-between items-start  bg-blue-500 pt-10 px-[4%] md:flex-col md:items-center">
-      <div className="flex items-center">
+    <footer className="flex flex-col bg-blue-500 py-10 px-[4%] md:flex-col md:items-center">
+      <div className="flex items-center justify-between mb-5">
         <img className="md:mb-4" src={logo} alt="logo" />
+        <nav className="flex items-center md:mb-4">
+          <a href="/" className="text-white text-sm mr-2  hover:text-gray-200">
+            Terms and Conditions
+          </a>
+          <a href="/" className="text-white text-sm  mr-2 hover:text-gray-200">
+            About
+          </a>
+          <a href="/" className="text-white text-sm mr-2  hover:text-gray-200">
+            Contact
+          </a>
+          <a href="/" className="text-white text-sm hover:text-gray-200">
+            Privacy policy
+          </a>
+        </nav>
       </div>
-      <nav className="flex items-center flex-col md:mb-4">
-        <a href="/" className="text-white text-sm mb-4 hover:text-gray-200">
-          Terms and Conditions
-        </a>
-        <a href="/" className="text-white text-sm mb-4 hover:text-gray-200">
-          About
-        </a>
-        <a href="/" className="text-white text-sm mb-4 hover:text-gray-200">
-          Contact
-        </a>
-        <a href="/" className="text-white text-sm hover:text-gray-200">
-          Privacy policy
-        </a>
-        <p className="text-white text-sm mb-4 mt-10 md:hidden">
-          © 2024.All rights reserved.
-        </p>
-      </nav>
+      <div className="w-full h-[1px] bg-slate-200"></div>
+      <div className="flex justify-between items-center mt-5">
+      <p className="text-white text-sm ">
+        © 2024.All rights reserved.
+      </p>
       <div className="flex items-center">
         <input
           type="email"
@@ -38,9 +40,8 @@ const Footer = () => {
           type="submit"
         />
       </div>
-      <p className="hidden text-white text-sm mb-4 mt-10 md:block">
-        © 2024.All rights reserved.
-      </p>
+      </div>
+    
     </footer>
   );
 };

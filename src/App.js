@@ -1,16 +1,26 @@
 import "./App.css";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Layout from "./components/Layout";
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
+import Home from "./Pages/Home";
+import Root from "./Root";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 
 function App() {
-  return (
-    <div className="flex flex-col justify-between h-screen">
-      <Header />
-      <Layout />
-      <Footer />
-    </div>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<Root />}>
+        <Route index={true} element={<Home />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="about" element={<About />} />
+      </Route>
+    )
   );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

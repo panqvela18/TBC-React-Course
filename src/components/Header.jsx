@@ -30,8 +30,14 @@ const Header = () => {
           <Link to={"/about"} className="text-white text-sm mr-6 hover:text-gray-200">
             About
           </Link>
-          <Link to={"/contact"} className="text-white text-sm hover:text-gray-200">
+          <Link to={"/blog"} className="text-white text-sm mr-6 hover:text-gray-200">
+            Blog
+          </Link>
+          <Link to={"/contact"} className="text-white text-sm mr-6 hover:text-gray-200">
             Contact
+          </Link>
+          <Link to={"/profile"} className="text-white text-sm hover:text-gray-200">
+            Profile
           </Link>
         </nav>
         {showBugerMenu ? (

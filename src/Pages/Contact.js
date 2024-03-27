@@ -88,7 +88,7 @@ export default function Contact() {
                 className="border outline-none p-3 text-blue-300 rounded resize-none h-[300px]"
               />
             </div>
-            <button className="mt-2 w-full bg-blue-300 p-2 border rounded text-white font-bold transition duration-300 ease-in-out transform hover:bg-white hover:text-blue-300  hover:border hover:rounded">
+            <button className="mt-2 w-full transition duration-300 ease-in-out transform bg-blue-300 p-2 border rounded text-white font-bold  hover:bg-blue-200 hover:text-black hover:border hover:rounded hover:scale-105">
               SEND
             </button>
           </form>

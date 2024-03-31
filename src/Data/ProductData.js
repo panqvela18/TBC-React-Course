@@ -10,7 +10,7 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 40,
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ export const productData = [
     name: "ADIDAS",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 36,
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ export const productData = [
     name: "PUMA",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 55,
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ export const productData = [
     name: "Lotto",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 54,
   },
   {
     id: 5,
@@ -42,7 +42,7 @@ export const productData = [
     name: "Lotto",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 10,
   },
   {
     id: 6,
@@ -50,7 +50,7 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 30,
   },
   {
     id: 7,
@@ -58,7 +58,7 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 50,
   },
   {
     id: 8,
@@ -66,7 +66,7 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet ",
-    price: 56,
+    price: 85,
   },
   {
     id: 9,
@@ -74,7 +74,7 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 56,
+    price: 20,
   },
   {
     id: 10,
@@ -98,7 +98,7 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 67,
+    price: 87,
   },
   {
     id: 13,
@@ -106,7 +106,7 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 120,
+    price: 80,
   },
   {
     id: 14,
@@ -130,6 +130,6 @@ export const productData = [
     name: "NIKE",
     description:
       "Stylish yet comfortable footwear designed to provide support and protection to the feet",
-    price: 536,
+    price: 15,
   },
 ];

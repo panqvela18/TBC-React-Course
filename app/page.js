@@ -1,18 +1,18 @@
+"use client";
+import { productData } from "@/Data/ProductData";
+import Loader from "@/components/Loader";
+import Product from "@/components/Product";
+import Title from "@/components/Title";
 import { useState } from "react";
-import "../App.css";
-import { productData } from "../Data/ProductData";
-import Product from "./Product";
-import Title from "./Title";
-import Loader from "./Loader";
 
-export default function Layout() {
+export default function Home() {
   const [product, setProduct] = useState(productData);
   const [resetProduct, setResetProduct] = useState(false);
   const [search, setSearch] = useState("");
   const [sortTimeout, setSortTimeout] = useState(null);
   const [loader, setLoader] = useState(false);
 
-  // debounce function 
+  // debounce function
   const debounce = (fn, delay) => {
     let timer;
     return (...args) => {
@@ -35,7 +35,6 @@ export default function Layout() {
     setProduct(sortedProductTyping);
     setLoader(false);
   }, 2000);
-
 
   // Sorting function
   const handleSortChange = (e) => {

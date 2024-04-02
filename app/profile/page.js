@@ -1,8 +1,9 @@
+"use client";
+import Title from "@/components/Title";
 import React, { useState } from "react";
-import Title from "../components/Title";
 import { CgProfile } from "react-icons/cg";
 
-export default function Profile() {
+export default function Page() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordNotMatch, setPasswordNotMatch] = useState(false);

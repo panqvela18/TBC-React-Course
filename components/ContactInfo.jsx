@@ -8,3 +8,4 @@ export default function ContactInfo({ iconImage, info }) {
     </div>
   );
 }
+

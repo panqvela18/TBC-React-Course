@@ -1,42 +1,51 @@
-import React, { useEffect, useState } from "react";
-import logo from "../images/icons8-logo.svg";
+"use client"
+import Image from "next/image";
+import Link from "next/link";
+import logo from "../public/icons8-logo.svg"
+import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
-import { Link } from "react-router-dom";
 
-const Header = () => {
-  const [showBugerMenu, setShowBurgerMenu] = useState(false);
+export default function Header() {
+    const [showBugerMenu, setShowBurgerMenu] = useState(false);
 
-  useEffect(() => {
-    if (showBugerMenu) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    useEffect(() => {
+      if (showBugerMenu) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+  
+      return () => {
+        document.body.style.overflow = "auto";
+      };
+    }, [showBugerMenu]);
 
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [showBugerMenu]);
 
   return (
     <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 ">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to={"/"}><img onClick={() => setShowBurgerMenu(false)} src={logo} alt="Logo" /> </Link>
+        <Link href={"/"}> 
+        <Image
+      src={logo}
+      width={50}
+      height={50}
+      alt="Picture of the author"
+    /></Link>
         <nav className="flex items-center md:hidden">
-          <Link to={"/"} className="text-white text-sm mr-6 hover:text-gray-200">
+          <Link href={"/"} className="text-white text-sm mr-6 hover:text-gray-200">
             Home
           </Link>
-          <Link to={"/about"} className="text-white text-sm mr-6 hover:text-gray-200">
+          <Link href={"/about"} className="text-white text-sm mr-6 hover:text-gray-200">
             About
           </Link>
-          <Link to={"/blog"} className="text-white text-sm mr-6 hover:text-gray-200">
+          <Link href={"/blog"} className="text-white text-sm mr-6 hover:text-gray-200">
             Blog
           </Link>
-          <Link to={"/contact"} className="text-white text-sm mr-6 hover:text-gray-200">
+          <Link href={"/contact"} className="text-white text-sm mr-6 hover:text-gray-200">
             Contact
           </Link>
-          <Link to={"/profile"} className="text-white text-sm hover:text-gray-200">
+          <Link href={"/profile"} className="text-white text-sm hover:text-gray-200">
             Profile
           </Link>
         </nav>
@@ -58,21 +67,21 @@ const Header = () => {
           <nav className="flex flex-col items-center">
             <Link
               onClick={() => setShowBurgerMenu(false)}
-              to={"/"}
+              href={"/"}
               className="text-white text-sm  p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
             >
               Home
             </Link>
             <Link
               onClick={() => setShowBurgerMenu(false)}
-              to={"about"}
+              href={"about"}
               className="text-white text-sm  p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
             >
               About
             </Link>
             <Link
               onClick={() => setShowBurgerMenu(false)}
-              to={"contact"}
+              href={"contact"}
               className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
             >
               Contact
@@ -82,6 +91,5 @@ const Header = () => {
       )}
     </header>
   );
-};
-
-export default Header;
+  
+}

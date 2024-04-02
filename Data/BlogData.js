@@ -1,6 +1,6 @@
-import image1 from "../images/smiles.png";
-import image2 from "../images/talk.png";
-import image3 from "../images/Teamwork.png";
+import image1 from "../public/smiles.png";
+import image2 from "../public/talk.png";
+import image3 from "../public/Teamwork.png";
 
 export const blogData = [
   {

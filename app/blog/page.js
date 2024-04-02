@@ -1,9 +1,9 @@
+import { blogData } from "@/Data/BlogData";
+import Blogs from "@/components/Blogs";
+import Title from "@/components/Title";
 import React from "react";
-import Title from "../components/Title";
-import { blogData } from "../Data/BlogData";
-import Blogs from "../components/Blogs";
 
-export default function Blog() {
+export default function Page() {
   return (
     <main className="bg-[aliceblue]">
       <Title titleName="BLOGS" />
@@ -11,6 +11,7 @@ export default function Blog() {
         {blogData.map((blog) => {
           return (
             <Blogs
+              key={blog.id}
               img={blog.img}
               description={blog.description}
               title={blog.title}

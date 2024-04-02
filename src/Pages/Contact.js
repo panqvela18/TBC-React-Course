@@ -1,15 +1,13 @@
-"use client";
-import ContactInfo from "@/components/ContactInfo";
-import { useState } from "react";
-import contactImage from "../../public/contact-image2.jpg";
+import React, { useState } from "react";
+import Title from "../components/Title";
+import contactImage from "../images/contact-image2.jpg";
 import { BsTelephoneFill } from "react-icons/bs";
 import { GrMail } from "react-icons/gr";
 import { HiOfficeBuilding } from "react-icons/hi";
-import Image from "next/image";
-import Input from "@/components/Input";
-import Title from "@/components/Title";
+import Input from "../components/Input";
+import ContactInfo from "../components/ContactInfo";
 
-export default function Page() {
+export default function Contact() {
   const [contactType, setContactType] = useState("staticContact");
 
   return (
@@ -60,7 +58,7 @@ export default function Page() {
                 info="თბილისი"
               />
             </div>
-            <Image
+            <img
               className="rounded w-1/2 object-cover select-none  md:w-full"
               src={contactImage}
               alt="contact-img"

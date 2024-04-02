@@ -1,3 +1,5 @@
+import React from 'react'
+
 export default function Title({titleName}) {
   return (
     <div className="flex items-center justify-center py-10">

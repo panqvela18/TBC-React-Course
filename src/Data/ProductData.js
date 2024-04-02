@@ -1,7 +1,7 @@
-import prod1 from "../public/shoespng.parspng.com-5.png";
-import prod2 from "../public/prod1.png";
-import prod3 from "../public/prod2.png";
-import prod4 from "../public/prod4.jpg";
+import prod1 from "../images/shoespng.parspng.com-5.png";
+import prod2 from "../images/prod1.png";
+import prod3 from "../images/prod2.png";
+import prod4 from "../images/prod4.jpg";
 
 export const productData = [
   {

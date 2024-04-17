@@ -9,7 +9,7 @@ export default function Product({ id,img, name, description, price }) {
   return (
     <div className='flex justify-between bg-white rounded flex-col items-center filter drop-shadow-xl py-2 '>
       <div className="relative h-40 w-40">
-        <Image src={img} alt='productimage' objectFit='cover' className="w-auto h-40"  width={160} height={80} />
+        <Image src={img} alt='productimage' className="w-auto h-40 object-cover"  width={160} height={80} />
       </div>
       <div className='flex justify-center items-center flex-col p-3'>
         <h5 className="text-black font-bold text-xl mb-2">{name}</h5>

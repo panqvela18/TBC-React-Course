@@ -1,7 +1,7 @@
 "use client";
 import ContactInfo from "@/components/ContactInfo";
 import { useState } from "react";
-import contactImage from "../../public/contact-image2.jpg";
+import contactImage from "../../../public/contact-image2.jpg";
 import { BsTelephoneFill } from "react-icons/bs";
 import { GrMail } from "react-icons/gr";
 import { HiOfficeBuilding } from "react-icons/hi";

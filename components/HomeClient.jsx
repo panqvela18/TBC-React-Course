@@ -13,7 +13,6 @@ export default function HomeClient({prdata}) {
   const [sortTimeout, setSortTimeout] = useState(null);
   const [loader, setLoader] = useState(false);
 
- 
 
     // debounce function
     const debounce = (fn, delay) => {

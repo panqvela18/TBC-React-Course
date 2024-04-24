@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Product from './Product';
 import Title from './Title';
 import Loader from './Loader';
+import { useTranslation } from 'react-i18next';
 
 
 export default function HomeClient({prdata}) {
@@ -12,6 +13,8 @@ export default function HomeClient({prdata}) {
   const [search, setSearch] = useState("");
   const [sortTimeout, setSortTimeout] = useState(null);
   const [loader, setLoader] = useState(false);
+  const { t } = useTranslation();
+
 
 
     // debounce function
@@ -71,21 +74,21 @@ export default function HomeClient({prdata}) {
   };
 
   return (
-    <section className="px-[4%] min-h-screen bg-[aliceblue]">
-      <Title titleName="PRODUCTS" />
+    <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
+      <Title titleName="productTitle" />
       <form className="flex items-center justify-center mt-4">
         <input
           value={search}
           onChange={handleChange}
           className="rounded-l border border-gray-300 outline-none p-2 w-64 mr-8 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Search Product"
+          placeholder={t("search")}
           type="text"
         />
         <button
           onClick={handleSortChange}
-          className="bg-blue-500 p-2 px-4 text-white font-bold rounded-r"
+          className="bg-blue-500 p-2 px-4 text-white font-bold rounded-r dark:bg-black"
         >
-          {resetProduct ? "Reset Products" : "Sort By Price"}
+          {resetProduct ? t("resetProduct") : t("sortByPrice")}
         </button>
       </form>
       {loader ? (
@@ -100,6 +103,7 @@ export default function HomeClient({prdata}) {
               name={prod.title}
               description={prod.description}
               price={prod.price}
+              learnMore={t("learnMore")}
             />
           ))}
         </div>

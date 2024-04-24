@@ -1,7 +1,5 @@
 import Api from "@/Data/Api";
-import { blogData } from "@/Data/BlogData";
 import BlogClient from "@/components/BlogClient";
-import Blogs from "@/components/Blogs";
 import Title from "@/components/Title";
 import React from "react";
 
@@ -23,8 +21,8 @@ export default async function Blog() {
   const postData = await fetchPosts();
 
   return (
-    <main className="bg-[aliceblue]">
-      <Title titleName="BLOGS" />
+    <main className="bg-white dark:bg-slate-900">
+      <Title titleName="blogTitle" />
       <div className="grid grid-cols-4 px-[4%] grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1 ">
         <BlogClient postData={postData} />
       </div>

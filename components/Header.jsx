@@ -6,20 +6,19 @@ import { redirect } from "next/navigation";
 
 export default function Header() {
 
-  const handleLogOut  = async ()=>{
-    "use server"
-    await logOut()
-    const cookieStore = cookies();
-    const auth_cookie = cookieStore.get(AUTH_COOKIE_KEY);
+  // const handleLogOut  = async ()=>{
+  //   "use server"
+  //   await logOut()
     
-    if(!auth_cookie?.value) {
-      redirect("/login")
-    }
-  }
+  //   // if (!cookies().has(AUTH_COOKIE_KEY)) {
+  //   //   redirect("/"); 
+  //   // }
+    
+  // }
     
 
   return (
-   <HeaderClient handleLogOut = {handleLogOut} />
+   <HeaderClient  />
   );
   
 }

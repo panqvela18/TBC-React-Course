@@ -9,14 +9,10 @@ export async function generateStaticParams() {
       throw new Error("Failed to fetch posts");
     }
 
-    const posts = await res.json();
-    console.log(posts);
-
-    const paths = posts.posts.map((post) => ({
-      params: { id: `blog/${post.id}` },
+    const data = await res.json();
+    return data.posts.map((post) => ({
+      id: `${post.id}`,
     }));
-
-    return paths;
   } catch (error) {
     console.error("Error fetching or processing posts:", error);
     return [];

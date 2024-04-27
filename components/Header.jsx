@@ -1,4 +1,4 @@
-import { logOut } from "@/app/actions";
+import { langToggle, logOut } from "@/app/actions";
 import HeaderClient from "./HeaderClient";
 import { AUTH_COOKIE_KEY } from "@/constants";
 import { cookies } from "next/headers";
@@ -15,6 +15,17 @@ export default function Header() {
   //   // }
     
   // }
+
+  const cookieStore = cookies()
+
+  const lng = cookieStore.get("lang")
+
+  console.log(lng)
+
+  const handleToggle = async (lang) =>{
+    "use server"
+    await langToggle(lang)
+  }
     
 
   return (

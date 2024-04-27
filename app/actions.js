@@ -38,3 +38,9 @@ import { cookies } from "next/headers";
 //     console.error("Error occurred during logout:", error);
 //   }
 // }
+
+export async function langToggle(lang) {
+  "use server";
+  const cookieStore = cookies();
+  cookieStore.set("lang", lang);
+}

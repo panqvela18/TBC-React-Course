@@ -19,12 +19,9 @@ export async function generateStaticParams() {
     }
 
     const data = await res.json();
-
-    const paths = data.products.map((product) => ({
-      params: { id: `blog/${product.id}` },
+    return data.products.map((product) => ({
+      id: `${product.id}`,
     }));
-
-    return paths;
   } catch (error) {
     console.error("Error fetching or processing products:", error);
     return [];

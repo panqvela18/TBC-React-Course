@@ -14,20 +14,20 @@ import { useTranslation } from "react-i18next";
 import i18n from "../app/i18n";
 
 export default function HeaderClient() {
-  const [showBugerMenu, setShowBurgerMenu] = useState(false);
-  const [lang, setLang] = useState("en");
-  const [theme, setTheme] = useState(() => {
+  const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
+  const [lang, setLang] = useState<string>("en");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
       const storedTheme = window.localStorage.getItem("theme");
       return (
-        storedTheme ||
+        (storedTheme as "light" | "dark") ||
         (window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
           : "light")
       );
     }
+    return "light";
   });
-
   const { t } = useTranslation();
 
   const toggleLanguage = () => {
@@ -100,7 +100,6 @@ export default function HeaderClient() {
           >
             {t("profile")}
           </Link>
-
           <button
             onClick={() =>
               handleLogout().then(() => {
@@ -138,7 +137,6 @@ export default function HeaderClient() {
             )}
           </button>
         </div>
-
         {showBugerMenu ? (
           <MdOutlineClose
             onClick={() => setShowBurgerMenu(false)}

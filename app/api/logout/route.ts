@@ -8,5 +8,7 @@ export async function POST() {
     return Response.json({ message: "Success" });
   } catch (err) {
     console.error(err);
+    // Return an error response
+    return Response.json({ error: "An error occurred" }, { status: 500 });
   }
 }

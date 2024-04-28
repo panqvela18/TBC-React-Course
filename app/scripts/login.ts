@@ -1,6 +1,6 @@
-export async function handleLogin(username, password) {
+export async function handleLogin(username:string, password:string) {
   try {
-    const res = await fetch("http://localhost:3000/api/login", {
+    await fetch("http://localhost:3000/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

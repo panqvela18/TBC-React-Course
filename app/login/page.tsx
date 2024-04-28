@@ -1,6 +1,4 @@
-import LoginForm from "@/components/loginForm";
-import moon from "../../public/moon.svg";
-import sun from "../../public/sun.svg";
+import LoginForm from "../../components/LoginForm";
 
 export default async function Login() {
   // if (cookies().has(AUTH_COOKIE_KEY)) {

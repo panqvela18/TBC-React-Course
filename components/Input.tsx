@@ -1,4 +1,8 @@
-export default function Input({labelName,placeholder}) {
+interface InputProps {
+  labelName: string;
+  placeholder: string;
+}
+export default function Input({ labelName, placeholder }: InputProps) {
   return (
     <>
       <label className="text-blue-300 mb-2 text-lg font-semibold dark:text-slate-50">

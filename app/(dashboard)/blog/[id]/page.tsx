@@ -1,6 +1,7 @@
 import Image from "next/image";
 import defaulImage from "../../../../public/Teamwork.png";
 import { AiFillLike } from "react-icons/ai";
+import { FetchedPost } from "@/app/interface";
 
 export async function generateStaticParams() {
   try {
@@ -9,7 +10,7 @@ export async function generateStaticParams() {
       throw new Error("Failed to fetch posts");
     }
 
-    const data = await res.json();
+    const data: FetchedPost = await res.json();
     return data.posts.map((post) => ({
       id: `${post.id}`,
     }));
@@ -19,13 +20,17 @@ export async function generateStaticParams() {
   }
 }
 
-async function fetchBlog(id) {
+async function fetchBlog(id: string) {
   const res = await fetch(`https://dummyjson.com/posts/${id}`);
   const post = await res.json();
 
   return post;
 }
-export default async function BlogDetail({ params }) {
+export default async function BlogDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
   const post = await fetchBlog(id);
 
@@ -53,10 +58,10 @@ export default async function BlogDetail({ params }) {
           height={500}
         />
         <div className="flex flex-wrap items-center mt-5">
-          {post.tags.map((tag, index) => {
+          {post.tags.map((tag: string) => {
             return (
               <button
-                key={index}
+                key={tag}
                 className="p-2 rounded-lg bg-slate-300 text-white mr-2 dark:bg-white dark:text-black w-40"
               >
                 {tag}

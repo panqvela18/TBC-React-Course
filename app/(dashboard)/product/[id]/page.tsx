@@ -1,15 +1,25 @@
 import Image from "next/image";
 import { FaStar } from "react-icons/fa6";
 import ProductDetailInfo from "@/components/ProductDetailInfo";
-import ProductsSwiper from "@/components/ProductsSwiper";
+// import ProductsSwiper from "@/components/ProductsSwiper";
+import { ProdDetail } from "@/app/interface";
+// import Api from "@/Data/Api";
 
-export async function fetchAllProduct() {
-  const res = await fetch("https://dummyjson.com/products");
-  const products = await res.json();
-  console.log(products);
+// export async function fetchAllProduct() {
+//   const res = await fetch("https://dummyjson.com/products");
+//   const products = await res.json();
+//   console.log(products);
 
-  return products;
-}
+//   return products;
+// }
+// export const fetchProducts = async () => {
+//   try {
+//     const response = await Api.get("products");
+//     return response.data.products;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export async function generateStaticParams() {
   try {
@@ -19,7 +29,7 @@ export async function generateStaticParams() {
     }
 
     const data = await res.json();
-    return data.products.map((product) => ({
+    return data.products.map((product: { id: number }) => ({
       id: `${product.id}`,
     }));
   } catch (error) {
@@ -28,19 +38,23 @@ export async function generateStaticParams() {
   }
 }
 
-async function fetchProduct(id) {
+async function fetchProduct(id: string) {
   const res = await fetch(`https://dummyjson.com/products/${id}`);
   const product = await res.json();
 
   return product;
 }
 
-export default async function ProductDetail({ params }) {
+export default async function ProductDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
 
-  const product = await fetchProduct(id);
+  const product: ProdDetail = await fetchProduct(id);
 
-  const products = await fetchAllProduct();
+  // const products = await fetchAllProduct();
 
   return (
     <main className="px-[4%] bg-white dark:bg-slate-900">
@@ -85,7 +99,7 @@ export default async function ProductDetail({ params }) {
         </h2>
         <div className="flex flex-wrap items-center justify-center py-16">
           {product &&
-            product.images.map((img, index) => (
+            product.images.map((img: string, index: number) => (
               <Image
                 key={index}
                 loading="lazy"
@@ -98,7 +112,7 @@ export default async function ProductDetail({ params }) {
             ))}
         </div>
       </section>
-      <section>
+      {/* <section>
         <h3 className="text-center pt-6 text-gray-600 font-bold text-2xl underline mb-6">
           Similar Products
         </h3>
@@ -107,7 +121,7 @@ export default async function ProductDetail({ params }) {
           category={product.category}
           id={product.id}
         />
-      </section>
+      </section> */}
     </main>
     // <h1>{product.title}</h1>
   );

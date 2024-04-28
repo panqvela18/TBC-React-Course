@@ -11,7 +11,7 @@ import Title from "@/components/Title";
 import { useTranslation } from "react-i18next";
 
 export default function Page() {
-  const [contactType, setContactType] = useState("staticContact");
+  const [contactType, setContactType] = useState<string>("staticContact");
   const { t } = useTranslation();
 
   return (

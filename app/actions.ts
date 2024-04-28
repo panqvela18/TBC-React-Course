@@ -1,4 +1,3 @@
-import { AUTH_COOKIE_KEY, TOKEN_COOKIE_KEY } from "@/constants";
 import { cookies } from "next/headers";
 
 // export async function login(username, password) {
@@ -39,7 +38,7 @@ import { cookies } from "next/headers";
 //   }
 // }
 
-export async function langToggle(lang) {
+export async function langToggle(lang:string) {
   "use server";
   const cookieStore = cookies();
   cookieStore.set("lang", lang);

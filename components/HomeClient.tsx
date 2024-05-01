@@ -3,8 +3,8 @@ import React, { ChangeEvent, useState } from "react";
 import Product from "./Product";
 import Title from "./Title";
 import Loader from "./Loader";
-import { useTranslation } from "react-i18next";
 import { ProductData } from "@/app/interface";
+import { useI18n } from "@/locales/client";
 
 interface HomeClientProps {
   prdata: ProductData[];
@@ -17,7 +17,7 @@ export default function HomeClient({ prdata }: HomeClientProps) {
   const [search, setSearch] = useState<string>("");
   const [sortTimeout, setSortTimeout] = useState<NodeJS.Timeout | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
-  const { t } = useTranslation();
+  const t = useI18n();
 
   // debounce function
   const debounce = (fn: Function, delay: number) => {
@@ -79,7 +79,7 @@ export default function HomeClient({ prdata }: HomeClientProps) {
 
   return (
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
-      <Title titleName="productTitle" />
+      <Title titleName={t("productTitle")} />
       <form className="flex items-center justify-center mt-4">
         <input
           value={search}

@@ -1,4 +1,4 @@
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../../components/LoginForm";
 
 export default async function Login() {
   // if (cookies().has(AUTH_COOKIE_KEY)) {

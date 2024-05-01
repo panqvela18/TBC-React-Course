@@ -1,22 +1,22 @@
 "use client";
 import ContactInfo from "@/components/ContactInfo";
 import { useState } from "react";
-import contactImage from "../../../public/contact-image2.jpg";
+import contactImage from "../../../../public/contact-image2.jpg";
 import { BsTelephoneFill } from "react-icons/bs";
 import { GrMail } from "react-icons/gr";
 import { HiOfficeBuilding } from "react-icons/hi";
 import Image from "next/image";
 import Input from "@/components/Input";
 import Title from "@/components/Title";
-import { useTranslation } from "react-i18next";
+import { useI18n } from "@/locales/client";
 
 export default function Page() {
   const [contactType, setContactType] = useState<string>("staticContact");
-  const { t } = useTranslation();
+  const t = useI18n();
 
   return (
     <main className="py-8 bg-white dark:bg-slate-900">
-      <Title titleName="contactTitle" />
+      <Title titleName={t("contactTitle")} />
       <div className="flex items-center justify-center mb-5">
         <span
           onClick={() => setContactType("staticContact")}

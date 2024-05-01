@@ -1,9 +1,7 @@
 "use client";
-import { useTranslation } from "react-i18next";
 
+// Title component
 export default function Title({ titleName }: { titleName: string }) {
-  const { t } = useTranslation();
-
   return (
     <div className="flex items-center justify-center py-10">
       <h1
@@ -12,7 +10,7 @@ export default function Title({ titleName }: { titleName: string }) {
         }}
         className="inline-block border-b-2 pb-2 text-blue-500 font-bold dark:text-white"
       >
-        {t(`${titleName}`)}
+        {titleName}
       </h1>
     </div>
   );

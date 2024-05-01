@@ -1,8 +1,8 @@
 "use client";
 import { ProductData } from "@/app/interface";
+import { useI18n } from "@/locales/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
 
 export default function Product({
   id,
@@ -11,7 +11,8 @@ export default function Product({
   description,
   price,
 }: ProductData) {
-  const { t } = useTranslation();
+  const t = useI18n();
+
   return (
     <div className="flex justify-between bg-white rounded flex-col items-center filter drop-shadow-xl py-2 dark:bg-black">
       <div className="relative h-40 w-40">

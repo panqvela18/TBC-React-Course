@@ -2,11 +2,11 @@
 import Image from "next/image";
 import defaulImage from "../public/Teamwork.png";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
 import { PostData } from "@/app/interface";
+import { useI18n } from "@/locales/client";
 
 export default function Blogs({ title, body, id, tags }: PostData) {
-  const { t } = useTranslation();
+  const t = useI18n();
   return (
     <div className="flex flex-col bg-white filter drop-shadow-xl min-h-[400px] justify-between border border-[#e5e7eb] rounded dark:bg-slate-900">
       <div>

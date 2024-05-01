@@ -1,5 +1,5 @@
 import Image from "next/image";
-import defaulImage from "../../../../public/Teamwork.png";
+import defaulImage from "../../../../../public/Teamwork.png";
 import { AiFillLike } from "react-icons/ai";
 import { FetchedPost } from "@/app/interface";
 

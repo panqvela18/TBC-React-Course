@@ -2,48 +2,59 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../public/icons8-logo.svg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
-import ukFlag from "../public/uk.svg";
-import geoFlag from "../public/Flag_of_Georgia.svg.png";
+// import ukFlag from "../public/uk.svg";
+// import geoFlag from "../public/Flag_of_Georgia.svg.png";
 import moon from "../public/moon.svg";
 import sun from "../public/sun.svg";
 import { handleLogout } from "@/app/scripts/logout";
-import { useTranslation } from "react-i18next";
-import i18n from "../app/i18n";
+import { ThemeContext } from "@/app/providers/ThemeContext";
+import { useChangeLocale, useI18n } from "../locales/client";
 
 export default function HeaderClient() {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
-  const [lang, setLang] = useState<string>("en");
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window !== "undefined") {
-      const storedTheme = window.localStorage.getItem("theme");
-      return (
-        (storedTheme as "light" | "dark") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light")
-      );
-    }
-    return "light";
-  });
-  const { t } = useTranslation();
+  // const [lang, setLang] = useState<string>("en");
 
-  const toggleLanguage = () => {
-    const currentLanguage = i18n.language;
-    const nextLanguage = currentLanguage === "en" ? "ka" : "en";
-    setLang(lang === "en" ? "ka" : "en");
-    i18n.changeLanguage(nextLanguage);
-  };
+  const { theme, setTheme } = useContext(ThemeContext);
 
+  console.log(theme);
+
+  useEffect(() => {
+    const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      setTheme(e.matches ? "dark" : "light");
+    };
+    prefersDarkMode.addEventListener("change", handleChange);
+    return () => {
+      prefersDarkMode.removeEventListener("change", handleChange);
+    };
+  }, []);
+  // const { t } = useTranslation();
+
+  // const toggleLanguage = () => {
+  //   const currentLanguage = i18n.language;
+  //   const nextLanguage = currentLanguage === "en" ? "ka" : "en";
+  //   setLang(lang === "en" ? "ka" : "en");
+  //   i18n.changeLanguage(nextLanguage);
+  // };
+
+  // const handleClick = () => {
+  //   // Toggle between "en" and "ka" languages
+  //   const nextLang = lang === "en" ? "ka" : "en";
+  //   setLang(nextLang);
+
+  //   // Update localStorage with the new language
+  //   localStorage.setItem("lang", nextLang);
+  // };
   useEffect(() => {
     document.body.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
-  function changeTheme() {
-    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+  function handleThemeChange() {
+    setTheme(theme === "light" ? "dark" : "light");
   }
 
   useEffect(() => {
@@ -57,6 +68,16 @@ export default function HeaderClient() {
       document.body.style.overflow = "auto";
     };
   }, [showBugerMenu]);
+
+  // function changeLanguage() {
+  //   const paths = path.split("/");
+  //   paths[1] = paths[1] === "en" ? "ka" : "en";
+  //   const newPath = paths.join("/");
+  //   router.replace(newPath);
+  // }
+  const changeLocale = useChangeLocale();
+  // const locale = useCurrentLocale();
+  const t = useI18n();
 
   return (
     <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 dark:bg-black">
@@ -112,8 +133,14 @@ export default function HeaderClient() {
           </button>
         </nav>
         <div className="flex items-center">
-          <button className="mr-6" onClick={toggleLanguage}>
-            {lang === "en" ? (
+          <button className="mr-4" onClick={() => changeLocale("en")}>
+            ENG
+          </button>
+          <button className="mr-4" onClick={() => changeLocale("ka")}>
+            KA
+          </button>
+          {/* <button className="mr-6" onClick={changeLocale}>
+            {locale === "en" ? (
               <div className="flex items-center">
                 <Image className="w-[20px]" src={geoFlag} alt="flag" />{" "}
                 <span className="text-white text-sm hover:text-gray-200">
@@ -128,8 +155,8 @@ export default function HeaderClient() {
                 </span>
               </div>
             )}
-          </button>
-          <button onClick={changeTheme}>
+          </button> */}
+          <button onClick={handleThemeChange}>
             {theme === "dark" ? (
               <Image src={sun} alt="sun" width={30} height={30} />
             ) : (

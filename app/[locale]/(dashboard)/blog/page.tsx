@@ -2,6 +2,7 @@ import Api from "@/Data/Api";
 import BlogClient from "@/components/BlogClient";
 import Title from "@/components/Title";
 import React from "react";
+import { getI18n } from "../../../../locales/server";
 
 export const metadata = {
   title: "BLOG",
@@ -19,10 +20,11 @@ const fetchPosts = async () => {
 
 export default async function Blog() {
   const postData = await fetchPosts();
+  const t = await getI18n();
 
   return (
     <main className="bg-white dark:bg-slate-900">
-      <Title titleName="blogTitle" />
+      <Title titleName={t("blogTitle")} />
       <div className="grid grid-cols-4 px-[4%] grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1 ">
         <BlogClient postData={postData} />
       </div>

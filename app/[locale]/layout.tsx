@@ -1,5 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ReactElement } from "react";
+import { ThemeProvider } from "../providers/ThemeContext";
+import { I18nProviderClient } from "@/locales/client";
+// import { LangProvider } from "./providers/LangContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -9,15 +13,19 @@ export const metadata = {
 };
 
 export default function RootLayout({
+  params: { locale },
   children,
 }: {
-  children: React.ReactNode;
+  params: { locale: string };
+  children: ReactElement;
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen justify-between">
-          {children}
+          <ThemeProvider>
+            <I18nProviderClient locale={locale}>{children}</I18nProviderClient>
+          </ThemeProvider>
         </div>
       </body>
     </html>

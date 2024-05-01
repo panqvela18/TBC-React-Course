@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
     },
 
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -28,6 +28,6 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "app/(dashboard)/blog/page.tsx", "components/BlogClient.jsx", "components/ProductsSwiper.tsx", "app/(dashboard)/product/[id]/page.jsx"],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "app/(dashboard)/blog/page.tsx", "components/BlogClient.jsx", "components/ProductsSwiper.tsx", "app/(dashboard)/product/[id]/page.jsx", "components/Test.tsx"],
   "exclude": ["node_modules"]
 }

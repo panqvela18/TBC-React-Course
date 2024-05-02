@@ -16,7 +16,7 @@ export default function DashboardLayout({
   // }
 
   return (
-    <div suppressHydrationWarning={true}>
+    <div>
       <Header />
       {children}
       <Footer />

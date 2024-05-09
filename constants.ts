@@ -1,2 +1,3 @@
 export const AUTH_COOKIE_KEY = "auth";
 export const TOKEN_COOKIE_KEY = "token";
+export const BASE_URL = "http://localhost:3000/api/"

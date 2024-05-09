@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient";
 
 export default function Header() {
@@ -22,5 +23,7 @@ export default function Header() {
   //   await langToggle(lang)
   // }
 
-  return <HeaderClient />;
+  const cookie = cookies();
+  const currentLang = cookie.get("Next-Locale");
+  return <HeaderClient currentLang={currentLang} />;
 }

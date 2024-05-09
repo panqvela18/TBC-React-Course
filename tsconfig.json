@@ -28,6 +28,6 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "app/(dashboard)/blog/page.tsx", "components/BlogClient.jsx", "components/ProductsSwiper.tsx", "app/(dashboard)/product/[id]/page.jsx", "components/Test.tsx"],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "app/(dashboard)/blog/page.tsx", "components/BlogClient.jsx", "components/ProductsSwiper.tsx", "app/(dashboard)/product/[id]/page.jsx", "components/Test.tsx", "middleware.js", "middleware.js"],
   "exclude": ["node_modules"]
 }

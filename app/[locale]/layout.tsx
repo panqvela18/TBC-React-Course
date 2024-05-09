@@ -20,7 +20,7 @@ export default function RootLayout({
   children: ReactElement;
 }) {
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen justify-between">
           <ThemeProvider>

@@ -34,4 +34,8 @@ export default {
      "email": "Email",
      "message": "Message",
      "send": "SEND",
+     //login
+     "username":"Username",
+     "password":"Password",
+     "login":"Log In"
   } as const

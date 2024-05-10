@@ -39,3 +39,23 @@ export interface ProdDetail{
   discountPercentage:number;
   images:string[];
 }
+
+export interface User {
+  id:number;
+  name:string,
+  age:number,
+  email:string,
+  isadmin:boolean
+}
+export interface UserData {
+  name: string;
+  email: string;
+  age: number;
+  isadmin: boolean;
+}
+export interface UserData1 {
+  name: string;
+  email: string;
+  age: number;
+  isAdmin: boolean;
+}

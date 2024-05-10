@@ -33,4 +33,9 @@ export default {
     "email": "ელ-ფოსტა",
     "message": "შეტყობინება",
     "send": "გაგზავნა",
+     //login
+     "username":"სახელი",
+     "password":"პაროლი",
+     "login":"შესვლა"
+
   } as const

@@ -15,19 +15,22 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(`/`, request.url));
   }
 
+  // const defaultLocale = request.headers.get("ka") || "en" 
+  
   const I18nMiddleware = createI18nMiddleware({
     locales: ["en", "ka"],
-    defaultLocale: "en",
+    defaultLocale:"en",
     urlMappingStrategy: "rewrite",
   });
-
   const response = I18nMiddleware(request);
+
+  // response.headers.set("ka", );
 
   return response;
 }
 
 export const config = {
   matcher: [
-    "/((?!api|_next|static|.*\\..*|favicon.ico|robots.txt).*)", // Ensuring API paths are excluded
+    "/((?!api|_next|static|.*\\..*|favicon.ico|robots.txt).*)", 
   ],
 };

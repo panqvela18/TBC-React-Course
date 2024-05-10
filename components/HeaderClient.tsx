@@ -5,18 +5,15 @@ import logo from "../public/icons8-logo.svg";
 import { useContext, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
-// import ukFlag from "../public/uk.svg";
-// import geoFlag from "../public/Flag_of_Georgia.svg.png";
 import moon from "../public/moon.svg";
 import sun from "../public/sun.svg";
 import { handleLogout } from "@/app/scripts/logout";
 import { ThemeContext } from "@/app/providers/ThemeContext";
-import { useChangeLocale, useI18n } from "../locales/client";
+import { useI18n } from "../locales/client";
+import ToggleLang from "./ToggleLang";
 
-export default function HeaderClient() {
+export default function HeaderClient({ currentLang }: { currentLang: any }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
-  // const [lang, setLang] = useState<string>("en");
-
   const { theme, setTheme } = useContext(ThemeContext);
 
   console.log(theme);
@@ -31,23 +28,7 @@ export default function HeaderClient() {
       prefersDarkMode.removeEventListener("change", handleChange);
     };
   }, []);
-  // const { t } = useTranslation();
 
-  // const toggleLanguage = () => {
-  //   const currentLanguage = i18n.language;
-  //   const nextLanguage = currentLanguage === "en" ? "ka" : "en";
-  //   setLang(lang === "en" ? "ka" : "en");
-  //   i18n.changeLanguage(nextLanguage);
-  // };
-
-  // const handleClick = () => {
-  //   // Toggle between "en" and "ka" languages
-  //   const nextLang = lang === "en" ? "ka" : "en";
-  //   setLang(nextLang);
-
-  //   // Update localStorage with the new language
-  //   localStorage.setItem("lang", nextLang);
-  // };
   useEffect(() => {
     document.body.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("theme", theme);
@@ -69,14 +50,6 @@ export default function HeaderClient() {
     };
   }, [showBugerMenu]);
 
-  // function changeLanguage() {
-  //   const paths = path.split("/");
-  //   paths[1] = paths[1] === "en" ? "ka" : "en";
-  //   const newPath = paths.join("/");
-  //   router.replace(newPath);
-  // }
-  const changeLocale = useChangeLocale();
-  // const locale = useCurrentLocale();
   const t = useI18n();
 
   return (
@@ -133,29 +106,7 @@ export default function HeaderClient() {
           </button>
         </nav>
         <div className="flex items-center">
-          <button className="mr-4" onClick={() => changeLocale("en")}>
-            ENG
-          </button>
-          <button className="mr-4" onClick={() => changeLocale("ka")}>
-            KA
-          </button>
-          {/* <button className="mr-6" onClick={changeLocale}>
-            {locale === "en" ? (
-              <div className="flex items-center">
-                <Image className="w-[20px]" src={geoFlag} alt="flag" />{" "}
-                <span className="text-white text-sm hover:text-gray-200">
-                  GE
-                </span>
-              </div>
-            ) : (
-              <div className="flex items-center">
-                <Image className="w-[20px] mr-[2px]" src={ukFlag} alt="flag" />{" "}
-                <span className="text-white text-sm hover:text-gray-200">
-                  EN
-                </span>
-              </div>
-            )}
-          </button> */}
+          <ToggleLang currentLang={currentLang?.value} />
           <button onClick={handleThemeChange}>
             {theme === "dark" ? (
               <Image src={sun} alt="sun" width={30} height={30} />

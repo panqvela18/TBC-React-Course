@@ -34,9 +34,12 @@ export default function Blogs({ title, body, id, tags }: PostData) {
             );
           })}
         </div>
-        <button className="bg-blue-500 p-4 text-white cursor-pointer w-full dark:bg-white dark:text-black">
-          <Link href={`/blog/${id}`}>{t("seeMore")}</Link>
-        </button>
+        <Link
+          className="bg-blue-500 p-4 text-white cursor-pointer w-full dark:bg-white dark:text-black text-center"
+          href={`/blog/${id}`}
+        >
+          {t("seeMore")}
+        </Link>
       </div>
     </div>
   );

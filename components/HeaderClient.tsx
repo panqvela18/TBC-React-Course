@@ -27,7 +27,7 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
     return () => {
       prefersDarkMode.removeEventListener("change", handleChange);
     };
-  }, []);
+  }, [setTheme]);
 
   useEffect(() => {
     document.body.classList.toggle("dark", theme === "dark");
@@ -93,6 +93,12 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
             className="text-white text-sm mr-6 hover:text-gray-200"
           >
             {t("profile")}
+          </Link>
+          <Link
+            href={"/admin"}
+            className="text-white text-sm mr-6 hover:text-gray-200"
+          >
+            {t("admin")}
           </Link>
           <button
             onClick={() =>
@@ -166,6 +172,23 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
             >
               {t("profile")}
             </Link>
+            <Link
+              onClick={() => setShowBurgerMenu(false)}
+              href={"admin"}
+              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+            >
+              {t("admin")}
+            </Link>
+            <button
+              onClick={() =>
+                handleLogout().then(() => {
+                  window.location.reload();
+                })
+              }
+              className="text-white text-sm  hover:text-gray-200"
+            >
+              {t("logout")}
+            </button>
           </nav>
         </div>
       )}

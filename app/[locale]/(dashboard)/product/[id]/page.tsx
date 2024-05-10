@@ -3,6 +3,7 @@ import { FaStar } from "react-icons/fa6";
 import ProductDetailInfo from "@/components/ProductDetailInfo";
 // import ProductsSwiper from "@/components/ProductsSwiper";
 import { ProdDetail } from "@/app/interface";
+import { setStaticParamsLocale } from "next-international/server";
 // import Api from "@/Data/Api";
 
 // export async function fetchAllProduct() {
@@ -29,7 +30,7 @@ export async function generateStaticParams() {
     }
 
     const data = await res.json();
-    return data.products.map((product: { id: number }) => ({
+    return data?.products.map((product: { id: number }) => ({
       id: `${product.id}`,
     }));
   } catch (error) {
@@ -46,11 +47,12 @@ async function fetchProduct(id: string) {
 }
 
 export default async function ProductDetail({
-  params,
+  params: { id, locale },
 }: {
-  params: { id: string };
+  params: { id: string; locale: string };
 }) {
-  const { id } = params;
+  // const { id } = params;
+  setStaticParamsLocale(locale);
 
   const product: ProdDetail = await fetchProduct(id);
 
@@ -98,18 +100,17 @@ export default async function ProductDetail({
           GALLERY
         </h2>
         <div className="flex flex-wrap items-center justify-center py-16">
-          {product &&
-            product.images.map((img: string, index: number) => (
-              <Image
-                key={index}
-                loading="lazy"
-                src={img}
-                width={200}
-                height={200}
-                alt="gallery-image"
-                className="rounded object-cover w-40 h-40"
-              />
-            ))}
+          {product?.images.map((img: string, index: number) => (
+            <Image
+              key={index}
+              loading="lazy"
+              src={img}
+              width={200}
+              height={200}
+              alt="gallery-image"
+              className="rounded object-cover w-40 h-40"
+            />
+          ))}
         </div>
       </section>
       {/* <section>

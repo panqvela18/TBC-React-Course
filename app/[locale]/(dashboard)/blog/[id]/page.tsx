@@ -2,6 +2,7 @@ import Image from "next/image";
 import defaulImage from "../../../../../public/Teamwork.png";
 import { AiFillLike } from "react-icons/ai";
 import { FetchedPost } from "@/app/interface";
+import { setStaticParamsLocale } from "next-international/server";
 
 export async function generateStaticParams() {
   try {
@@ -11,7 +12,7 @@ export async function generateStaticParams() {
     }
 
     const data: FetchedPost = await res.json();
-    return data.posts.map((post) => ({
+    return data?.posts.map((post) => ({
       id: `${post.id}`,
     }));
   } catch (error) {
@@ -27,11 +28,12 @@ async function fetchBlog(id: string) {
   return post;
 }
 export default async function BlogDetail({
-  params,
+  params: { id, locale },
 }: {
-  params: { id: string };
+  params: { id: string; locale: string };
 }) {
-  const { id } = params;
+  setStaticParamsLocale(locale);
+
   const post = await fetchBlog(id);
 
   return (
@@ -58,7 +60,7 @@ export default async function BlogDetail({
           height={500}
         />
         <div className="flex flex-wrap items-center mt-5">
-          {post.tags.map((tag: string) => {
+          {post?.tags.map((tag: string) => {
             return (
               <button
                 key={tag}

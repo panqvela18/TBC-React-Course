@@ -1,7 +1,8 @@
 import { ReactElement } from "react";
+import { getStaticParams } from "../../../../../locales/server";
 
-export async function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "ka" }];
+export function generateStaticParams() {
+  return getStaticParams();
 }
 
 export default function BlogDetailLayout({

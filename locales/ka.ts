@@ -6,6 +6,7 @@ export default {
     "contact": "კონტაქტი",
     "profile": "პროფილი",
     "logout": "გასვლა",
+    "admin": "ადმინი",
     //TITLE
     "blogTitle": "ბლოგი",
     "productTitle": "პროდუქტები",

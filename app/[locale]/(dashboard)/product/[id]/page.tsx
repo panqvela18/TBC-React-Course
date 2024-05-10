@@ -30,7 +30,7 @@ export async function generateStaticParams() {
     }
 
     const data = await res.json();
-    return data?.products.map((product: { id: number }) => ({
+    return data?.products?.map((product: { id: number }) => ({
       id: `${product.id}`,
     }));
   } catch (error) {
@@ -100,7 +100,7 @@ export default async function ProductDetail({
           GALLERY
         </h2>
         <div className="flex flex-wrap items-center justify-center py-16">
-          {product?.images.map((img: string, index: number) => (
+          {product?.images?.map((img: string, index: number) => (
             <Image
               key={index}
               loading="lazy"

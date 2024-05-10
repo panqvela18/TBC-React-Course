@@ -12,7 +12,7 @@ export async function generateStaticParams() {
     }
 
     const data: FetchedPost = await res.json();
-    return data?.posts.map((post) => ({
+    return data?.posts?.map((post) => ({
       id: `${post.id}`,
     }));
   } catch (error) {
@@ -60,7 +60,7 @@ export default async function BlogDetail({
           height={500}
         />
         <div className="flex flex-wrap items-center mt-5">
-          {post?.tags.map((tag: string) => {
+          {post?.tags?.map((tag: string) => {
             return (
               <button
                 key={tag}

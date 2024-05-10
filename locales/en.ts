@@ -7,6 +7,7 @@ export default {
      "contact": "CONTACT",
      "profile": "PROFILE",
      "logout": "LOG OUT",
+     "admin": "ADMIN",
      //TITLE
      "blogTitle": "BLOG",
      "productTitle": "PRODUCTS",

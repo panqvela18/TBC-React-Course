@@ -1,7 +1,6 @@
 "use client";
 import { createUserAction } from "@/app/actions";
 import { UserData1 } from "@/app/interface";
-// import { BASE_URL } from "@/constants";
 import Modal from "@mui/material/Modal";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

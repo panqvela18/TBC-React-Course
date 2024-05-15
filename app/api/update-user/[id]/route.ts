@@ -13,7 +13,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error }, { status: 500 });
   }
 
-  const users = await sql`SELECT * FROM users;`;
+  const users = await sql`SELECT * FROM users ORDER BY id ASC;`;
 
   return NextResponse.json({ users }, { status: 200 });
 }

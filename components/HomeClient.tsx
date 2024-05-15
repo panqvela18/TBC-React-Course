@@ -1,14 +1,24 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
 import Product from "./Product";
 import Title from "./Title";
 import Loader from "./Loader";
 import { ProductData } from "@/app/interface";
 import { useI18n } from "@/locales/client";
+import { BsCartCheckFill } from "react-icons/bs";
+import { useLocalStorage } from "@/app/hook";
+import { reducer } from "@/app/useReducerHook";
+import Link from "next/link";
 
 interface HomeClientProps {
   prdata: ProductData[];
 }
+interface SelectedProd {
+  id: number;
+  count: number;
+}
+
+const initialState: SelectedProd[] = [];
 
 export default function HomeClient({ prdata }: HomeClientProps) {
   const [originalProductsData] = useState<ProductData[]>(prdata);
@@ -17,7 +27,32 @@ export default function HomeClient({ prdata }: HomeClientProps) {
   const [search, setSearch] = useState<string>("");
   const [sortTimeout, setSortTimeout] = useState<NodeJS.Timeout | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
+  const [value, setCachedValue] = useLocalStorage(
+    "selectedProducts",
+    initialState
+  );
+  const [selectedProducts, dispatch] = useReducer(reducer, value);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    setCachedValue(selectedProducts);
+  }, [selectedProducts, setCachedValue]);
+
+  const selectedProductCount = selectedProducts.reduce((acc, curr) => {
+    return acc + curr?.count;
+  }, 0);
+
+  console.log(selectedProducts);
+
   const t = useI18n();
+
+  const handleClick = (card: ProductData) => {
+    dispatch({ type: "INCREMENT", payload: card });
+  };
 
   // debounce function
   const debounce = (fn: Function, delay: number) => {
@@ -98,18 +133,21 @@ export default function HomeClient({ prdata }: HomeClientProps) {
       {loader ? (
         <Loader />
       ) : (
-        <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
-          {productsData?.map((prod) => (
-            <Product
-              key={prod.id}
-              id={prod.id}
-              thumbnail={prod.thumbnail}
-              description={prod.description}
-              price={prod.price}
-              title={prod.title}
-            />
-          ))}
-        </div>
+        <>
+          <Link href={"/cart"} className="flex items-center">
+            <BsCartCheckFill />
+            <span>{isClient ? selectedProductCount : ""}</span>
+          </Link>
+          <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
+            {productsData?.map((prod) => (
+              <Product
+                key={prod.id}
+                prod={prod}
+                handleClick={() => handleClick(prod)}
+              />
+            ))}
+          </div>
+        </>
       )}
     </section>
   );

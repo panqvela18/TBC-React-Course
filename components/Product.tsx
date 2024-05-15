@@ -3,14 +3,17 @@ import { ProductData } from "@/app/interface";
 import { useI18n } from "@/locales/client";
 import Image from "next/image";
 import Link from "next/link";
+import { BsCartCheckFill } from "react-icons/bs";
 
 export default function Product({
-  id,
-  thumbnail,
-  title,
-  description,
-  price,
-}: ProductData) {
+  prod,
+  handleClick,
+}: {
+  prod: ProductData;
+  handleClick: (id: number) => void;
+}) {
+  const { id, thumbnail, title, description, price } = prod;
+
   const t = useI18n();
 
   return (
@@ -35,7 +38,12 @@ export default function Product({
           {price}$
         </span>
       </div>
-      {/* <button  className='bg-blue-500 text-white flex items-center py-2 px-4 rounded font-bold'>Add to Cart <BsCartCheckFill className="ml-3" color="white" /></button> */}
+      <button
+        onClick={() => handleClick(id)}
+        className="bg-blue-500 text-white flex items-center py-2 px-4 rounded font-bold"
+      >
+        Add to Cart <BsCartCheckFill className="ml-3" color="white" />
+      </button>
       <button className="bg-blue-500 text-white flex items-center py-2 px-4 rounded font-bold dark:bg-white dark:text-black">
         <Link href={`/product/${id}`}>{t("learnMore")}</Link>
       </button>

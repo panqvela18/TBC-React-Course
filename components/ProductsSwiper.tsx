@@ -1,5 +1,5 @@
 import { ProductData } from "@/app/interface";
-import Product from "./Product";
+// import Product from "./Product";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Mousewheel, Keyboard } from "swiper/modules";
 import "swiper/css";
@@ -38,14 +38,15 @@ export default function ProductsSwiper({
           return (
             <SwiperSlide className="grid grid-cols-4 gap-2" key={prod.id}>
               <div className="h-[500px] mr-4">
-                <Product
+                {/* <Product
                   key={prod.id}
                   id={prod.id}
                   thumbnail={prod.thumbnail}
                   description={prod.description}
                   price={prod.price}
                   title={prod.title}
-                />
+                /> */}
+                <h1>{prod.title}</h1>
               </div>
             </SwiperSlide>
           );

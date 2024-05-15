@@ -6,7 +6,6 @@ export default async function Login() {
   // if (cookies().has(AUTH_COOKIE_KEY)) {
   //   redirect("/");
   // }
-
   const cookie = cookies();
   const currentLang = cookie.get("Next-Locale");
 

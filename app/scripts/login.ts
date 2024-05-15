@@ -1,6 +1,7 @@
+
 export async function handleLogin(username:string, password:string) {
   try {
-    await fetch("http://localhost:3000/api/login", {
+    await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -8,7 +8,19 @@ export interface PostData {
 
 
 export interface ProductData {
-    id: number | string;
+    id: number ;
+    thumbnail: string;
+    description: string;
+    price: number;
+    title:string;
+    category?:string
+    count?:number;
+    handleClick: (productId: number) => void;
+
+  }
+
+  export interface ProductData {
+    id: number ;
     thumbnail: string;
     description: string;
     price: number;

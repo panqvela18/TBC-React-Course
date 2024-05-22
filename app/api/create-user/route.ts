@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   const { name, email,age,isAdmin } = await request.json();
 
- 
   try {
     if (!name || !email || !age) throw new Error('name,email and age are required');
     await sql`INSERT INTO users (name, email,age,isAdmin) VALUES (${name}, ${email},${age},${isAdmin});`;

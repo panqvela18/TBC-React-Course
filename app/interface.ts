@@ -27,6 +27,17 @@ export interface ProductData {
     title:string;
     category?:string
   }
+  export interface ProductFromVercel {
+    id: number | string;
+    description: string;
+    price: string;
+    title:string;
+    discount:string;
+    category:string;
+    stock:number
+  }
+
+
 
   
   export interface PaginatedResponse extends PostData {

@@ -1,11 +1,21 @@
-// import { BASE_URL } from "@/constants";
-
-// import { BASE_URL } from "../constants";
-
 export async function getUsers() {
     const response = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + '/api/get-users');
     const { users } = await response.json();
     return users?.rows;
+  }
+
+  export async function getProductDetail(id:string) {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-products/${id}`);
+    const data = await response.json();
+    const product = data.products?.rows ? data.products.rows[0] : null;
+    return product;
+  }
+  
+
+export async function getProducts() {
+    const response = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + '/api/get-products');
+    const { products } = await response.json();
+    return products?.rows;
   }
 
 export async function createUser(name: string, email: string,age:number,isAdmin:boolean,) {
@@ -43,4 +53,15 @@ export async function updateUserById(id: number,  name: string, email: string, a
         console.error('Error updating user:', error);
         throw error;
     }
+}
+
+export async function getUserCart(userId: number) {
+  const response = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-cart/${userId}`, {
+    cache: "no-store",
+  });
+  const carts = await response.json();
+ 
+  const [cart] = carts.carts.rows;
+ 
+  return cart;
 }

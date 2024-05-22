@@ -1,60 +1,28 @@
 "use client";
-import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
-import Product from "./Product";
+import React, { ChangeEvent, useState } from "react";
 import Title from "./Title";
 import Loader from "./Loader";
-import { ProductData } from "@/app/interface";
+import { ProductFromVercel } from "@/app/interface";
 import { useI18n } from "@/locales/client";
 import { BsCartCheckFill } from "react-icons/bs";
-import { useLocalStorage } from "@/app/hook";
-import { reducer } from "@/app/useReducerHook";
 import Link from "next/link";
+import { handleAddToCart } from "@/app/actions";
 
 interface HomeClientProps {
-  prdata: ProductData[];
-}
-interface SelectedProd {
-  id: number;
-  count: number;
+  products: ProductFromVercel[];
 }
 
-const initialState: SelectedProd[] = [];
-
-export default function HomeClient({ prdata }: HomeClientProps) {
-  const [originalProductsData] = useState<ProductData[]>(prdata);
-  const [productsData, setProductsData] = useState<ProductData[]>(prdata);
+export default function HomeClient({ products }: HomeClientProps) {
+  const [originalProductsData] = useState<ProductFromVercel[]>(products);
+  const [productsData, setProductsData] =
+    useState<ProductFromVercel[]>(products);
   const [resetProduct, setResetProduct] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
-  const [sortTimeout, setSortTimeout] = useState<NodeJS.Timeout | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
-  const [value, setCachedValue] = useLocalStorage(
-    "selectedProducts",
-    initialState
-  );
-  const [selectedProducts, dispatch] = useReducer(reducer, value);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    setCachedValue(selectedProducts);
-  }, [selectedProducts, setCachedValue]);
-
-  const selectedProductCount = selectedProducts.reduce((acc, curr) => {
-    return acc + curr?.count;
-  }, 0);
-
-  console.log(selectedProducts);
 
   const t = useI18n();
 
-  const handleClick = (card: ProductData) => {
-    dispatch({ type: "INCREMENT", payload: card });
-  };
-
-  // debounce function
+  // Debounce function
   const debounce = (fn: Function, delay: number) => {
     let timer: NodeJS.Timeout;
     return (...args: any[]) => {
@@ -65,49 +33,43 @@ export default function HomeClient({ prdata }: HomeClientProps) {
     };
   };
 
-  // use debounced function on my search input
-
-  const debouncedHandleChange = debounce((searchValue: string) => {
-    const filteredProducts = originalProductsData?.filter((prod) =>
-      prod.title.toLowerCase().includes(searchValue.toLowerCase())
-    );
-    const sortedProductTyping = resetProduct
-      ? filteredProducts.sort((a, b) => a.price - b.price)
-      : filteredProducts;
-    setProductsData(sortedProductTyping);
-    setLoader(false);
-  }, 2000);
-
   const handleSortChange = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    setResetProduct(!resetProduct);
     setLoader(true);
 
-    if (sortTimeout) {
-      clearTimeout(sortTimeout);
-    }
-
-    const newTimeout = setTimeout(() => {
-      const sortedProducts = [...productsData].sort(
-        (a, b) => a.price - b.price
-      );
-      setProductsData(sortedProducts);
+    setTimeout(() => {
+      if (resetProduct) {
+        // Reset to original products data
+        setProductsData([...originalProductsData]);
+      } else {
+        // Sort products by price
+        const sortedProducts = [...productsData].sort(
+          (a, b) => Number(a.price) - Number(b.price)
+        );
+        setProductsData(sortedProducts);
+      }
+      setResetProduct(!resetProduct);
       setLoader(false);
     }, 2000);
-
-    setSortTimeout(newTimeout);
   };
 
-  // Inside handleChange function, filter original data instead of current data
+  const handleSearch = (searchValue: string) => {
+    const filteredProducts = originalProductsData.filter((prod) =>
+      prod.title.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    const sortedProductTyping = resetProduct
+      ? filteredProducts.sort((a, b) => Number(a.price) - Number(b.price))
+      : filteredProducts;
+    setProductsData(sortedProductTyping);
+    setLoader(false);
+  };
+
+  const debouncedHandleChange = debounce(handleSearch, 2000);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    const searchValue = e.target.value.toLowerCase();
-    const filteredProducts = originalProductsData.filter((prod) =>
-      prod.title.toLowerCase().includes(searchValue)
-    );
-    setProductsData(filteredProducts);
     setLoader(true);
     debouncedHandleChange(e.target.value);
   };
@@ -133,21 +95,34 @@ export default function HomeClient({ prdata }: HomeClientProps) {
       {loader ? (
         <Loader />
       ) : (
-        <>
-          <Link href={"/cart"} className="flex items-center">
-            <BsCartCheckFill />
-            <span>{isClient ? selectedProductCount : ""}</span>
-          </Link>
-          <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
-            {productsData?.map((prod) => (
-              <Product
-                key={prod.id}
-                prod={prod}
-                handleClick={() => handleClick(prod)}
-              />
-            ))}
-          </div>
-        </>
+        <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
+          {productsData.map((p) => {
+            return (
+              <div
+                key={p.id}
+                className="bg-white dark:bg-slate-800 p-5 rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
+              >
+                <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                  {p.description}
+                </p>
+                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
+                  {p.category}
+                </span>
+                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
+                  {p.price}
+                </span>
+                <button
+                  onClick={() => handleAddToCart(p.id.toString())}
+                  className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
+                >
+                  Add to Cart <BsCartCheckFill className="ml-3" color="white" />
+                </button>
+                <Link href={`/product/${p.id}`}>{t("learnMore")}</Link>
+              </div>
+            );
+          })}
+        </div>
       )}
     </section>
   );

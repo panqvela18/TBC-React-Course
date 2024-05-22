@@ -1,92 +1,40 @@
-"use client";
-import { useLocalStorage } from "@/app/hook";
-import { ProductData } from "@/app/interface";
-import { reducer } from "@/app/useReducerHook";
-import Image from "next/image";
-import { useEffect, useReducer, useState } from "react";
+import React from "react";
+import { getProducts, getUserCart } from "../../../api";
+import QuintityChangeButtons from "../../../../components/QuintityChangeButtons";
+import ClearButton from "@/components/ClearButton";
 
-export default function Cart() {
-  const [isClient, setIsClient] = useState(false);
-  const [cardsData, setCachedValue] = useLocalStorage("selectedProducts", []);
-  const [SelectedProducts, dispatch] = useReducer(reducer, cardsData);
+export default async function page() {
+  const cart = await getUserCart(32);
+  const cartProductsArray = Object.entries(cart?.products);
+  const cartProducts = await getProducts();
 
-  useEffect(() => {
-    setCachedValue(SelectedProducts);
-  }, [SelectedProducts, setCachedValue]);
+  const cartProductMap = new Map(cartProductsArray);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const handleQuantityChange = (
-    action: "INCREMENT" | "DECREMENT" | "REMOVE",
-    card: ProductData
-  ) => {
-    dispatch({ type: action, payload: card });
-  };
-
-  const handleProductRemove = (action: "RESET") => {
-    dispatch({ type: action });
-  };
+  const filteredProducts = cartProducts
+    .filter((product: any) => cartProductMap.has(product.id.toString()))
+    .map((product: any) => ({
+      ...product,
+      quantity: cartProductMap.get(product.id.toString()),
+    }));
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <button
-        className="bg-red-500 text-white py-2 px-4 rounded"
-        onClick={() => handleProductRemove("RESET")}
-      >
-        Clear Cart
-      </button>
-      <div className="mt-8 space-y-4">
-        {isClient &&
-          cardsData.map((item: any) => (
-            <div className="flex items-center space-x-4" key={item.id}>
-              <div className="w-24 h-24 relative">
-                <Image
-                  src={item.selectedCard.thumbnail}
-                  layout="fill"
-                  objectFit="cover"
-                  alt={item.selectedCard.title}
-                />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold">
-                  {item.selectedCard.title}
-                </h2>
-                <p className="text-gray-600">{item.selectedCard.brand}</p>
-                <p className="text-gray-700">{item.selectedCard.description}</p>
-                <p className="text-gray-800">${item.selectedCard.price}</p>
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  className="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex justify-center items-center"
-                  onClick={() =>
-                    handleQuantityChange("DECREMENT", item.selectedCard)
-                  }
-                >
-                  -
-                </button>
-                <span className="text-gray-800">{item.count}</span>
-                <button
-                  className="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex justify-center items-center"
-                  onClick={() =>
-                    handleQuantityChange("INCREMENT", item.selectedCard)
-                  }
-                >
-                  +
-                </button>
-                <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() =>
-                    handleQuantityChange("REMOVE", item.selectedCard)
-                  }
-                >
-                  Remove
-                </button>
-              </div>
+    <div className="container mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
+      <div className="grid grid-cols-1 gap-4">
+        {filteredProducts.map((prod: any) => (
+          <div
+            key={prod.id}
+            className="p-4 border rounded-lg shadow-sm flex items-center justify-between"
+          >
+            <div>
+              <p className="text-lg font-semibold">{prod.title}</p>
+              <span className="text-gray-500">Quantity: {prod.quantity}</span>
             </div>
-          ))}
+            <QuintityChangeButtons id={prod.id} />
+          </div>
+        ))}
       </div>
+      <ClearButton />
     </div>
   );
 }

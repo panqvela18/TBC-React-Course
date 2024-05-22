@@ -5,7 +5,7 @@ export function generateStaticParams() {
   return getStaticParams();
 }
 
-export default function BlogDetailLayout({
+export default function ProductDetailLayout({
   children,
 }: {
   children: ReactElement;

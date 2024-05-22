@@ -11,6 +11,7 @@ import { handleLogout } from "@/app/scripts/logout";
 import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
+import CartBtn from "./CartBtn";
 
 export default function HeaderClient({ currentLang }: { currentLang: any }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
@@ -112,6 +113,7 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
           </button>
         </nav>
         <div className="flex items-center">
+          <CartBtn />
           <ToggleLang currentLang={currentLang?.value} />
           <button onClick={handleThemeChange}>
             {theme === "dark" ? (

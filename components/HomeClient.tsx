@@ -7,6 +7,8 @@ import { useI18n } from "@/locales/client";
 import { BsCartCheckFill } from "react-icons/bs";
 import Link from "next/link";
 import { handleAddToCart } from "@/app/actions";
+import { debounce } from "@/app/utils";
+// import { useCart } from "@/app/providers/CartContext";
 
 interface HomeClientProps {
   products: ProductFromVercel[];
@@ -19,19 +21,9 @@ export default function HomeClient({ products }: HomeClientProps) {
   const [resetProduct, setResetProduct] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
+  // const { fetchCartData } = useCart();
 
   const t = useI18n();
-
-  // Debounce function
-  const debounce = (fn: Function, delay: number) => {
-    let timer: NodeJS.Timeout;
-    return (...args: any[]) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        fn(...args);
-      }, delay);
-    };
-  };
 
   const handleSortChange = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -100,25 +92,37 @@ export default function HomeClient({ products }: HomeClientProps) {
             return (
               <div
                 key={p.id}
-                className="bg-white dark:bg-slate-800 p-5 rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
+                className="bg-white flex flex-col justify-between dark:bg-slate-800 p-5 rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
               >
-                <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                  {p.description}
-                </p>
-                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
-                  {p.category}
-                </span>
-                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
-                  {p.price}
-                </span>
-                <button
-                  onClick={() => handleAddToCart(p.id.toString())}
-                  className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
-                >
-                  Add to Cart <BsCartCheckFill className="ml-3" color="white" />
-                </button>
-                <Link href={`/product/${p.id}`}>{t("learnMore")}</Link>
+                <div className="flex flex-col">
+                  <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    {p.description}
+                  </p>
+                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
+                    {p.category}
+                  </span>
+                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
+                    {p.price}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <button
+                    onClick={() => {
+                      handleAddToCart(p.id.toString());
+                    }}
+                    className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
+                  >
+                    Add to Cart{" "}
+                    <BsCartCheckFill className="ml-3" color="white" />
+                  </button>
+                  <Link
+                    href={`/product/${p.id}`}
+                    className="text-blue-500 hover:text-blue-700 hover:underline transition duration-200 mt-2"
+                  >
+                    {t("learnMore")}
+                  </Link>
+                </div>
               </div>
             );
           })}

@@ -45,7 +45,7 @@ export const handleAddToCart = async (productId: string) => {
         quantity: 1,
       }),
     });
-    revalidatePath("/test")
+    revalidatePath("/cart")
     if (!response.ok) {
       throw new Error("Failed to add item to cart");
     }
@@ -69,8 +69,7 @@ export const handleDecrement = async (productId: string) => {
       }),
     });
 
-    // Ensure the cache is invalidated so the page shows the latest cart state
-    revalidatePath("/test");
+    revalidatePath("/cart");
 
     if (!response.ok) {
       throw new Error("Failed to remove item from cart");
@@ -94,7 +93,7 @@ export const handleRemoveProductFromCart = async (productId: string) => {
       }),
     });
 
-    revalidatePath("/test");
+    revalidatePath("/cart");
 
     if (!response.ok) {
       throw new Error("Failed to remove item from cart");
@@ -118,8 +117,7 @@ export const handleClearCart = async () => {
       }),
     });
 
-    // Ensure the cache is invalidated so the page shows the latest cart state
-    revalidatePath("/test");
+    revalidatePath("/cart");
 
     if (!response.ok) {
       throw new Error("Failed to clear cart");

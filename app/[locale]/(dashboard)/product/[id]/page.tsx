@@ -31,8 +31,54 @@ export default async function ProductDetail({
   const prodDetail: ProductFromVercel = await getProductDetail(id);
 
   return (
-    <div className="flex justify-center items-center">
-      <h1>{prodDetail.title}</h1>
+    <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          {prodDetail.title}
+        </h1>
+        <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400">
+          ${prodDetail.price}
+        </h2>
+      </div>
+      <div className="mb-4">
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          {prodDetail.description}
+        </p>
+      </div>
+      <div className="flex flex-wrap justify-center items-center space-x-4 mt-4">
+        <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+          <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
+            Category
+          </h4>
+          <span className="text-gray-600 dark:text-gray-300">
+            {prodDetail.category}
+          </span>
+        </div>
+        <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+          <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
+            Discount
+          </h4>
+          <span className="text-green-500 dark:text-green-300">
+            {prodDetail.discount}%
+          </span>
+        </div>
+        <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+          <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
+            Stock
+          </h4>
+          <span
+            className={`text-lg font-bold ${
+              prodDetail.stock > 0
+                ? "text-green-500 dark:text-green-300"
+                : "text-red-500 dark:text-red-300"
+            }`}
+          >
+            {prodDetail.stock > 0
+              ? `${prodDetail.stock} available`
+              : "Out of stock"}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

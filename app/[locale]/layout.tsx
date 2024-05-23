@@ -3,6 +3,7 @@ import "./globals.css";
 import { ReactElement } from "react";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { I18nProviderClient } from "@/locales/client";
+import { CartProvider } from "../providers/CartContext";
 // import { LangProvider } from "./providers/LangContext";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,7 +25,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen justify-between">
           <ThemeProvider>
-            <I18nProviderClient locale={locale}>{children}</I18nProviderClient>
+            <CartProvider>
+              <I18nProviderClient locale={locale}>
+                {children}
+              </I18nProviderClient>
+            </CartProvider>
           </ThemeProvider>
         </div>
       </body>

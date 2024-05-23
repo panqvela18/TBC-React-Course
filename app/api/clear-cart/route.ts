@@ -5,7 +5,6 @@ export async function DELETE(req: NextRequest) {
   try {
     const { userId } = await req.json();
 
-    // Clear the cart by setting products to an empty object
     const updatedCart = await sql`
       UPDATE carts
       SET products = '{}'::jsonb

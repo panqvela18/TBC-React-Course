@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
 import { getProducts, getUserCart } from "../../../api";
 import QuintityChangeButtons from "../../../../components/QuintityChangeButtons";
 import ClearButton from "@/components/ClearButton";
+// import { useCart } from "@/app/providers/CartContext";
 
 export default async function page() {
   const cart = await getUserCart(32);
@@ -16,6 +18,8 @@ export default async function page() {
       ...product,
       quantity: cartProductMap.get(product.id.toString()),
     }));
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // const { filteredProducts } = useCart();
 
   return (
     <div className="container mx-auto p-6">

@@ -9,7 +9,6 @@ export async function PUT(req: NextRequest) {
   try {
     const { userId, productId, quantity } = await req.json();
 
-    // Fetch existing cart data from the database
     const result = await sql`
       SELECT products FROM carts
       WHERE user_id = ${Number(userId)}
@@ -23,17 +22,14 @@ export async function PUT(req: NextRequest) {
 
   
 
-    // Decrement the quantity if the product already exists in the cart
     if (products[productId]) {
       products[productId] -= quantity;
 
-      // If the product quantity goes below 1, remove it from the cart
       if (products[productId] <= 0) {
         delete products[productId];
       }
     }
 
-    // Update the cart in the database
     const updatedCart = await sql`
       UPDATE carts
       SET products = ${JSON.stringify(products)}::jsonb

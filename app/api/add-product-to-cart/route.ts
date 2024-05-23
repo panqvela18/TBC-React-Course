@@ -9,7 +9,6 @@ export async function PUT(req: NextRequest) {
   try {
     const { userId, productId, quantity } = await req.json();
 
-    // Fetch existing cart data from the database
     const result = await sql`
       SELECT products FROM carts
       WHERE user_id = ${Number(userId)}
@@ -21,20 +20,13 @@ export async function PUT(req: NextRequest) {
       products = result.rows[0].products || {};
     }
 
-    // Ensure products is a proper object
-    if (typeof products === "string") {
-      products = JSON.parse(products);
-    }
 
-    // Update the quantity if the product already exists in the cart
     if (products[productId]) {
       products[productId] += quantity;
     } else {
-      // Add the new product to the cart
       products[productId] = quantity;
     }
 
-    // Update the cart in the database
     const updatedCart = await sql`
       UPDATE carts
       SET products = ${JSON.stringify(products)}::jsonb

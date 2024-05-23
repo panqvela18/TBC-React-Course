@@ -37,7 +37,9 @@ export interface ProductData {
     stock:number
   }
 
-
+  export interface ProductWithQuantity extends ProductFromVercel {
+    quantity: number;
+  }
 
   
   export interface PaginatedResponse extends PostData {
@@ -81,4 +83,13 @@ export interface UserData1 {
   email: string;
   age: number;
   isAdmin: boolean;
+}
+
+export interface Cart {
+  id: number;
+  user_id: number;
+  products: {
+    [key: string]: number;
+  };
+  added_on: string;
 }

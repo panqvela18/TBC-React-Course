@@ -12,12 +12,22 @@ import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
 import CartBtn from "./CartBtn";
+import { useRouter } from "next/navigation";
 
-export default function HeaderClient({ currentLang, user }: { currentLang: any, user: any }) {
+export default function HeaderClient({
+  currentLang,
+  user,
+  totalQuantity,
+}: {
+  currentLang: any;
+  user: any;
+  totalQuantity: any;
+}) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
   const { theme, setTheme } = useContext(ThemeContext);
+  const router = useRouter();
 
-  console.log(user)
+  console.log(user);
   console.log(theme);
 
   useEffect(() => {
@@ -53,6 +63,11 @@ export default function HeaderClient({ currentLang, user }: { currentLang: any, 
   }, [showBugerMenu]);
 
   const t = useI18n();
+
+  // const handleLogoutClick = async () => {
+  //   await handleLogout();
+  //   router.push("/api/auth/logout");
+  // };
 
   return (
     <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 dark:bg-black">
@@ -102,33 +117,24 @@ export default function HeaderClient({ currentLang, user }: { currentLang: any, 
           >
             {t("admin")}
           </Link>
-          {
-            user ? <Link
-            href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/logout`}
-            // onClick={() =>
-            //   handleLogout().then(() => {
-            //     window.location.reload();
-            //   })
-            // }
-            className="text-white text-sm  hover:text-gray-200"
-          >
-            {t("logout")}
-          </Link> : <a
-            href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/login`}
-            // onClick={() =>
-            //   handleLogout().then(() => {
-            //     window.location.reload();
-            //   })
-            // }
-            className="text-white text-sm  hover:text-gray-200"
-          >
-            {'Log In'}
-          </a>
-          }
-          
+          {user ? (
+            <Link
+              href={"/api/auth/logout"}
+              className="text-white text-sm hover:text-gray-200"
+            >
+              {t("logout")}
+            </Link>
+          ) : (
+            <Link
+              href={`/api/auth/login`}
+              className="text-white text-sm hover:text-gray-200"
+            >
+              {"Log In"}
+            </Link>
+          )}
         </nav>
         <div className="flex items-center">
-          <CartBtn />
+          <CartBtn totalQuantity={totalQuantity} />
           <ToggleLang currentLang={currentLang?.value} />
           <button onClick={handleThemeChange}>
             {theme === "dark" ? (
@@ -196,16 +202,12 @@ export default function HeaderClient({ currentLang, user }: { currentLang: any, 
             >
               {t("admin")}
             </Link>
-            <button
-              onClick={() =>
-                handleLogout().then(() => {
-                  window.location.reload();
-                })
-              }
-              className="text-white text-sm  hover:text-gray-200"
+            <Link
+              href={"/api/auth/logout"}
+              className="text-white text-sm hover:text-gray-200"
             >
               {t("logout")}
-            </button>
+            </Link>
           </nav>
         </div>
       )}

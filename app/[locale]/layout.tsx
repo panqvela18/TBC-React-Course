@@ -21,21 +21,20 @@ export default async function RootLayout({
   params: { locale: string };
   children: ReactElement;
 }) {
-
   return (
     <html lang={locale}>
-      <UserProvider>
-        <body className={inter.className}>
-          <div className="flex flex-col min-h-screen justify-between">
-            {/* <CartProvider> */}
-            <I18nProviderClient locale={locale}>
-              <ThemeProvider>{children}</ThemeProvider>
-            </I18nProviderClient>
+      <body className={inter.className}>
+        <div className="flex flex-col min-h-screen justify-between">
+          {/* <CartProvider> */}
+          <I18nProviderClient locale={locale}>
+            <ThemeProvider>
+              <UserProvider>{children}</UserProvider>
+            </ThemeProvider>
+          </I18nProviderClient>
 
-            {/* </CartProvider> */}
-          </div>
-        </body>
-      </UserProvider>
+          {/* </CartProvider> */}
+        </div>
+      </body>
     </html>
   );
 }

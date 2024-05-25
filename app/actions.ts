@@ -14,9 +14,9 @@ export async function langToggle(lang:string) {
 }
 
 export async function createUserAction(userData: UserData1) {
-  const {name,email,age,isAdmin} = userData
+  const {name,email} = userData
    revalidatePath("/admin")
-   createUser(name,email,age,isAdmin)
+   createUser(name,email)
 }
 
 export const deleteUser: (id: number) => Promise<void> = async (id: number) => {
@@ -25,9 +25,9 @@ export const deleteUser: (id: number) => Promise<void> = async (id: number) => {
 };
 
 export async function updateUserAction(id:number,userData:UserData){
-  const {name,email,age,isadmin} = userData
+  const {name,email} = userData
   revalidatePath("/admin")
-  updateUserById(id,name,email,age,isadmin)
+  updateUserById(id,name,email)
 
 }
 
@@ -40,7 +40,7 @@ export const handleAddToCart = async (productId: string) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: 32,
+        userId: 43,
         productId: productId,
         quantity: 1,
       }),
@@ -63,7 +63,7 @@ export const handleDecrement = async (productId: string) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: 32,
+        userId: 43,
         productId: productId,
         quantity: 1,
       }),
@@ -88,7 +88,7 @@ export const handleRemoveProductFromCart = async (productId: string) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: 32, 
+        userId: 43, 
         productId: productId,
       }),
     });
@@ -113,7 +113,7 @@ export const handleClearCart = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: 32, // Replace with the actual user ID
+        userId: 43, 
       }),
     });
 

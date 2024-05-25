@@ -16,7 +16,6 @@ export default async function Admin() {
             <tr>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Email</th>
-              <th className="px-4 py-2">Age</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -25,7 +24,6 @@ export default async function Admin() {
               <tr key={user.id} className="bg-white rounded-md shadow-md mb-4">
                 <td className="border px-4 py-2">{user.name}</td>
                 <td className="border px-4 py-2">{user.email}</td>
-                <td className="border px-4 py-2">{user.age}</td>
                 <td className="border px-4 py-2 flex justify-center">
                   <div className="flex items-center">
                     <EditUser userData={user} id={user.id} />

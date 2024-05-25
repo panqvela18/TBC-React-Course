@@ -9,8 +9,6 @@ export default function AddNewUser() {
   const [open, setOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [age, setAge] = useState<number>(0);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const router = useRouter();
 
   const handleOpen = () => setOpen(true);
@@ -21,8 +19,6 @@ export default function AddNewUser() {
     const userData: UserData1 = {
       name,
       email,
-      age,
-      isAdmin,
     };
 
     try {
@@ -89,35 +85,10 @@ export default function AddNewUser() {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="age"
-            >
-              Age
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="age"
-              type="number"
-              placeholder="Age"
-              value={age}
-              onChange={(e) => setAge(parseInt(e.target.value))}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="isAdmin"
             >
               Role
             </label>
-            <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="isAdmin"
-              value={isAdmin.toString()}
-              onChange={(e) => setIsAdmin(e.target.value === "true")}
-            >
-              <option value="true">Admin</option>
-              <option value="false">Not Admin</option>
-            </select>
           </div>
           <div className="flex items-center justify-between">
             <button

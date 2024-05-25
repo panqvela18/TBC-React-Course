@@ -18,10 +18,10 @@ export async function getProducts() {
     return products?.rows;
   }
 
-export async function createUser(name: string, email: string,age:number,isAdmin:boolean,) {
+export async function createUser(name: string, email: string) {
     return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + '/api/create-user', {
       method: 'POST',
-      body: JSON.stringify({ name, email,isAdmin,age }),
+      body: JSON.stringify({ name, email }),
     });
   }
 
@@ -32,14 +32,14 @@ export async function deleteUserById(id:number){
 }
 
 
-export async function updateUserById(id: number,  name: string, email: string, age: number,isAdmin:boolean ) {
+export async function updateUserById(id: number,  name: string, email: string) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/update-user/${id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name,email,age,isAdmin})
+            body: JSON.stringify({name,email})
         });
         
         if (!response.ok) {

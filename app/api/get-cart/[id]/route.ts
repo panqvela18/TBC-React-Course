@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export const revalidate = 0;
  
 export async function GET(
-  _request: Request, // Renamed to _request to indicate it's intentionally unused
+  _request: Request, 
   { params }: { params: { id: string } }
 ) {
   try {

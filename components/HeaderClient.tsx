@@ -13,10 +13,11 @@ import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
 import CartBtn from "./CartBtn";
 
-export default function HeaderClient({ currentLang }: { currentLang: any }) {
+export default function HeaderClient({ currentLang, user }: { currentLang: any, user: any }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
   const { theme, setTheme } = useContext(ThemeContext);
 
+  console.log(user)
   console.log(theme);
 
   useEffect(() => {
@@ -101,16 +102,30 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
           >
             {t("admin")}
           </Link>
-          <button
-            onClick={() =>
-              handleLogout().then(() => {
-                window.location.reload();
-              })
-            }
+          {
+            user ? <Link
+            href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/logout`}
+            // onClick={() =>
+            //   handleLogout().then(() => {
+            //     window.location.reload();
+            //   })
+            // }
             className="text-white text-sm  hover:text-gray-200"
           >
             {t("logout")}
-          </button>
+          </Link> : <a
+            href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/login`}
+            // onClick={() =>
+            //   handleLogout().then(() => {
+            //     window.location.reload();
+            //   })
+            // }
+            className="text-white text-sm  hover:text-gray-200"
+          >
+            {'Log In'}
+          </a>
+          }
+          
         </nav>
         <div className="flex items-center">
           <CartBtn />

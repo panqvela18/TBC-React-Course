@@ -1,7 +1,9 @@
 import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient";
-
-export default function Header() {
+import { getSession } from "@auth0/nextjs-auth0";
+export default async function Header() {
+  const session = await getSession();
+  const user = session?.user;
   // const handleLogOut  = async ()=>{
   //   "use server"
   //   await logOut()
@@ -25,5 +27,5 @@ export default function Header() {
 
   const cookie = cookies();
   const currentLang = cookie.get("Next-Locale");
-  return <HeaderClient currentLang={currentLang} />;
+  return <HeaderClient currentLang={currentLang} user={user} />;
 }

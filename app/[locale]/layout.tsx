@@ -4,7 +4,6 @@ import { ReactElement } from "react";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { I18nProviderClient } from "@/locales/client";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
-import { getSession } from "@auth0/nextjs-auth0";
 // import { CartProvider } from "../providers/CartContext";
 // import { LangProvider } from "./providers/LangContext";
 

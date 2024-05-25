@@ -1,39 +1,32 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createI18nMiddleware } from "next-international/middleware";
-// import { AUTH_COOKIE_KEY } from "./constants";
 
 export default async function middleware(request: NextRequest) {
-  // const cookieStore = request.cookies;
-  // const cookie = cookieStore.get('appSession');
-  // const { pathname } = request.nextUrl;
+  const cookieStore = request.cookies;
+  const appSessionCookie = cookieStore.get("appSession");
+  const { pathname } = request.nextUrl;
+  if (
+    !appSessionCookie &&
+    (pathname.startsWith("/profile") || pathname.startsWith("/admin"))
+  ) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
+  if (appSessionCookie && pathname.startsWith("/login")) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
-
-
-  // if (!cookie?.value && !pathname.startsWith(`/login`)) {
-  //   return NextResponse.redirect(new URL(`/login`, request.url));
-  // }
-
-  // if (cookie?.value && pathname.startsWith(`/login`)) {
-  //   return NextResponse.redirect(new URL(`/`, request.url));
-  // }
-
-  // const defaultLocale = request.headers.get("ka") || "en" 
-  
   const I18nMiddleware = createI18nMiddleware({
     locales: ["en", "ka"],
-    defaultLocale:"en",
+    defaultLocale: "en",
     urlMappingStrategy: "rewrite",
   });
-  const response = I18nMiddleware(request);
 
-  // response.headers.set("ka", );
+  const response = await I18nMiddleware(request);
 
   return response;
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next|static|.*\\..*|favicon.ico|robots.txt).*)", 
-  ],
+  matcher: ["/((?!api|_next|static|.*\\..*|favicon.ico|robots.txt).*)"],
 };

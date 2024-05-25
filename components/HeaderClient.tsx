@@ -7,17 +7,16 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
 import moon from "../public/moon.svg";
 import sun from "../public/sun.svg";
-import { handleLogout } from "@/app/scripts/logout";
 import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
-import CartBtn from "./CartBtn";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
-export default function HeaderClient({ currentLang, user }: { currentLang: any, user: any }) {
+export default function HeaderClient({ currentLang }: { currentLang: any }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
   const { theme, setTheme } = useContext(ThemeContext);
-
-  console.log(user)
+  const { user, error } = useUser();
+  console.log(user);
   console.log(theme);
 
   useEffect(() => {
@@ -54,6 +53,7 @@ export default function HeaderClient({ currentLang, user }: { currentLang: any, 
 
   const t = useI18n();
 
+  if (error) return <div>{error.message}</div>;
   return (
     <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 dark:bg-black">
       <div className="container mx-auto flex justify-between items-center">
@@ -90,45 +90,40 @@ export default function HeaderClient({ currentLang, user }: { currentLang: any, 
           >
             {t("contact")}
           </Link>
-          <Link
-            href={"/profile"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("profile")}
-          </Link>
-          <Link
-            href={"/admin"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("admin")}
-          </Link>
-          {
-            user ? <Link
-            href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/logout`}
-            // onClick={() =>
-            //   handleLogout().then(() => {
-            //     window.location.reload();
-            //   })
-            // }
-            className="text-white text-sm  hover:text-gray-200"
-          >
-            {t("logout")}
-          </Link> : <a
-            href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/login`}
-            // onClick={() =>
-            //   handleLogout().then(() => {
-            //     window.location.reload();
-            //   })
-            // }
-            className="text-white text-sm  hover:text-gray-200"
-          >
-            {'Log In'}
-          </a>
-          }
-          
+          {user && (
+            <Link
+              href={"/profile"}
+              className="text-white text-sm mr-6 hover:text-gray-200"
+            >
+              {t("profile")}
+            </Link>
+          )}
+          {user && (
+            <Link
+              href={"/admin"}
+              className="text-white text-sm mr-6 hover:text-gray-200"
+            >
+              {t("admin")}
+            </Link>
+          )}
+          {user ? (
+            <a
+              href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/logout`}
+              className="text-white text-sm hover:text-gray-200"
+            >
+              {t("logout")}
+            </a>
+          ) : (
+            <a
+              href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/login`}
+              className="text-white text-sm  hover:text-gray-200"
+            >
+              {t("login")}
+            </a>
+          )}
         </nav>
         <div className="flex items-center">
-          <CartBtn />
+          {/* <CartBtn /> */}
           <ToggleLang currentLang={currentLang?.value} />
           <button onClick={handleThemeChange}>
             {theme === "dark" ? (
@@ -196,16 +191,12 @@ export default function HeaderClient({ currentLang, user }: { currentLang: any, 
             >
               {t("admin")}
             </Link>
-            <button
-              onClick={() =>
-                handleLogout().then(() => {
-                  window.location.reload();
-                })
-              }
-              className="text-white text-sm  hover:text-gray-200"
+            <a
+              href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/logout`}
+              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
             >
               {t("logout")}
-            </button>
+            </a>
           </nav>
         </div>
       )}

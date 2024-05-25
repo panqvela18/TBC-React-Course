@@ -35,6 +35,7 @@ export interface ProductData {
     discount:string;
     category:string;
     stock:number
+    image_url:string
   }
 
   export interface ProductWithQuantity extends ProductFromVercel {
@@ -68,21 +69,15 @@ export interface ProdDetail{
 export interface User {
   id:number;
   name:string,
-  age:number,
   email:string,
-  isadmin:boolean
 }
 export interface UserData {
   name: string;
   email: string;
-  age: number;
-  isadmin: boolean;
 }
 export interface UserData1 {
   name: string;
   email: string;
-  age: number;
-  isAdmin: boolean;
 }
 
 export interface Cart {

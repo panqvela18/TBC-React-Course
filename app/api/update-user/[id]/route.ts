@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(request: NextRequest) {
   const id = request.nextUrl.pathname.replace('/api/update-user/', '');
-  const {name,email,age,isAdmin}= await request.json()
+  const {name,email}= await request.json()
 
   try {
     if (!id) throw new Error('ID is required');
 
-    await sql`UPDATE users SET name=${name},email=${email},age=${age},isAdmin=${isAdmin} WHERE id = ${Number(id)};`;
+    await sql`UPDATE users SET name=${name},email=${email} WHERE id = ${Number(id)};`;
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

@@ -7,7 +7,7 @@ import { IoMdCart } from "react-icons/io";
 export default async function CartBtn() {
   // const { totalQuantity } = useCart();
 
-  const cart: Cart = await getUserCart(32);
+  const cart: Cart = await getUserCart(43);
   const num = Object.values(cart.products);
   const totalQuantity = num.reduce((total: number, quantity: number) => {
     return total + quantity;

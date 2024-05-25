@@ -6,7 +6,7 @@ import ClearButton from "@/components/ClearButton";
 // import { useCart } from "@/app/providers/CartContext";
 
 export default async function page() {
-  const cart = await getUserCart(32);
+  const cart = await getUserCart(43);
   const cartProductsArray = Object.entries(cart?.products);
   const cartProducts = await getProducts();
 

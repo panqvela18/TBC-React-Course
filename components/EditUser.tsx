@@ -8,8 +8,6 @@ import { updateUserAction } from "@/app/actions";
 interface UserData {
   name: string;
   email: string;
-  age: number;
-  isadmin: boolean;
 }
 
 export default function EditUser({
@@ -40,7 +38,7 @@ export default function EditUser({
 
   const handleChange = (
     field: keyof UserData,
-    value: string | number | boolean
+    value: string | number 
   ) => {
     setUser((prevUser) => ({
       ...prevUser,
@@ -98,37 +96,7 @@ export default function EditUser({
               onChange={(e) => handleChange("email", e.target.value)}
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="age"
-            >
-              Age
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="age"
-              type="number"
-              placeholder="Age"
-              value={user.age.toString()}
-              onChange={(e) => handleChange("age", parseInt(e.target.value))}
-            />
-          </div>
-          <div className="mb-4">
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="isAdmin"
-              checked={user?.isadmin}
-              onChange={(e) => handleChange("isadmin", e.target.checked)}
-            />
-            <label
-              className="text-gray-700 text-sm font-bold mb-2"
-              htmlFor="isAdmin"
-            >
-              Admin
-            </label>
-          </div>
+    
           <div className="flex items-center justify-between">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

@@ -9,8 +9,6 @@ export default function AvatarUploadPage() {
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const { user } = useUser();
 
-  const onSubmit = () => {};
-
   return (
     <>
       {/* <h1>Upload Your Avatar</h1> */}

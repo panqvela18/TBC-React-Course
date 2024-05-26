@@ -26,9 +26,6 @@ export default function HeaderClient({
   const { theme, setTheme } = useContext(ThemeContext);
   const router = useRouter();
 
-  console.log(user);
-  console.log(theme);
-
   useEffect(() => {
     const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (e: MediaQueryListEvent) => {
@@ -141,7 +138,7 @@ export default function HeaderClient({
           )}
         </nav>
         <div className="flex items-center">
-          <CartBtn totalQuantity={totalQuantity} />
+          {user && <CartBtn totalQuantity={totalQuantity} />}
           <ToggleLang currentLang={currentLang?.value} />
           <button onClick={handleThemeChange}>
             {theme === "dark" ? (

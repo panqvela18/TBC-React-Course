@@ -3,6 +3,8 @@ import Loader from "@/components/Loader";
 import Title from "@/components/Title";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import UploadPage from "@/components/UploadPage";
+import Image from "next/image";
+import ProfileImage from "../../../../public/profile-img.webp";
 // import React, { useState } from "react";
 interface IUserProfile {
   nickname?: string;
@@ -74,20 +76,21 @@ export default function Page() {
     <main className="bg-white dark:bg-slate-900">
       <Title titleName="PROFILE" />
       <div className="px-[4%] pb-24 flex justify-center items-center md:flex-col gap-20 md:gap-12">
-        {/* <div className="flex flex-col gap-3 justify-center items-center">
-         
-        </div> */}
+        <div className="flex flex-col gap-3 justify-center items-center">
+          <div className="rounded-2xl">
+            <Image
+              src={user?.picture || ProfileImage}
+              width={100}
+              height={100}
+              alt="profileimg"
+              priority
+            />
+          </div>
+          <UploadPage />
+        </div>
 
         <div className="flex flex-col justify-center gap-8">
           <div className="flex border border-blue-500 p-4 xs:p-2 rounded-lg gap-8 xs:gap-3 shadow-lg bg-white items-baseline">
-            {/* <div className="rounded-2xl ">
-              <img
-                src={user?.picture}
-                alt=""
-                className="rounded-3xl max-w-[150px]"
-              />
-            </div> */}
-            <UploadPage />
             {/* <div className="flex justify-center items-center">
               <input type="file" className="text-[10px]" />
             </div> */}
@@ -123,11 +126,11 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="flex justify-center">
+          {/* <div className="flex justify-center">
             <button className=" w-48 bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
               Submit
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* <span>

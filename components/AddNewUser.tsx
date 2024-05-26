@@ -1,6 +1,6 @@
 "use client";
-import { createUserAction } from "@/app/actions";
-import { UserData1 } from "@/app/interface";
+// import { createUserAction } from "@/app/actions";
+// import { UserData1 } from "@/app/interface";
 import Modal from "@mui/material/Modal";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,13 +16,13 @@ export default function AddNewUser() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const userData: UserData1 = {
-      name,
-      email,
-    };
+    // const userData: UserData1 = {
+    //   name,
+    //   email,
+    // };
 
     try {
-      await createUserAction(userData);
+      // await createUserAction(userData);
     } catch (error) {
       // Handle error appropriately, e.g., display an error message
       console.error("Error creating user:", error);

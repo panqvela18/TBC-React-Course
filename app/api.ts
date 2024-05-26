@@ -1,3 +1,5 @@
+import { getSession } from "@auth0/nextjs-auth0";
+
 export async function getUsers() {
     const response = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + '/api/get-users');
     const { users } = await response.json();
@@ -18,10 +20,18 @@ export async function getProducts() {
     return products?.rows;
   }
 
-export async function createUser(name: string, email: string) {
+export async function createUser() {
+  const session = await getSession();
+  const user = session?.user;
+
+  const name = user?.nickname
+  const id = user?.sid
+  const email = user?.email
+  const img = user?.picture
+
     return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + '/api/create-user', {
       method: 'POST',
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({id, name, email,img }),
     });
   }
 
@@ -56,6 +66,11 @@ export async function updateUserById(id: number,  name: string, email: string) {
 }
 
 export async function getUserCart(userId: number) {
+  // const session = await getSession();
+  // const user = session?.user;
+
+  // const id = user?.sid
+  // console.log(id)
   const response = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-cart/${userId}`, {
     cache: "no-store",
   });

@@ -25,16 +25,12 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen justify-between">
-          {/* <CartProvider> */}
-
           <I18nProviderClient locale={locale}>
             <ThemeProvider>
               {" "}
               <UserProvider>{children} </UserProvider>
             </ThemeProvider>
           </I18nProviderClient>
-
-          {/* </CartProvider> */}
         </div>
       </body>
     </html>

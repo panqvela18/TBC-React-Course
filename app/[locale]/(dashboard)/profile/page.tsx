@@ -71,31 +71,31 @@ export default function Page() {
         />
         <div className="flex border border-blue-500 p-4 rounded-lg gap-8 shadow-lg bg-white items-baseline">
           <div className="font-bold text-blue-500">
-            {user.nickname && (
+            {user?.nickname && (
               <h3 className="text-xl  leading-6 h-8">Username</h3>
             )}
-            {user.family_name && (
+            {user?.family_name && (
               <h3 className="text-xl  leading-6 h-8">Name</h3>
             )}
             {/* {user.name && <h3 className="text-xl  leading-6 h-8">Name</h3>} */}
-            {user.given_name && (
+            {user?.given_name && (
               <h3 className="text-xl  leading-6 h-8">Surname</h3>
             )}
-            {user.email && <h3 className="text-xl leading-6 h-8">Email</h3>}
+            {user?.email && <h3 className="text-xl leading-6 h-8">Email</h3>}
           </div>
           <div className="text-gray-700">
-            {user.nickname && (
-              <p className="text-lg leading-6 h-8">{user.nickname}</p>
+            {user?.nickname && (
+              <p className="text-lg leading-6 h-8">{user?.nickname}</p>
             )}
-            {user.given_name && (
+            {user?.given_name && (
               <p className="text-lg leading-6 h-8">{user.given_name}</p>
             )}
-            {user.family_name && (
+            {user?.family_name && (
               <p className="text-lg leading-6 h-8">{user.family_name}</p>
             )}
             {/* {user.name && <p className="text-lg leading-6 h-8">{user.name}</p>} */}
 
-            {user.email && (
+            {user?.email && (
               <p className="text-lg leading-6 h-8">{user.email}</p>
             )}
           </div>

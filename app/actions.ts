@@ -1,8 +1,8 @@
 "use server"
 // import { BASE_URL } from "@/constants";
 import { cookies } from "next/headers";
-import {  UserData, UserData1 } from "./interface";
-import { createUser, updateUserById } from "./api";
+import {  UserData } from "./interface";
+import {  updateUserById } from "./api";
 import { revalidatePath } from "next/cache";
 import { deleteUserById } from "@/app/api";
 
@@ -13,11 +13,11 @@ export async function langToggle(lang:string) {
   cookieStore.set("lang", lang);
 }
 
-export async function createUserAction(userData: UserData1) {
-  const {name,email} = userData
-   revalidatePath("/admin")
-   createUser(name,email)
-}
+// export async function createUserAction(userData: UserData1) {
+//   const {name,email} = userData
+//    revalidatePath("/admin")
+//    createUser(name,email)
+// }
 
 export const deleteUser: (id: number) => Promise<void> = async (id: number) => {
   await deleteUserById(id);

@@ -10,12 +10,22 @@ import sun from "../public/sun.svg";
 import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import CartBtn from "./CartBtn";
+import { useRouter } from "next/navigation";
 
-export default function HeaderClient({ currentLang }: { currentLang: any }) {
+export default function HeaderClient({
+  currentLang,
+  user,
+  totalQuantity,
+}: {
+  currentLang: any;
+  user: any;
+  totalQuantity: any;
+}) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
   const { theme, setTheme } = useContext(ThemeContext);
-  const { user, error } = useUser();
+  const router = useRouter();
+
   console.log(user);
   console.log(theme);
 
@@ -53,7 +63,15 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
 
   const t = useI18n();
 
-  if (error) return <div>{error.message}</div>;
+  const handleLogin = () => {
+    router.push("/api/auth/login");
+  };
+
+  // const handleLogoutClick = async () => {
+  //   await handleLogout();
+  //   router.push("/api/auth/logout");
+  // };
+
   return (
     <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 dark:bg-black">
       <div className="container mx-auto flex justify-between items-center">
@@ -107,23 +125,23 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
             </Link>
           )}
           {user ? (
-            <a
-              href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/logout`}
+            <Link
+              href={"/api/auth/logout"}
               className="text-white text-sm hover:text-gray-200"
             >
               {t("logout")}
-            </a>
+            </Link>
           ) : (
-            <a
-              href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/login`}
+            <button
+              onClick={handleLogin}
               className="text-white text-sm  hover:text-gray-200"
             >
               {t("login")}
-            </a>
+            </button>
           )}
         </nav>
         <div className="flex items-center">
-          {/* <CartBtn /> */}
+          <CartBtn totalQuantity={totalQuantity} />
           <ToggleLang currentLang={currentLang?.value} />
           <button onClick={handleThemeChange}>
             {theme === "dark" ? (
@@ -177,26 +195,39 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
             >
               {t("contact")}
             </Link>
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"profile"}
-              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("profile")}
-            </Link>
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"admin"}
-              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("admin")}
-            </Link>
-            <a
-              href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/logout`}
-              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("logout")}
-            </a>
+            {user ? (
+              <>
+                <Link
+                  onClick={() => setShowBurgerMenu(false)}
+                  href="/profile"
+                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                >
+                  {t("profile")}
+                </Link>
+
+                <Link
+                  onClick={() => setShowBurgerMenu(false)}
+                  href="/admin"
+                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                >
+                  {t("admin")}
+                </Link>
+
+                <Link
+                  href={`/api/auth/logout`}
+                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                >
+                  {t("logout")}
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+              >
+                {t("login")}
+              </button>
+            )}
           </nav>
         </div>
       )}

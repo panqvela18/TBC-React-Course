@@ -3,6 +3,7 @@ import type { PutBlobResult } from "@vercel/blob";
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useEffect } from "react";
 
 export default function AvatarUploadPage() {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -30,13 +31,16 @@ export default function AvatarUploadPage() {
             body: file,
           });
 
-          await fetch(`/api/upload-user-picture`, {
-            method: "PUT",
-            body: JSON.stringify({
-              blobUrl: blob?.url,
-              userSub: user?.sub,
-            }),
-          });
+          await fetch(
+            `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/upload-user-picture`,
+            {
+              method: "PUT",
+              body: JSON.stringify({
+                blobUrl: blob?.url,
+                userSub: user?.sub,
+              }),
+            }
+          );
 
           const newBlob = (await response.json()) as PutBlobResult;
 

@@ -2,6 +2,7 @@
 import Loader from "@/components/Loader";
 import Title from "@/components/Title";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import UploadPage from "@/components/UploadPage";
 // import React, { useState } from "react";
 interface IUserProfile {
   nickname?: string;
@@ -73,21 +74,23 @@ export default function Page() {
     <main className="bg-white dark:bg-slate-900">
       <Title titleName="PROFILE" />
       <div className="px-[4%] pb-24 flex justify-center items-center md:flex-col gap-20 md:gap-12">
-        <div className="flex flex-col gap-3 justify-center items-center">
-          <div className="rounded-xl">
-            <img
-              src={user?.picture}
-              alt=""
-              className="rounded-3xl max-w-[150px]"
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <input type="file" className="text-[10px]" />
-          </div>
-        </div>
+        {/* <div className="flex flex-col gap-3 justify-center items-center">
+         
+        </div> */}
 
         <div className="flex flex-col justify-center gap-8">
           <div className="flex border border-blue-500 p-4 xs:p-2 rounded-lg gap-8 xs:gap-3 shadow-lg bg-white items-baseline">
+            {/* <div className="rounded-2xl ">
+              <img
+                src={user?.picture}
+                alt=""
+                className="rounded-3xl max-w-[150px]"
+              />
+            </div> */}
+            <UploadPage />
+            {/* <div className="flex justify-center items-center">
+              <input type="file" className="text-[10px]" />
+            </div> */}
             <div className="flex flex-1 justify-center items-center"></div>
             <div className="font-bold text-blue-500">
               {user?.nickname && (

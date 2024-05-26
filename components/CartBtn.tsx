@@ -1,20 +1,12 @@
-// import { useCart } from "@/app/providers/CartContext";
-import { getUserCart } from "@/app/api";
-import { Cart } from "@/app/interface";
+// import Link from "next/link";
 import Link from "next/link";
 import { IoMdCart } from "react-icons/io";
 
-export default async function CartBtn() {
-  // const { totalQuantity } = useCart();
-
-  const cart: Cart = await getUserCart(43);
-  const num = Object.values(cart.products);
-  const totalQuantity = num.reduce((total: number, quantity: number) => {
-    return total + quantity;
-  }, 0);
-
-  console.log(totalQuantity);
-
+export default async function CartBtn({
+  totalQuantity,
+}: {
+  totalQuantity: any;
+}) {
   return (
     <div className="relative mr-2">
       <IoMdCart className="text-3xl text-white" />

@@ -7,17 +7,24 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
 import moon from "../public/moon.svg";
 import sun from "../public/sun.svg";
-import { handleLogout } from "@/app/scripts/logout";
 import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
 import CartBtn from "./CartBtn";
+import { useRouter } from "next/navigation";
 
-export default function HeaderClient({ currentLang }: { currentLang: any }) {
+export default function HeaderClient({
+  currentLang,
+  user,
+  totalQuantity,
+}: {
+  currentLang: any;
+  user: any;
+  totalQuantity: any;
+}) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
   const { theme, setTheme } = useContext(ThemeContext);
-
-  console.log(theme);
+  const router = useRouter();
 
   useEffect(() => {
     const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
@@ -52,6 +59,15 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
   }, [showBugerMenu]);
 
   const t = useI18n();
+
+  const handleLogin = () => {
+    router.push("/api/auth/login");
+  };
+
+  // const handleLogoutClick = async () => {
+  //   await handleLogout();
+  //   router.push("/api/auth/logout");
+  // };
 
   return (
     <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 dark:bg-black">
@@ -89,31 +105,40 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
           >
             {t("contact")}
           </Link>
-          <Link
-            href={"/profile"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("profile")}
-          </Link>
-          <Link
-            href={"/admin"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("admin")}
-          </Link>
-          <button
-            onClick={() =>
-              handleLogout().then(() => {
-                window.location.reload();
-              })
-            }
-            className="text-white text-sm  hover:text-gray-200"
-          >
-            {t("logout")}
-          </button>
+          {user && (
+            <Link
+              href={"/profile"}
+              className="text-white text-sm mr-6 hover:text-gray-200"
+            >
+              {t("profile")}
+            </Link>
+          )}
+          {user && (
+            <Link
+              href={"/admin"}
+              className="text-white text-sm mr-6 hover:text-gray-200"
+            >
+              {t("admin")}
+            </Link>
+          )}
+          {user ? (
+            <Link
+              href={"/api/auth/logout"}
+              className="text-white text-sm hover:text-gray-200"
+            >
+              {t("logout")}
+            </Link>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="text-white text-sm  hover:text-gray-200"
+            >
+              {t("login")}
+            </button>
+          )}
         </nav>
         <div className="flex items-center">
-          <CartBtn />
+          {user && <CartBtn totalQuantity={totalQuantity} />}
           <ToggleLang currentLang={currentLang?.value} />
           <button onClick={handleThemeChange}>
             {theme === "dark" ? (
@@ -167,30 +192,39 @@ export default function HeaderClient({ currentLang }: { currentLang: any }) {
             >
               {t("contact")}
             </Link>
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"profile"}
-              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("profile")}
-            </Link>
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"admin"}
-              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("admin")}
-            </Link>
-            <button
-              onClick={() =>
-                handleLogout().then(() => {
-                  window.location.reload();
-                })
-              }
-              className="text-white text-sm  hover:text-gray-200"
-            >
-              {t("logout")}
-            </button>
+            {user ? (
+              <>
+                <Link
+                  onClick={() => setShowBurgerMenu(false)}
+                  href="/profile"
+                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                >
+                  {t("profile")}
+                </Link>
+
+                <Link
+                  onClick={() => setShowBurgerMenu(false)}
+                  href="/admin"
+                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                >
+                  {t("admin")}
+                </Link>
+
+                <Link
+                  href={`/api/auth/logout`}
+                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                >
+                  {t("logout")}
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+              >
+                {t("login")}
+              </button>
+            )}
           </nav>
         </div>
       )}

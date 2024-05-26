@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { getProducts, getUserCart } from "../../../api";
 import QuintityChangeButtons from "../../../../components/QuintityChangeButtons";
@@ -6,8 +5,8 @@ import ClearButton from "@/components/ClearButton";
 // import { useCart } from "@/app/providers/CartContext";
 
 export default async function page() {
-  const cart = await getUserCart(43);
-  const cartProductsArray = Object.entries(cart?.products);
+  const cart = await getUserCart();
+  const cartProductsArray = cart ? Object.entries(cart?.products) : [];
   const cartProducts = await getProducts();
 
   const cartProductMap = new Map(cartProductsArray);

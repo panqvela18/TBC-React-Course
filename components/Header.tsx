@@ -1,29 +1,28 @@
 import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient";
+import { getSession } from "@auth0/nextjs-auth0";
+import { Cart } from "@/app/interface";
+import { getUserCart } from "@/app/api";
+export default async function Header() {
+  const session = await getSession();
+  const user = session?.user;
 
-export default function Header() {
-  // const handleLogOut  = async ()=>{
-  //   "use server"
-  //   await logOut()
+  const cart: Cart = await getUserCart();
 
-  //   // if (!cookies().has(AUTH_COOKIE_KEY)) {
-  //   //   redirect("/");
-  //   // }
+  const num = cart ? Object.values(cart.products) : [];
+  const totalQuantity = num.reduce((total: number, quantity: number) => {
+    return total + quantity;
+  }, 0);
 
-  // }
-
-  // const cookieStore = cookies()
-
-  // const lng = cookieStore.get("lang")
-
-  // console.log(lng)
-
-  // const handleToggle = async (lang) =>{
-  //   "use server"
-  //   await langToggle(lang)
-  // }
+  // console.log("user", user);
 
   const cookie = cookies();
   const currentLang = cookie.get("Next-Locale");
-  return <HeaderClient currentLang={currentLang} />;
+  return (
+    <HeaderClient
+      currentLang={currentLang}
+      user={user}
+      totalQuantity={totalQuantity}
+    />
+  );
 }

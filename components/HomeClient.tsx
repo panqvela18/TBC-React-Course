@@ -9,6 +9,7 @@ import Link from "next/link";
 import { handleAddToCart } from "@/app/actions";
 import { debounce } from "@/app/utils";
 import Image from "next/image";
+import Image1 from "@/public/Breezeicons-devices-64-audio-headphones.svg.png";
 // import { useCart } from "@/app/providers/CartContext";
 
 interface HomeClientProps {
@@ -106,12 +107,7 @@ export default function HomeClient({ products }: HomeClientProps) {
                   <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
                     {p.price}
                   </span>
-                  <Image
-                    src={p.image_url === null ? "" : p.image_url}
-                    width={100}
-                    height={100}
-                    alt="image"
-                  />
+                  <Image src={Image1} width={100} height={100} alt="image" />
                 </div>
                 <div className="flex flex-col">
                   <button

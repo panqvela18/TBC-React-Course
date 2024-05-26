@@ -1,6 +1,6 @@
 // import { sql } from '@vercel/postgres';
 // import { NextResponse } from 'next/server';
- 
+
 // export async function POST(request: Request) {
 //   const { id,name, email,img } = await request.json();
 
@@ -9,7 +9,7 @@
 
 //     // Insert user into the users table
 //     await sql`
-//       INSERT INTO AuthUsers (name, email) 
+//       INSERT INTO AuthUsers (name, email)
 //       VALUES (${id},${name}, ${email},${img});
 //     `;
 
@@ -17,7 +17,7 @@
 //     const userId = users.rows[0].id;
 
 //     await sql`
-//       INSERT INTO carts (user_id, products) 
+//       INSERT INTO carts (user_id, products)
 //       VALUES (${userId}, '{}');
 //     `;
 
@@ -29,31 +29,36 @@
 //   return NextResponse.json({ users: allUsers }, { status: 200 });
 // }
 
-import { sql } from '@vercel/postgres';
-import { NextRequest } from 'next/server';
-import { getSession } from '@auth0/nextjs-auth0';
-import { redirect } from 'next/navigation';
+import { sql } from "@vercel/postgres";
+import { NextRequest } from "next/server";
+import { getSession } from "@auth0/nextjs-auth0";
+import { redirect } from "next/navigation";
 
 export async function GET(_: NextRequest) {
-    try {
-      console.log("test")
-        const session = await getSession();
+  try {
+    const session = await getSession();
 
-        if (session?.user) {
-            const { sub,nickname,email,  picture } = session.user;
+    if (session?.user) {
+      const { sub, nickname, email, picture } = session.user;
 
-            const user = await sql`SELECT * FROM AuthUsers WHERE id = ${sub}`;
-            console.log(user)
+      const user = await sql`SELECT * FROM users WHERE sub = ${sub}`;
 
-            if (!user.rows.length) await sql`INSERT INTO AuthUsers (id,name, email, img) VALUES ( ${sub},${nickname}, ${email}, ${picture});`;
-            
-        } else {
-            return redirect('/api/auth/logout');
-        }
-    } catch (error) {
-        return redirect('/api/auth/logout');
+      if (!user.rows.length)
+        await sql`INSERT INTO users (sub ,name, email, image_url) VALUES ( ${sub},${nickname}, ${email}, ${picture});`;
+
+      const users = await sql`SELECT id FROM users ORDER BY id DESC LIMIT 1;`;
+      const userId = users.rows[0].id;
+
+      await sql`
+      INSERT INTO carts (user_id, products)
+      VALUES (${userId}, '{}');
+    `;
+    } else {
+      return redirect("/api/auth/logout");
     }
+  } catch (error) {
+    return redirect("/api/auth/logout");
+  }
 
-    return redirect('/profile');
+  return redirect("/");
 }
-

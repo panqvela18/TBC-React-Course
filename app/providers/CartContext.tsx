@@ -35,7 +35,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchCartData = useCallback(async () => {
     try {
-      const cart: Cart = await getUserCart(43);
+      const cart: Cart = await getUserCart();
       const cartProductsArray = Object.entries(cart.products);
       const cartProducts: ProductFromVercel[] = await getProducts();
 

@@ -2,9 +2,10 @@ import { handleAuth, handleLogin } from "@auth0/nextjs-auth0";
 
 export const GET = handleAuth({
     login: handleLogin({
-      returnTo: "/profile",
-      authorizationParams: {
-        prompt: "login",
-      },
+      returnTo: "/api/create-user",
+      authorizationParams:{
+        prompt:"login"
+      }
     }),
+   
   });

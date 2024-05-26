@@ -7,7 +7,6 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
 import moon from "../public/moon.svg";
 import sun from "../public/sun.svg";
-import { handleLogout } from "@/app/scripts/logout";
 import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
@@ -63,6 +62,10 @@ export default function HeaderClient({
   }, [showBugerMenu]);
 
   const t = useI18n();
+
+  const handleLogin = () => {
+    router.push("/api/auth/login");
+  };
 
   // const handleLogoutClick = async () => {
   //   await handleLogout();
@@ -125,12 +128,12 @@ export default function HeaderClient({
               {t("logout")}
             </Link>
           ) : (
-            <Link
-              href={`/api/auth/login`}
+            <button
+              onClick={() => handleLogin()}
               className="text-white text-sm hover:text-gray-200"
             >
               {"Log In"}
-            </Link>
+            </button>
           )}
         </nav>
         <div className="flex items-center">

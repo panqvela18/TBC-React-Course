@@ -7,13 +7,14 @@ export default async function Header() {
   const session = await getSession();
   const user = session?.user;
 
-  const cart: Cart = await getUserCart(43);
-  const num = Object.values(cart.products);
+  const cart: Cart = await getUserCart();
+
+  const num = cart ? Object.values(cart.products) : [];
   const totalQuantity = num.reduce((total: number, quantity: number) => {
     return total + quantity;
   }, 0);
 
-  console.log(totalQuantity);
+  // console.log("user", user);
 
   const cookie = cookies();
   const currentLang = cookie.get("Next-Locale");

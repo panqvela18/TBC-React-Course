@@ -2,7 +2,7 @@
 import Loader from "@/components/Loader";
 import Title from "@/components/Title";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import UploadPage from "@/components/UploadPage";
+// import UploadPage from "@/components/UploadPage";
 import Image from "next/image";
 import ProfileImage from "../../../../public/profile-img.webp";
 // import React, { useState } from "react";
@@ -86,7 +86,7 @@ export default function Page() {
               priority
             />
           </div>
-          <UploadPage />
+          {/* <UploadPage /> */}
         </div>
 
         <div className="flex flex-col justify-center gap-8">

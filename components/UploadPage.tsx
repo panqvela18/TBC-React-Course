@@ -4,8 +4,9 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useEffect } from "react";
+import { FaCamera } from "react-icons/fa";
 
-export default function AvatarUploadPage() {
+export default function AvatarUploadPage({ userImage }: { userImage: string }) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const { user } = useUser();
@@ -13,7 +14,6 @@ export default function AvatarUploadPage() {
   useEffect(() => {
     const updateUser = async () => {
       if (!blob || !user) return;
-
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/upload-user-picture`,
@@ -44,8 +44,41 @@ export default function AvatarUploadPage() {
 
   return (
     <>
-      {/* <h1>Upload Your Avatar</h1> */}
-
+      <div className="relative rounded-full ">
+        {blob ? (
+          <Image
+            src={blob.url}
+            priority={true}
+            alt="Person-logo"
+            className="h-auto "
+            width={150}
+            height={150}
+          />
+        ) : (
+          <Image
+            src={userImage}
+            priority={true}
+            alt="Person-logo"
+            className="h-auto"
+            width={150}
+            height={150}
+          />
+        )}
+        <div className="absolute right-1 bottom-1">
+          <FaCamera fontSize={20} />
+        </div>
+        <input
+          className="text-[10px] hidden"
+          name="file"
+          ref={inputFileRef}
+          type="file"
+          id="files"
+          required
+        />
+        <label htmlFor="files" className="absolute right-0 bottom-0 opacity-0">
+          text
+        </label>
+      </div>
       <form
         className="flex flex-col justify-center items-center gap-3"
         onSubmit={async (event) => {
@@ -68,13 +101,6 @@ export default function AvatarUploadPage() {
           setBlob(newBlob);
         }}
       >
-        <input
-          className="text-[10px]"
-          name="file"
-          ref={inputFileRef}
-          type="file"
-          required
-        />
         <button
           className="bg-blue-500 w-32 text-white text-[12px] py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
           type="submit"
@@ -82,16 +108,6 @@ export default function AvatarUploadPage() {
           Upload
         </button>
       </form>
-      {blob && (
-        <Image
-          src={blob.url}
-          priority={true}
-          alt="Person-logo"
-          className="h-auto rounded-[100%]"
-          width={150}
-          height={150}
-        />
-      )}
     </>
   );
 }

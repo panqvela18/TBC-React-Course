@@ -20,7 +20,7 @@ export default function HeaderClient({
 }: {
   currentLang: any;
   user: any;
-  totalQuantity: any;
+  totalQuantity: number;
 }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
   const { theme, setTheme } = useContext(ThemeContext);
@@ -63,11 +63,6 @@ export default function HeaderClient({
   const handleLogin = () => {
     router.push("/api/auth/login");
   };
-
-  // const handleLogoutClick = async () => {
-  //   await handleLogout();
-  //   router.push("/api/auth/logout");
-  // };
 
   return (
     <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 dark:bg-black">

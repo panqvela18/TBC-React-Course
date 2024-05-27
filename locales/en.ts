@@ -38,5 +38,5 @@ export default {
   //login
   username: "Username",
   password: "Password",
-  login: "Log In",
+  login: "LOG IN",
 } as const;

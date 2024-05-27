@@ -9,7 +9,9 @@ import Link from "next/link";
 import { handleAddToCart } from "@/app/actions";
 import { debounce } from "@/app/utils";
 import Image from "next/image";
-import Image1 from "@/public/Breezeicons-devices-64-audio-headphones.svg.png";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { useRouter } from "next/navigation";
+// import Image1 from "@/public/Breezeicons-devices-64-audio-headphones.svg.png";
 // import { useCart } from "@/app/providers/CartContext";
 
 interface HomeClientProps {
@@ -24,6 +26,8 @@ export default function HomeClient({ products }: HomeClientProps) {
   const [search, setSearch] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
   // const { fetchCartData } = useCart();
+  const { user } = useUser();
+  const router = useRouter();
 
   const t = useI18n();
 
@@ -68,6 +72,14 @@ export default function HomeClient({ products }: HomeClientProps) {
     debouncedHandleChange(e.target.value);
   };
 
+  const handleAddToCartClick = (productId: string) => {
+    if (!user) {
+      router.push("/api/auth/login");
+    } else {
+      handleAddToCart(productId);
+    }
+  };
+
   return (
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
       <Title titleName={t("productTitle")} />
@@ -107,24 +119,29 @@ export default function HomeClient({ products }: HomeClientProps) {
                   <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
                     {p.price}
                   </span>
-                  <Image src={Image1} width={100} height={100} alt="image" />
+                  <Image
+                    src={p.image_url ? p.image_url : ""}
+                    width={100}
+                    height={100}
+                    alt="image"
+                  />
                 </div>
                 <div className="flex flex-col">
-                  <button
-                    onClick={() => {
-                      handleAddToCart(p.id.toString());
-                    }}
-                    className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
-                  >
-                    Add to Cart{" "}
-                    <BsCartCheckFill className="ml-3" color="white" />
-                  </button>
                   <Link
                     href={`/product/${p.id}`}
                     className="text-blue-500 hover:text-blue-700 hover:underline transition duration-200 mt-2"
                   >
                     {t("learnMore")}
                   </Link>
+                  <button
+                    onClick={() => {
+                      handleAddToCartClick(p.id.toString());
+                    }}
+                    className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
+                  >
+                    Add to Cart
+                    <BsCartCheckFill className="ml-3" color="white" />
+                  </button>
                 </div>
               </div>
             );

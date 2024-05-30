@@ -11,8 +11,6 @@ import { debounce } from "@/app/utils";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
-// import Image1 from "@/public/Breezeicons-devices-64-audio-headphones.svg.png";
-// import { useCart } from "@/app/providers/CartContext";
 
 interface HomeClientProps {
   products: ProductFromVercel[];
@@ -25,7 +23,6 @@ export default function HomeClient({ products }: HomeClientProps) {
   const [resetProduct, setResetProduct] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
-  // const { fetchCartData } = useCart();
   const { user } = useUser();
   const router = useRouter();
 
@@ -39,10 +36,8 @@ export default function HomeClient({ products }: HomeClientProps) {
 
     setTimeout(() => {
       if (resetProduct) {
-        // Reset to original products data
         setProductsData([...originalProductsData]);
       } else {
-        // Sort products by price
         const sortedProducts = [...productsData].sort(
           (a, b) => Number(a.price) - Number(b.price)
         );
@@ -83,7 +78,7 @@ export default function HomeClient({ products }: HomeClientProps) {
   return (
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
       <Title titleName={t("productTitle")} />
-      <form className="flex items-center justify-center mt-4">
+      <form className="flex items-center justify-center mt-4 md:flex-col">
         <input
           value={search}
           onChange={handleChange}
@@ -93,7 +88,7 @@ export default function HomeClient({ products }: HomeClientProps) {
         />
         <button
           onClick={handleSortChange}
-          className="bg-blue-500 p-2 px-4 text-white font-bold rounded-r dark:bg-black"
+          className="bg-blue-500 p-2 px-4 text-white font-bold rounded-r dark:bg-blac md:mt-2"
         >
           {resetProduct ? t("resetProduct") : t("sortByPrice")}
         </button>

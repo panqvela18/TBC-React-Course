@@ -20,6 +20,7 @@ export default function QuintityChangeButtons({ id }: { id: string }) {
       >
         -
       </button>
+
       <button
         onClick={() => {
           handleAddToCart(id);

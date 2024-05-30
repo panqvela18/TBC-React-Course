@@ -16,7 +16,7 @@ export default function DashboardLayout({
   // }
 
   return (
-    <div className="flex flex-col min-h-screen justify-between">
+    <div className="flex flex-col min-h-screen justify-between bg-white dark:bg-slate-900">
       <Header />
       {children}
       <Footer />

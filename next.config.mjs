@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "2u0jumuukobkisgr.public.blob.vercel-storage.com",
+        hostname: "s.gravatar.com",
       },
       {
         protocol: "https",

@@ -5,6 +5,7 @@
 import { ProductFromVercel } from "@/app/interface";
 // import { setStaticParamsLocale } from "next-international/server";
 import { getProductDetail } from "@/app/api";
+import Image from "next/image";
 
 // export async function generateStaticParams() {
 //   try {
@@ -32,6 +33,14 @@ export default async function ProductDetail({
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+      <div className="flex justify-center items-center">
+        <Image
+          src={prodDetail.image_url}
+          width={100}
+          height={100}
+          alt="image"
+        />
+      </div>
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
           {prodDetail.title}

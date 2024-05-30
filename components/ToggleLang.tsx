@@ -11,7 +11,7 @@ export default function ToggleLang({ currentLang }: { currentLang: any }) {
     window.location.reload();
   };
   return (
-    <button className="mr-6" onClick={handleChangeLanguage}>
+    <button className="mr-2" onClick={handleChangeLanguage}>
       {currentLang === "en" ? (
         <div className="flex items-center">
           <Image className="w-[20px]" src={geoFlag} alt="flag" />{" "}

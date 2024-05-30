@@ -25,20 +25,7 @@ export async function getProducts() {
   return products?.rows;
 }
 
-export async function createUser() {
-  const session = await getSession();
-  const user = session?.user;
 
-  const name = user?.nickname;
-  const id = user?.sid;
-  const email = user?.email;
-  const img = user?.picture;
-
-  return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/create-user", {
-    method: "POST",
-    body: JSON.stringify({ id, name, email, img }),
-  });
-}
 
 export async function deleteUserById(id: number) {
   return await fetch(
@@ -74,25 +61,32 @@ export async function updateUserById(id: number, name: string, email: string) {
   }
 }
 
-export async function getUserCart() {
-  const session = await getSession();
-  const user = session?.user;
-  const id = user?.sub;
-  // console.log("sub", id);
-  const userSubId = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + `/api/getId/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
-  const userSerialId = await userSubId.json();
-  const userId = userSerialId.usersId;
+// export async function createUser() {
+//   const session = await getSession();
+//   const user = session?.user;
 
-  if (!userId) {
+//   const name = user?.nickname;
+//   const id = user?.sid;
+//   const email = user?.email;
+//   const img = user?.picture;
+
+//   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/create-user", {
+//     method: "POST",
+//     body: JSON.stringify({ id, name, email, img }),
+//   });
+// }
+export async function getUserCart() {
+  // const session = await getSession();
+  // const user = session?.user;
+  // const id = user?.sub;
+  // console.log("sub", id);
+  const userSubId = await getUserId()
+
+  if (!userSubId) {
     return null;
   }
   const response = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-cart/${userId}`,
+    process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-cart/${userSubId}`,
     {
       cache: "no-store",
     }

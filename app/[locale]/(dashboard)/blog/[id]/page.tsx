@@ -4,6 +4,27 @@ import { AiFillLike } from "react-icons/ai";
 import { FetchedPost } from "@/app/interface";
 import { setStaticParamsLocale } from "next-international/server";
 
+export async function generateMetadata({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
+  try {
+    const blogDetail = await fetchBlog(id);
+
+    return {
+      title: blogDetail.title,
+      description: blogDetail.description,
+    };
+  } catch (error) {
+    console.error("Error fetching product details for metadata:", error);
+    return {
+      title: "Product not found",
+      description: "The product you are looking for does not exist.",
+    };
+  }
+}
+
 export async function generateStaticParams() {
   try {
     const res = await fetch("https://dummyjson.com/posts");
@@ -49,7 +70,7 @@ export default async function BlogDetail({
               // color="gray"
               fontSize={25}
             />
-            <span>{post.reactions}</span>
+            <span>{post.reactions.likes}</span>
           </div>
         </div>
         <Image

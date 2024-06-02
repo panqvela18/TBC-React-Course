@@ -3,19 +3,28 @@ import Blogs from "./Blogs";
 
 interface BlogClientProps {
   postData: PostData[];
+  userId: number;
+  userRole: string;
 }
 
-export default function BlogClient({ postData }: BlogClientProps) {
+export default function BlogClient({
+  postData,
+  userId,
+  userRole,
+}: BlogClientProps) {
   return (
     <>
       {postData.map((blog) => {
         return (
           <Blogs
             key={blog.id}
-            tags={blog.tags}
-            id={blog.id}
-            body={blog.body}
-            title={blog.title}
+            // id={blog.id}
+            // title={blog.title}
+            // description={blog.description}
+            // user_id={blog.user_id}
+            blogData={blog}
+            userId={userId}
+            userRole={userRole}
           />
         );
       })}

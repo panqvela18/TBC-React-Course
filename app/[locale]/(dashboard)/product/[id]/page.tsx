@@ -6,6 +6,8 @@ import { ProductFromVercel } from "@/app/interface";
 // import { setStaticParamsLocale } from "next-international/server";
 import { getProductDetail } from "@/app/api";
 import Image from "next/image";
+import StarRating from "@/components/StarRating";
+import { getSession } from "@auth0/nextjs-auth0";
 
 // export async function generateStaticParams() {
 //   try {
@@ -23,6 +25,18 @@ import Image from "next/image";
 //     return [];
 //   }
 // }
+export async function generateMetadata({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
+  const prodDetail: ProductFromVercel = await getProductDetail(id);
+
+  return {
+    title: prodDetail.title,
+    description: prodDetail.description,
+  };
+}
 
 export default async function ProductDetail({
   params: { id },
@@ -30,10 +44,13 @@ export default async function ProductDetail({
   params: { id: string };
 }) {
   const prodDetail: ProductFromVercel = await getProductDetail(id);
+  const user = await getSession();
+  const userName = user?.user.name;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <div className="flex justify-center items-center">
+        <StarRating userName={userName} />
         <Image
           src={prodDetail.image_url}
           width={100}
@@ -77,12 +94,12 @@ export default async function ProductDetail({
           </h4>
           <span
             className={`text-lg font-bold ${
-              prodDetail.stock > 0
+              typeof prodDetail.stock === "number" && prodDetail.stock > 0
                 ? "text-green-500 dark:text-green-300"
                 : "text-red-500 dark:text-red-300"
             }`}
           >
-            {prodDetail.stock > 0
+            {typeof prodDetail.stock === "number" && prodDetail.stock > 0
               ? `${prodDetail.stock} available`
               : "Out of stock"}
           </span>

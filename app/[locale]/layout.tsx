@@ -27,7 +27,6 @@ export default async function RootLayout({
         <div className="flex flex-col min-h-screen justify-between">
           <I18nProviderClient locale={locale}>
             <ThemeProvider>
-              {" "}
               <UserProvider>{children} </UserProvider>
             </ThemeProvider>
           </I18nProviderClient>

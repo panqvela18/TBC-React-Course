@@ -5,8 +5,8 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const products = await sql`SELECT id,title,description,price,category,image_url,user_id,stock,discount FROM products ORDER BY id ASC;`;
-    return NextResponse.json({ products }, { status: 200 });
+    const blogs = await sql`SELECT id,title,description,image_url,user_id FROM blogs ORDER BY id ASC;`;
+    return NextResponse.json({ blogs }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

@@ -17,10 +17,12 @@ export default function HeaderClient({
   currentLang,
   user,
   totalQuantity,
+  userRole,
 }: {
   currentLang: any;
   user: any;
   totalQuantity: number;
+  userRole: string;
 }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
   const { theme, setTheme } = useContext(ThemeContext);
@@ -108,7 +110,7 @@ export default function HeaderClient({
               {t("profile")}
             </Link>
           )}
-          {user && (
+          {userRole === "admin" && (
             <Link
               href={"/admin"}
               className="text-white text-sm mr-6 hover:text-gray-200"

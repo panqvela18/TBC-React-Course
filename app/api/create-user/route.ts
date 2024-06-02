@@ -8,12 +8,12 @@ export async function GET(_: NextRequest) {
     const session = await getSession();
 
     if (session?.user) {
-      const { sub, nickname, email, picture } = session.user;
+      const { sub, nickname,name ,email, picture } = session.user;
 
       const user = await sql`SELECT * FROM users WHERE sub = ${sub}`;
 
       if (!user.rows.length)
-        await sql`INSERT INTO users (sub ,name, email, image_url) VALUES ( ${sub},${nickname}, ${email}, ${picture});`;
+        await sql`INSERT INTO users (sub ,nickname,name, email, image_url) VALUES ( ${sub},${nickname},${name} ${email}, ${picture});`;
 
       const users = await sql`SELECT id FROM users ORDER BY id DESC LIMIT 1;`;
       const userId = users.rows[0].id;

@@ -5,7 +5,7 @@ import { IoMdCart } from "react-icons/io";
 export default async function CartBtn({
   totalQuantity,
 }: {
-  totalQuantity: any;
+  totalQuantity: number;
 }) {
   return (
     <div className="relative mr-2">

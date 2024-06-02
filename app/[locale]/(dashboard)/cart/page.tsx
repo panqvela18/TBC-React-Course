@@ -4,6 +4,11 @@ import QuintityChangeButtons from "../../../../components/QuintityChangeButtons"
 import ClearButton from "@/components/ClearButton";
 // import { useCart } from "@/app/providers/CartContext";
 
+export const metadata = {
+  title: "Cart",
+  description: "Cart by Next",
+};
+
 export default async function page() {
   const cart = await getUserCart();
   const cartProductsArray = cart ? Object.entries(cart?.products) : [];

@@ -1,35 +1,35 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
-import Title from "./Title";
-import Loader from "./Loader";
-import { ProductFromVercel } from "@/app/interface";
-import { useI18n } from "@/locales/client";
-import { BsCartCheckFill } from "react-icons/bs";
-import Link from "next/link";
 import { deleteProduct, handleAddToCart } from "@/app/actions";
+import { ProductFromVercel } from "@/app/interface";
+import Link from "next/link";
+import { BsCartCheckFill } from "react-icons/bs";
+import Loader from "./Loader";
+import Title from "./Title";
+import { ChangeEvent, useState } from "react";
 import { debounce } from "@/app/utils";
-import Image from "next/image";
+import { useI18n } from "@/locales/client";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
-import AddNewProduct from "./AddNewProduct";
-import EditProduct from "./EditProduct";
 
 interface HomeClientProps {
   products: ProductFromVercel[];
   userId: number;
   userRole: string;
 }
-
-export default function HomeClient({
+export default function ProductClient({
   products,
   userId,
   userRole,
 }: HomeClientProps) {
+  const [productsData, setProductsData] =
+    useState<ProductFromVercel[]>(products);
   const [resetProduct, setResetProduct] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
   const { user } = useUser();
   const router = useRouter();
+
+  console.log(userId);
 
   const t = useI18n();
 
@@ -40,12 +40,27 @@ export default function HomeClient({
     setLoader(true);
 
     setTimeout(() => {
+      if (resetProduct) {
+        setProductsData([...products]);
+      } else {
+        const sortedProducts = [...productsData].sort(
+          (a, b) => Number(a.price) - Number(b.price)
+        );
+        setProductsData(sortedProducts);
+      }
       setResetProduct(!resetProduct);
       setLoader(false);
     }, 2000);
   };
 
-  const handleSearch = () => {
+  const handleSearch = (searchValue: string) => {
+    const filteredProducts = products.filter((prod) =>
+      prod.title.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    const sortedProductTyping = resetProduct
+      ? filteredProducts.sort((a, b) => Number(a.price) - Number(b.price))
+      : filteredProducts;
+    setProductsData(sortedProductTyping);
     setLoader(false);
   };
 
@@ -67,17 +82,10 @@ export default function HomeClient({
 
   const handleDelete = async (productId: number) => {
     await deleteProduct(productId);
-  };
-
-  let filteredProducts = products.filter((prod) =>
-    prod.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  if (resetProduct) {
-    filteredProducts = filteredProducts.sort(
-      (a, b) => Number(a.price) - Number(b.price)
+    setProductsData((prevProducts) =>
+      prevProducts.filter((product) => product.id !== productId)
     );
-  }
+  };
 
   return (
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
@@ -97,14 +105,14 @@ export default function HomeClient({
           {resetProduct ? t("resetProduct") : t("sortByPrice")}
         </button>
       </form>
-      <AddNewProduct user_id={userId} />
       {loader ? (
         <Loader />
       ) : (
         <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
-          {filteredProducts.map((p) => {
+          {productsData.map((p) => {
             const isAdmin = userRole === "admin";
             const isOwner = userId === p.user_id;
+
             return (
               <div
                 key={p.id}
@@ -112,12 +120,7 @@ export default function HomeClient({
               >
                 <div className="flex flex-col">
                   {(isAdmin || isOwner) && (
-                    <>
-                      <button onClick={() => handleDelete(+p.id)}>
-                        delete
-                      </button>
-                      <EditProduct user_id={userId} product={p} />
-                    </>
+                    <button onClick={() => handleDelete(+p.id)}>delete</button>
                   )}
                   <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
@@ -129,12 +132,12 @@ export default function HomeClient({
                   <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
                     {p.price}
                   </span>
-                  <Image
+                  {/* <Image
                     src={p.image_url ? p.image_url : ""}
                     width={100}
                     height={100}
                     alt="image"
-                  />
+                  /> */}
                 </div>
                 <div className="flex flex-col">
                   <Link

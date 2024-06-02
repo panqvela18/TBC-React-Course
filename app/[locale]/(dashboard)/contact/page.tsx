@@ -9,10 +9,50 @@ import Image from "next/image";
 import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { useI18n } from "@/locales/client";
+import { createContact } from "@/app/api";
+
+// export const metadata = {
+//   title: "Contact",
+//   description: "Contact by Next",
+// };
 
 export default function Page() {
   const [contactType, setContactType] = useState<string>("staticContact");
   const t = useI18n();
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    message: "",
+  });
+  const [messageSend, setMessageSend] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createContact(formData);
+      setMessageSend(true);
+      setFormData({
+        name: "",
+        surname: "",
+        email: "",
+        message: "",
+      });
+    } catch (error) {
+      // Handle error appropriately, e.g., display an error message
+      console.error("Error creating user:", error);
+    }
+  };
 
   return (
     <main className="py-8 bg-white dark:bg-slate-900">
@@ -86,28 +126,56 @@ export default function Page() {
         </section>
       ) : (
         <section className="px-[20%] py-4 md:px-[4%] ">
-          <form className="bg-white rounded p-10 md:p-4 dark:bg-black">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white rounded p-10 md:p-4 dark:bg-black"
+          >
             <div className="flex items-center justify-between md:flex-col">
               <div className="flex flex-col w-1/2 mr-2 md:w-full">
-                <Input labelName={t("name")} placeholder="John" />
+                <Input
+                  value={formData.name}
+                  onChange={handleChange}
+                  labelName={t("name")}
+                  placeholder="John"
+                  name="name"
+                />
               </div>
               <div className="flex flex-col w-1/2 md:w-full">
-                <Input labelName={t("surname")} placeholder="Doe" />
+                <Input
+                  value={formData.surname}
+                  onChange={handleChange}
+                  labelName={t("surname")}
+                  placeholder="Doe"
+                  name="surname"
+                />
               </div>
             </div>
             <div className="flex flex-col mt-2">
-              <Input labelName={t("email")} placeholder="example@gmail.com" />
+              <Input
+                value={formData.email}
+                onChange={handleChange}
+                labelName={t("email")}
+                placeholder="example@gmail.com"
+                name="email"
+              />
             </div>
             <div className="flex flex-col">
               <label className="text-blue-300 mb-2 text-lg font-semibold mt-2 dark:text-slate-50">
                 {t("message")}
               </label>
               <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder={`${t("message")}...`}
                 className="border outline-none p-3 text-blue-300 rounded resize-none h-[300px] dark:text-slate-50"
               />
             </div>
-            <button className="mt-2 w-full transition duration-300 ease-in-out transform bg-blue-300 p-2 border rounded text-white font-bold  hover:bg-blue-200 hover:text-black hover:border hover:rounded hover:scale-105 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-900 dark:hover:border-none dark:hover:text-white">
+            {messageSend && <p>Message Sent</p>}
+            <button
+              type="submit"
+              className="mt-2 w-full transition duration-300 ease-in-out transform bg-blue-300 p-2 border rounded text-white font-bold  hover:bg-blue-200 hover:text-black hover:border hover:rounded hover:scale-105 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-900 dark:hover:border-none dark:hover:text-white"
+            >
               {t("send")}
             </button>
           </form>

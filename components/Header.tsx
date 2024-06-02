@@ -2,10 +2,11 @@ import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient";
 import { getSession } from "@auth0/nextjs-auth0";
 import { Cart } from "@/app/interface";
-import { getUserCart } from "@/app/api";
+import { getUserCart, getUserRole } from "@/app/api";
 export default async function Header() {
   const session = await getSession();
   const user = session?.user;
+  const userRole = await getUserRole();
 
   const cart: Cart = await getUserCart();
 
@@ -23,6 +24,7 @@ export default async function Header() {
       currentLang={currentLang}
       user={user}
       totalQuantity={totalQuantity}
+      userRole={userRole}
     />
   );
 }

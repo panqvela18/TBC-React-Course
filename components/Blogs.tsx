@@ -2,41 +2,46 @@
 import Image from "next/image";
 import defaulImage from "../public/Teamwork.png";
 import Link from "next/link";
-import { PostData } from "@/app/interface";
 import { useI18n } from "@/locales/client";
+import { deleteBlog } from "@/app/actions";
+import { PostData } from "@/app/interface";
+import EditBlog from "./EditBlog";
 
-export default function Blogs({ title, body, id, tags }: PostData) {
+interface BlogClientProps {
+  blogData: PostData;
+  userId: number;
+  userRole: string;
+}
+
+export default function Blogs({ blogData, userId, userRole }: BlogClientProps) {
   const t = useI18n();
+  const isAdmin = userRole === "admin";
+  const isOwner = userId === blogData.user_id;
+
   return (
     <div className="flex flex-col bg-white filter drop-shadow-xl min-h-[400px] justify-between border border-[#e5e7eb] rounded dark:bg-slate-900">
       <div>
         <Image className="rounded-tl rounded-tr" src={defaulImage} alt="blog" />
         <div className="px-4">
           <h3 className=" text-black text-xl font-bold mb-4 dark:text-slate-200">
-            {title}
+            {blogData.title}
           </h3>
-          <p className="text-medium_grey opacity-60 mb-4 dark:text-white">{`${body
+          <p className="text-medium_grey opacity-60 mb-4 dark:text-white">{`${blogData.description
             .split(" ")
             .slice(0, 30)
             .join(" ")} ...`}</p>
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <div className="flex items-center w-full p-4 flex-wrap">
-          {tags.map((tag, index) => {
-            return (
-              <button
-                key={index}
-                className="p-2 rounded-lg bg-slate-300 text-white mr-2 dark:bg-white dark:text-black"
-              >
-                {tag}
-              </button>
-            );
-          })}
-        </div>
+        {(isAdmin || isOwner) && (
+          <>
+            <button onClick={() => deleteBlog(blogData.id)}>Delete</button>
+            <EditBlog blogData={blogData} />
+          </>
+        )}
         <Link
           className="bg-blue-500 p-4 text-white cursor-pointer w-full dark:bg-white dark:text-black text-center"
-          href={`/blog/${id}`}
+          href={`/blog/${blogData.id}`}
         >
           {t("seeMore")}
         </Link>

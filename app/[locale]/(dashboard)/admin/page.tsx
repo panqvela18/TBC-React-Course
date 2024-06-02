@@ -4,6 +4,11 @@ import AddNewUser from "@/components/AddNewUser";
 import DeleteUser from "@/components/DeleteUser";
 import EditUser from "@/components/EditUser";
 
+export const metadata = {
+  title: "Admin Portal",
+  description: "Admin by Next",
+};
+
 export default async function Admin() {
   const users = await getUsers();
 

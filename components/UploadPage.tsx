@@ -10,11 +10,14 @@ export default function AvatarUploadPage({ userImage }: { userImage: string }) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const { user } = useUser();
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
+    setLoader(true);
     const updateUser = async () => {
       if (!blob || !user) return;
       try {
+        setLoader(true);
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/upload-user-picture`,
           {
@@ -33,11 +36,14 @@ export default function AvatarUploadPage({ userImage }: { userImage: string }) {
           console.error("Failed to update user picture");
         } else {
           console.log("User picture updated successfully");
+          setLoader(false);
         }
       } catch (error) {
         console.error("Error updating user picture:", error);
       }
     };
+
+    setLoader(false);
 
     updateUser();
   }, [blob, user]);
@@ -45,6 +51,7 @@ export default function AvatarUploadPage({ userImage }: { userImage: string }) {
   return (
     <>
       <div className="relative rounded-full ">
+        {loader && <p className="absolute top-0 left-0 ">loading....</p>}
         {blob ? (
           <Image
             src={blob.url}

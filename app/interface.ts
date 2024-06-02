@@ -2,8 +2,16 @@
 export interface PostData {
   id: number;
   title: string;
-  body: string;
-  tags: string[];
+  description: string;
+  image_url?:string;
+  user_id:number
+}
+
+export interface blogData {
+  title: string;
+  description: string;
+  image_url?:string | undefined;
+  user_id:number
 }
 
 
@@ -27,6 +35,13 @@ export interface ProductData {
     title:string;
     category?:string
   }
+
+  export interface formData{
+    name:string;
+    surname:string;
+    email:string;
+    message:string
+  }
   export interface ProductFromVercel {
     id: number | string;
     description: string;
@@ -34,8 +49,21 @@ export interface ProductData {
     title:string;
     discount:string;
     category:string;
+    stock:number | string;
+    image_url:string;
+    user_id:number;
+  }
+
+  export interface Prod {
+    id?:number | undefined;
+    title:string;
+    description: string;
+    price: string;
+    category:string;
+    discount:number;
     stock:number
     image_url:string
+    user_id:number
   }
 
   export interface ProductWithQuantity extends ProductFromVercel {

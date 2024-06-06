@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import Title from "./Title";
 import Loader from "./Loader";
 import { ProductFromVercel } from "@/app/interface";
@@ -7,12 +7,13 @@ import { useI18n } from "@/locales/client";
 import { BsCartCheckFill } from "react-icons/bs";
 import Link from "next/link";
 import { deleteProduct, handleAddToCart } from "@/app/actions";
-import { debounce } from "@/app/utils";
+// import { debounce } from "@/app/utils";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
 import AddNewProduct from "./AddNewProduct";
 import EditProduct from "./EditProduct";
+import { Autocomplete, TextField } from "@mui/material";
 
 interface HomeClientProps {
   products: ProductFromVercel[];
@@ -45,17 +46,17 @@ export default function HomeClient({
     }, 2000);
   };
 
-  const handleSearch = () => {
-    setLoader(false);
-  };
+  // const handleSearch = () => {
+  //   setLoader(false);
+  // };
 
-  const debouncedHandleChange = debounce(handleSearch, 2000);
+  // const debouncedHandleChange = debounce(handleSearch, 2000);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    setLoader(true);
-    debouncedHandleChange(e.target.value);
-  };
+  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setSearch(e.target.value);
+  //   setLoader(true);
+  //   debouncedHandleChange(e.target.value);
+  // };
 
   const handleAddToCartClick = (productId: string) => {
     if (!user) {
@@ -83,12 +84,29 @@ export default function HomeClient({
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
       <Title titleName={t("productTitle")} />
       <form className="flex items-center justify-center mt-4 md:flex-col">
-        <input
+        {/* <input
           value={search}
           onChange={handleChange}
           className="rounded-l border border-gray-300 outline-none p-2 w-64 mr-8 focus:ring-blue-500 focus:border-blue-500"
           placeholder={t("search")}
           type="text"
+        /> */}
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={products}
+          getOptionLabel={(option) => option.title}
+          onChange={(_event, value) => {
+            setSearch(value ? value.title : "");
+          }}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField
+              onChange={(e) => setSearch(e.target.value)}
+              {...params}
+              label="Products"
+            />
+          )}
         />
         <button
           onClick={handleSortChange}

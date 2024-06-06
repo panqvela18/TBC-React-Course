@@ -2,6 +2,7 @@ import React from "react";
 import { getProducts, getUserCart } from "../../../api";
 import QuintityChangeButtons from "../../../../components/QuintityChangeButtons";
 import ClearButton from "@/components/ClearButton";
+// import { useCartOptimistic } from "@/app/hooks/useCartOptimistic";
 // import { useCart } from "@/app/providers/CartContext";
 
 export const metadata = {
@@ -10,6 +11,8 @@ export const metadata = {
 };
 
 export default async function page() {
+  // const { optimistic } = useCartOptimistic();
+
   const cart = await getUserCart();
   const cartProductsArray = cart ? Object.entries(cart?.products) : [];
   const cartProducts = await getProducts();
@@ -22,6 +25,11 @@ export default async function page() {
       ...product,
       quantity: cartProductMap.get(product.id.toString()),
     }));
+  const totalPrice = filteredProducts.reduce((acc: number, item: any) => {
+    return acc + parseFloat(item.price) * item.quantity;
+  }, 0);
+  console.log(totalPrice);
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // const { filteredProducts } = useCart();
 
@@ -43,6 +51,7 @@ export default async function page() {
         ))}
       </div>
       <ClearButton />
+      <h5>{totalPrice.toFixed(2)}</h5>
     </div>
   );
 }

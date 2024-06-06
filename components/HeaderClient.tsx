@@ -2,51 +2,52 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../public/icons8-logo.svg";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
-import moon from "../public/moon.svg";
-import sun from "../public/sun.svg";
-import { ThemeContext } from "@/app/providers/ThemeContext";
+// import moon from "../public/moon.svg";
+// import sun from "../public/sun.svg";
+// import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
 import CartBtn from "./CartBtn";
 import { useRouter } from "next/navigation";
+import DarkMode from "./ChangeTheme";
 
 export default function HeaderClient({
   currentLang,
   user,
   totalQuantity,
-  userRole,
-}: {
+}: // userRole,
+{
   currentLang: any;
   user: any;
   totalQuantity: number;
-  userRole: string;
+  // userRole: string;
 }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
-  const { theme, setTheme } = useContext(ThemeContext);
+  // const { theme, setTheme } = useContext(ThemeContext);
   const router = useRouter();
 
-  useEffect(() => {
-    const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      setTheme(e.matches ? "dark" : "light");
-    };
-    prefersDarkMode.addEventListener("change", handleChange);
-    return () => {
-      prefersDarkMode.removeEventListener("change", handleChange);
-    };
-  }, [setTheme]);
+  // useEffect(() => {
+  //   const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+  //   const handleChange = (e: MediaQueryListEvent) => {
+  //     setTheme(e.matches ? "dark" : "light");
+  //   };
+  //   prefersDarkMode.addEventListener("change", handleChange);
+  //   return () => {
+  //     prefersDarkMode.removeEventListener("change", handleChange);
+  //   };
+  // }, [setTheme]);
 
-  useEffect(() => {
-    document.body.classList.toggle("dark", theme === "dark");
-    window.localStorage.setItem("theme", theme);
-  }, [theme]);
+  // useEffect(() => {
+  //   document.body.classList.toggle("dark", theme === "dark");
+  //   window.localStorage.setItem("theme", theme);
+  // }, [theme]);
 
-  function handleThemeChange() {
-    setTheme(theme === "light" ? "dark" : "light");
-  }
+  // function handleThemeChange() {
+  //   setTheme(theme === "light" ? "dark" : "light");
+  // }
 
   useEffect(() => {
     if (showBugerMenu) {
@@ -110,7 +111,7 @@ export default function HeaderClient({
               {t("profile")}
             </Link>
           )}
-          {userRole === "admin" && (
+          {user?.role.length > 0 && "admin" && (
             <Link
               href={"/admin"}
               className="text-white text-sm mr-6 hover:text-gray-200"
@@ -137,13 +138,14 @@ export default function HeaderClient({
         <div className="flex items-center">
           {user && <CartBtn totalQuantity={totalQuantity} />}
           <ToggleLang currentLang={currentLang?.value} />
-          <button onClick={handleThemeChange}>
+          {/* <button onClick={handleThemeChange}>
             {theme === "dark" ? (
               <Image src={sun} alt="sun" width={30} height={30} />
             ) : (
               <Image src={moon} alt="moon" width={30} height={30} />
             )}
-          </button>
+          </button> */}
+          <DarkMode />
         </div>
         {showBugerMenu ? (
           <MdOutlineClose

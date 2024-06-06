@@ -1,9 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ReactElement } from "react";
-import { ThemeProvider } from "../providers/ThemeContext";
+// import { ThemeProvider } from "../providers/ThemeContext";
 import { I18nProviderClient } from "@/locales/client";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { Providers } from "./(dashboard)/providers";
 // import { CartProvider } from "../providers/CartContext";
 // import { LangProvider } from "./providers/LangContext";
 
@@ -26,9 +27,11 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen justify-between">
           <I18nProviderClient locale={locale}>
-            <ThemeProvider>
-              <UserProvider>{children} </UserProvider>
-            </ThemeProvider>
+            {/* <ThemeProvider> */}
+            <UserProvider>
+              <Providers>{children}</Providers>{" "}
+            </UserProvider>
+            {/* </ThemeProvider> */}
           </I18nProviderClient>
         </div>
       </body>

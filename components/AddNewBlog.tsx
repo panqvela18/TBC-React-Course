@@ -2,15 +2,18 @@
 import { createAddBlogAction } from "@/app/actions";
 import { blogData } from "@/app/interface";
 import Modal from "@mui/material/Modal";
+import { PutBlobResult } from "@vercel/blob";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function AddNewBlog({ user_id }: any) {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [image_url, setImage_url] = useState<string>("");
+  const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,6 +37,33 @@ export default function AddNewBlog({ user_id }: any) {
     router.refresh();
   };
 
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+
+    if (!inputFileRef.current?.files) {
+      throw new Error("No file selected");
+    }
+
+    const file = inputFileRef.current.files[0];
+    setLoading(true);
+
+    try {
+      const response = await fetch(`/api/upload?filename=${file.name}`, {
+        method: "POST",
+        body: file,
+      });
+
+      const newBlob = (await response.json()) as PutBlobResult;
+      setImage_url(newBlob.url);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {user_id === undefined ? (
@@ -43,7 +73,7 @@ export default function AddNewBlog({ user_id }: any) {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleOpen}
         >
-          Add New User
+          Add New Blog
         </button>
       )}
 
@@ -69,7 +99,7 @@ export default function AddNewBlog({ user_id }: any) {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
-              placeholder="Name"
+              placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -80,7 +110,7 @@ export default function AddNewBlog({ user_id }: any) {
             </label>
             <textarea
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="description"
+              placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -91,19 +121,19 @@ export default function AddNewBlog({ user_id }: any) {
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="email"
-              type="text"
-              placeholder="Email"
-              value={image_url}
-              onChange={(e) => setImage_url(e.target.value)}
+              type="file"
+              ref={inputFileRef}
+              onChange={handleFileUpload}
             />
+            {loading && <p>Uploading...</p>}
           </div>
           <div className="flex items-center justify-between">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
+              disabled={loading}
             >
-              Add blog
+              Add Blog
             </button>
           </div>
         </form>

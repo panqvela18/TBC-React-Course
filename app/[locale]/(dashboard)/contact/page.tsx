@@ -11,15 +11,16 @@ import Title from "@/components/Title";
 import { useI18n } from "@/locales/client";
 import { createContact } from "@/app/api";
 
-// export const metadata = {
-//   title: "Contact",
-//   description: "Contact by Next",
-// };
-
 export default function Page() {
   const [contactType, setContactType] = useState<string>("staticContact");
   const t = useI18n();
   const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState({
     name: "",
     surname: "",
     email: "",
@@ -35,10 +36,44 @@ export default function Page() {
       ...prevData,
       [name]: value,
     }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
+
+  const validate = () => {
+    const newErrors = { name: "", surname: "", email: "", message: "" };
+    let isValid = true;
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+      isValid = false;
+    }
+    if (!formData.surname.trim()) {
+      newErrors.surname = "Surname is required";
+      isValid = false;
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is not valid";
+      isValid = false;
+    }
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     try {
       await createContact(formData);
       setMessageSend(true);
@@ -49,7 +84,6 @@ export default function Page() {
         message: "",
       });
     } catch (error) {
-      // Handle error appropriately, e.g., display an error message
       console.error("Error creating user:", error);
     }
   };
@@ -139,6 +173,7 @@ export default function Page() {
                   placeholder="John"
                   name="name"
                 />
+                {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
               <div className="flex flex-col w-1/2 md:w-full">
                 <Input
@@ -148,6 +183,9 @@ export default function Page() {
                   placeholder="Doe"
                   name="surname"
                 />
+                {errors.surname && (
+                  <p className="text-red-500">{errors.surname}</p>
+                )}
               </div>
             </div>
             <div className="flex flex-col mt-2">
@@ -158,6 +196,7 @@ export default function Page() {
                 placeholder="example@gmail.com"
                 name="email"
               />
+              {errors.email && <p className="text-red-500">{errors.email}</p>}
             </div>
             <div className="flex flex-col">
               <label className="text-blue-300 mb-2 text-lg font-semibold mt-2 dark:text-slate-50">
@@ -170,6 +209,9 @@ export default function Page() {
                 placeholder={`${t("message")}...`}
                 className="border outline-none p-3 text-blue-300 rounded resize-none h-[300px] dark:text-slate-50"
               />
+              {errors.message && (
+                <p className="text-red-500">{errors.message}</p>
+              )}
             </div>
             {messageSend && <p>Message Sent</p>}
             <button

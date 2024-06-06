@@ -14,6 +14,13 @@ export interface blogData {
   user_id:number
 }
 
+export interface reviewData {
+  user_id:number,
+      product_id:number,
+      rating:number,
+      message:string
+}
+
 
 export interface ProductData {
     id: number ;

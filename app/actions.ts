@@ -1,8 +1,8 @@
 "use server";
 // import { BASE_URL } from "@/constants";
 import { cookies } from "next/headers";
-import { PostData, Prod, UserData, blogData } from "./interface";
-import { EditProfile, createBlog, createProduct, deleteBlogById, deleteProductById, editProduct, updateBlogById, updateUserById } from "./api";
+import { PostData, Prod, UserData, blogData, reviewData } from "./interface";
+import { EditProfile, createBlog, createProduct, createReview, deleteBlogById, deleteProductById, editProduct, updateBlogById, updateUserById } from "./api";
 import { revalidatePath } from "next/cache";
 import { deleteUserById } from "@/app/api";
 import { getUserId } from "./api";
@@ -21,6 +21,17 @@ export async function createAddBlogAction(blogData: blogData) {
   const {title,description,user_id,image_url} = blogData
    revalidatePath("/blog")
    createBlog(title,description,user_id,image_url)
+}
+export async function createAddReviewAction(reviewData: reviewData) {
+  const {user_id,
+      product_id,
+      rating,
+      message} = reviewData
+   revalidatePath(`/product/${product_id}`)
+   createReview(user_id,
+      product_id,
+      rating,
+      message)
 }
 export async function createAddProductAction(productData: Prod) {
   const {title,
@@ -221,3 +232,18 @@ export const handleClearCart = async () => {
     console.error("Error clearing cart:", error);
   }
 };
+
+
+
+// export const storeThemeInCookies = (pref: string) => {
+//   if (pref === "os") {
+//     cookies().delete("theme");
+//   } else {
+//     cookies().set("theme", pref, { secure: true, sameSite: "none" });
+//   }
+// };
+
+// // General
+// export const readCookieForClient = async (searchCookie: string) => {
+//   return cookies().get(searchCookie)?.value;
+// };

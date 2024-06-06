@@ -15,7 +15,9 @@ export async function getProductDetail(id: string) {
   );
   const data = await response.json();
   const product = data.products?.rows ? data.products.rows[0] : null;
-  return product;
+  const reviews = data.reviews?.rows ? data.reviews.rows : null;
+  const gallery = data.gallery?.rows ? data.gallery.rows : null;
+  return {product,reviews,gallery};
 }
 
 export async function getProducts() {
@@ -153,6 +155,19 @@ export async function createBlog(title:string,description:string,user_id:number,
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-blog", {
     method: "POST",
     body: JSON.stringify({ title,description,user_id,image_url}),
+  });
+}
+export async function createReview(user_id:number | undefined,
+  product_id:number,
+  rating:number,
+  message:string,) {
+
+  return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-review", {
+    method: "POST",
+    body: JSON.stringify({ user_id,
+      product_id,
+      rating,
+      message}),
   });
 }
 export async function createContact(formData:formData) {

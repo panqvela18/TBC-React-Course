@@ -2,12 +2,13 @@
 // import { FaStar } from "react-icons/fa6";
 // import ProductDetailInfo from "@/components/ProductDetailInfo";
 // import ProductsSwiper from "@/components/ProductsSwiper";
-import { ProductFromVercel } from "@/app/interface";
+// import { ProductFromVercel } from "@/app/interface";
 // import { setStaticParamsLocale } from "next-international/server";
-import { getProductDetail } from "@/app/api";
+import { getProductDetail, getUserId } from "@/app/api";
 import Image from "next/image";
 import StarRating from "@/components/StarRating";
 import { getSession } from "@auth0/nextjs-auth0";
+import ShareOnSocials from "@/components/ShareOnSocials";
 
 // export async function generateStaticParams() {
 //   try {
@@ -25,50 +26,54 @@ import { getSession } from "@auth0/nextjs-auth0";
 //     return [];
 //   }
 // }
-export async function generateMetadata({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
-  const prodDetail: ProductFromVercel = await getProductDetail(id);
+// export async function generateMetadata({
+//   params: { id },
+// }: {
+//   params: { id: string };
+// }) {
+//   const { product }: any = await getProductDetail(id);
 
-  return {
-    title: prodDetail.title,
-    description: prodDetail.description,
-  };
-}
+//   return {
+//     title: product.title,
+//     description: product.description,
+//   };
+// }
 
 export default async function ProductDetail({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const prodDetail: ProductFromVercel = await getProductDetail(id);
+  const {
+    product,
+    reviews,
+    gallery,
+  }: { product: any; reviews: any; gallery: any } = await getProductDetail(id);
   const user = await getSession();
   const userName = user?.user.name;
+  const user_id = await getUserId();
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <div className="flex justify-center items-center">
-        <StarRating userName={userName} />
-        <Image
-          src={prodDetail.image_url}
-          width={100}
-          height={100}
-          alt="image"
+        <StarRating
+          user_id={user_id}
+          product_id={product.id}
+          userName={userName}
         />
+        <Image src={product.image_url} width={100} height={100} alt="image" />
       </div>
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          {prodDetail.title}
+          {product.title}
         </h1>
         <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400">
-          ${prodDetail.price}
+          ${product.price}
         </h2>
       </div>
       <div className="mb-4">
         <p className="text-lg text-gray-700 dark:text-gray-300">
-          {prodDetail.description}
+          {product.description}
         </p>
       </div>
       <div className="flex flex-wrap justify-center items-center space-x-4 mt-4">
@@ -77,7 +82,7 @@ export default async function ProductDetail({
             Category
           </h4>
           <span className="text-gray-600 dark:text-gray-300">
-            {prodDetail.category}
+            {product.category}
           </span>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
@@ -85,7 +90,7 @@ export default async function ProductDetail({
             Discount
           </h4>
           <span className="text-green-500 dark:text-green-300">
-            {prodDetail.discount}%
+            {product.discount}%
           </span>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
@@ -94,17 +99,32 @@ export default async function ProductDetail({
           </h4>
           <span
             className={`text-lg font-bold ${
-              typeof prodDetail.stock === "number" && prodDetail.stock > 0
+              typeof product.stock === "number" && product.stock > 0
                 ? "text-green-500 dark:text-green-300"
                 : "text-red-500 dark:text-red-300"
             }`}
           >
-            {typeof prodDetail.stock === "number" && prodDetail.stock > 0
-              ? `${prodDetail.stock} available`
+            {typeof product.stock === "number" && product.stock > 0
+              ? `${product.stock} available`
               : "Out of stock"}
           </span>
         </div>
+        <ShareOnSocials product={product} />
       </div>
+      {reviews?.map((rev: any, index: any) => {
+        return <p key={index}>{rev.message}</p>;
+      })}
+      {gallery?.map((item: any) => {
+        return (
+          <Image
+            key={item.id}
+            src={item.image_url}
+            width={100}
+            height={100}
+            alt="image"
+          />
+        );
+      })}
     </div>
   );
 }

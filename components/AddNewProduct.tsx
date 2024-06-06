@@ -3,7 +3,7 @@ import { createAddProductAction } from "@/app/actions";
 import { Prod } from "@/app/interface";
 import { Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 export default function AddNewProduct({ user_id }: { user_id: number }) {
   const [open, setOpen] = useState<boolean>(false);
@@ -14,7 +14,9 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
   const [category, setCategory] = useState<string>("");
   const [discount, setDiscount] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
+  const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -35,11 +37,33 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
     try {
       await createAddProductAction(productData);
     } catch (error) {
-      // Handle error appropriately, e.g., display an error message
       console.error("Error creating user:", error);
     }
     handleClose();
     router.refresh();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      throw new Error("No file selected");
+    }
+
+    const file = e.target.files[0];
+    setLoading(true);
+
+    try {
+      const response = await fetch(`/api/upload?filename=${file.name}`, {
+        method: "POST",
+        body: file,
+      });
+
+      const newBlob = await response.json();
+      setImage_url(newBlob.url);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,16 +119,15 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Image URL
+              Image
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="image_url"
-              type="text"
-              placeholder="Image URL"
-              value={image_url}
-              onChange={(e) => setImage_url(e.target.value)}
+              type="file"
+              ref={inputFileRef}
+              onChange={handleFileChange}
             />
+            {loading && <p>Uploading...</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -162,6 +185,7 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
+              disabled={loading}
             >
               Add Product
             </button>

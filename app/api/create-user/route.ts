@@ -18,10 +18,13 @@ export async function GET(_: NextRequest) {
       const users = await sql`SELECT id FROM users ORDER BY id DESC LIMIT 1;`;
       const userId = users.rows[0].id;
 
-      await sql`
-      INSERT INTO carts (user_id, products)
-      VALUES (${userId}, '{}');
-    `;
+      if(!users.rows.length){
+
+        await sql`
+        INSERT INTO carts (user_id, products)
+        VALUES (${userId}, '{}');
+      `;
+      }
 }
   } catch (error) {
     return redirect("/api/auth/logout");

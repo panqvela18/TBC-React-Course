@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import Title from "./Title";
 import Loader from "./Loader";
 import { ProductFromVercel } from "@/app/interface";
@@ -7,7 +7,6 @@ import { useI18n } from "@/locales/client";
 import { BsCartCheckFill } from "react-icons/bs";
 import Link from "next/link";
 import { deleteProduct, handleAddToCart } from "@/app/actions";
-// import { debounce } from "@/app/utils";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
@@ -18,18 +17,23 @@ import { Autocomplete, TextField } from "@mui/material";
 interface HomeClientProps {
   products: ProductFromVercel[];
   userId: number;
-  userRole: string;
+  // userRole: string;
+}
+
+interface User {
+  role: string[]; // Define role as an array of strings
+  [key: string]: any; // To include other properties that might exist on the user object
 }
 
 export default function HomeClient({
   products,
   userId,
-  userRole,
-}: HomeClientProps) {
+}: // userRole,
+HomeClientProps) {
   const [resetProduct, setResetProduct] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
-  const { user } = useUser();
+  const { user } = useUser() as unknown as { user: User }; // Type assertion
   const router = useRouter();
 
   const t = useI18n();
@@ -45,18 +49,6 @@ export default function HomeClient({
       setLoader(false);
     }, 2000);
   };
-
-  // const handleSearch = () => {
-  //   setLoader(false);
-  // };
-
-  // const debouncedHandleChange = debounce(handleSearch, 2000);
-
-  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setSearch(e.target.value);
-  //   setLoader(true);
-  //   debouncedHandleChange(e.target.value);
-  // };
 
   const handleAddToCartClick = (productId: string) => {
     if (!user) {
@@ -84,13 +76,6 @@ export default function HomeClient({
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
       <Title titleName={t("productTitle")} />
       <form className="flex items-center justify-center mt-4 md:flex-col">
-        {/* <input
-          value={search}
-          onChange={handleChange}
-          className="rounded-l border border-gray-300 outline-none p-2 w-64 mr-8 focus:ring-blue-500 focus:border-blue-500"
-          placeholder={t("search")}
-          type="text"
-        /> */}
         <Autocomplete
           disablePortal
           id="combo-box-demo"
@@ -121,7 +106,7 @@ export default function HomeClient({
       ) : (
         <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
           {filteredProducts.map((p) => {
-            const isAdmin = userRole === "admin";
+            const isAdmin = user?.role.includes("admin");
             const isOwner = userId === p.user_id;
             return (
               <div

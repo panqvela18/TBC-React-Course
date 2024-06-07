@@ -6,16 +6,21 @@ import { useI18n } from "@/locales/client";
 import { deleteBlog } from "@/app/actions";
 import { PostData } from "@/app/interface";
 import EditBlog from "./EditBlog";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface BlogClientProps {
   blogData: PostData;
   userId: number;
-  userRole: string;
+  // userRole: string;
 }
-
-export default function Blogs({ blogData, userId, userRole }: BlogClientProps) {
+interface User {
+  role: string[]; // Define role as an array of strings
+  [key: string]: any; // To include other properties that might exist on the user object
+}
+export default function Blogs({ blogData, userId }: BlogClientProps) {
+  const { user } = useUser() as unknown as { user: User }; // Type assertion
   const t = useI18n();
-  const isAdmin = userRole === "admin";
+  const isAdmin = user?.role.includes("admin");
   const isOwner = userId === blogData.user_id;
 
   return (

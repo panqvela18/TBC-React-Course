@@ -310,16 +310,16 @@ const session = await getSession();
   return imageUrl
  
 }
-export async function getUserRole(){
-const session = await getSession();
-  const user = session?.user;
-  const id = user?.sub;
-  const userRole = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-user-role/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
-  const userRoleInfo = await userRole.json();
-  return userRoleInfo.userImage.rows[0]?.role
-}
+// export async function getUserRole(){
+// const session = await getSession();
+//   const user = session?.user;
+//   const id = user?.sub;
+//   const userRole = await fetch(
+//     process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-user-role/${id}`,
+//     {
+//       cache: "no-store",
+//     }
+//   );
+//   const userRoleInfo = await userRole.json();
+//   return userRoleInfo.userImage.rows[0]?.role
+// }

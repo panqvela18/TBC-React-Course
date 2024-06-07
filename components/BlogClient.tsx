@@ -7,14 +7,14 @@ import { useState } from "react";
 interface BlogClientProps {
   postData: PostData[];
   userId: number;
-  userRole: string;
+  // userRole: string;
 }
 
 export default function BlogClient({
   postData,
   userId,
-  userRole,
-}: BlogClientProps) {
+}: // userRole,
+BlogClientProps) {
   const [search, setSearch] = useState("");
   let filteredProducts = postData.filter((prod) =>
     prod.title.toLowerCase().includes(search.toLowerCase())
@@ -49,7 +49,7 @@ export default function BlogClient({
               // user_id={blog.user_id}
               blogData={blog}
               userId={userId}
-              userRole={userRole}
+              // userRole={userRole}
             />
           );
         })}

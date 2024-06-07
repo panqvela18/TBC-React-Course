@@ -3,7 +3,7 @@ import { createI18nMiddleware } from "next-international/middleware";
 
 export default async function middleware(request: NextRequest) {
   const cookieStore = request.cookies;
-  const appSessionCookie = cookieStore.get("appSession");
+  const appSessionCookie = cookieStore.get("appSession")
   const { pathname } = request.nextUrl;
   if (
     !appSessionCookie &&
@@ -22,7 +22,7 @@ export default async function middleware(request: NextRequest) {
     urlMappingStrategy: "rewrite",
   });
 
-  const response = await I18nMiddleware(request);
+  const response =  I18nMiddleware(request);
 
   return response;
 }

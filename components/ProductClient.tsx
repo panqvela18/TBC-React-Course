@@ -14,19 +14,25 @@ import { useRouter } from "next/navigation";
 interface HomeClientProps {
   products: ProductFromVercel[];
   userId: number;
-  userRole: string;
+  // userRole: string;
+}
+
+interface User {
+  role: string[];
+  [key: string]: any; // other properties
 }
 export default function ProductClient({
   products,
   userId,
-  userRole,
-}: HomeClientProps) {
+}: // userRole,
+HomeClientProps) {
   const [productsData, setProductsData] =
     useState<ProductFromVercel[]>(products);
   const [resetProduct, setResetProduct] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
-  const { user } = useUser();
+  const { user } = useUser() as unknown as { user: User }; // Type assertion
+
   const router = useRouter();
 
   console.log(userId);
@@ -110,7 +116,7 @@ export default function ProductClient({
       ) : (
         <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
           {productsData.map((p) => {
-            const isAdmin = userRole === "admin";
+            const isAdmin = user?.role.includes("admin");
             const isOwner = userId === p.user_id;
 
             return (

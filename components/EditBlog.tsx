@@ -2,8 +2,9 @@
 import { updateBlog } from "@/app/actions";
 import { PostData } from "@/app/interface";
 import Modal from "@mui/material/Modal";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 
 interface BlogClientProps {
@@ -13,9 +14,9 @@ interface BlogClientProps {
 export default function EditBlog({ blogData }: BlogClientProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [blog, setBlog] = useState<PostData>(blogData);
+  const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  console.log(blog);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -41,6 +42,29 @@ export default function EditBlog({ blogData }: BlogClientProps) {
     }));
   };
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      throw new Error("No file selected");
+    }
+
+    const file = e.target.files[0];
+
+    try {
+      const response = await fetch(`/api/upload?filename=${file.name}`, {
+        method: "POST",
+        body: file,
+      });
+
+      const newBlob = await response.json();
+      setBlog((prevBlog) => ({
+        ...prevBlog,
+        image_url: newBlob.url, // Assuming newBlob.url contains the new image URL
+      }));
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   return (
     <div>
       <CiEdit
@@ -55,68 +79,72 @@ export default function EditBlog({ blogData }: BlogClientProps) {
         aria-describedby="modal-modal-description"
         className="flex items-center justify-center"
       >
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        >
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="title"
-            >
-              Title
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="title"
-              type="text"
-              placeholder="title"
-              value={blog.title}
-              onChange={(e) => handleChange("title", e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="description"
-            >
-              Description
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="description"
-              type="text"
-              placeholder="description"
-              value={blog.description}
-              onChange={(e) => handleChange("description", e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="image_url"
-            >
-              Image URL
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="image_url"
-              type="text"
-              placeholder="image_url"
-              value={blog.image_url}
-              onChange={(e) => handleChange("image_url", e.target.value)}
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-2xl max-h-full overflow-y-auto">
+          <form onSubmit={handleSubmit} className="w-full">
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="title"
+              >
+                Title
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="title"
+                type="text"
+                placeholder="title"
+                value={blog.title}
+                onChange={(e) => handleChange("title", e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="description"
+              >
+                Description
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="description"
+                type="text"
+                placeholder="description"
+                value={blog.description}
+                onChange={(e) => handleChange("description", e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Image
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="file"
+                ref={inputFileRef}
+                onChange={handleFileChange}
+              />
+            </div>
+            {blog.image_url && (
+              <div className="mb-4">
+                <Image
+                  src={blog.image_url}
+                  alt="Blog Image"
+                  className="max-w-full h-auto"
+                  width={100}
+                  height={100}
+                />
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       </Modal>
     </div>
   );

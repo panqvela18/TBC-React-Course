@@ -4,6 +4,8 @@ import QuintityChangeButtons from "../../../../components/QuintityChangeButtons"
 import ClearButton from "@/components/ClearButton";
 // import { useCartOptimistic } from "@/app/hooks/useCartOptimistic";
 // import { useCart } from "@/app/providers/CartContext";
+import CheckoutButton from "@/components/CheckoutButton";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Cart",
@@ -28,7 +30,27 @@ export default async function page() {
   const totalPrice = filteredProducts.reduce((acc: number, item: any) => {
     return acc + parseFloat(item.price) * item.quantity;
   }, 0);
-  console.log(totalPrice);
+  console.log(filteredProducts);
+
+  const checkout = async () => {
+    "use server";
+    await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/checkout`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ products: filteredProducts }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.url) {
+          redirect(response.url);
+        }
+      });
+  };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // const { filteredProducts } = useCart();
@@ -52,6 +74,7 @@ export default async function page() {
       </div>
       <ClearButton />
       <h5>{totalPrice.toFixed(2)}</h5>
+      <CheckoutButton checkout={checkout} />
     </div>
   );
 }

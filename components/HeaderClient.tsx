@@ -23,31 +23,10 @@ export default function HeaderClient({
   currentLang: any;
   user: any;
   totalQuantity: number;
-  // userRole: string;
 }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
-  // const { theme, setTheme } = useContext(ThemeContext);
+
   const router = useRouter();
-
-  // useEffect(() => {
-  //   const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
-  //   const handleChange = (e: MediaQueryListEvent) => {
-  //     setTheme(e.matches ? "dark" : "light");
-  //   };
-  //   prefersDarkMode.addEventListener("change", handleChange);
-  //   return () => {
-  //     prefersDarkMode.removeEventListener("change", handleChange);
-  //   };
-  // }, [setTheme]);
-
-  // useEffect(() => {
-  //   document.body.classList.toggle("dark", theme === "dark");
-  //   window.localStorage.setItem("theme", theme);
-  // }, [theme]);
-
-  // function handleThemeChange() {
-  //   setTheme(theme === "light" ? "dark" : "light");
-  // }
 
   useEffect(() => {
     if (showBugerMenu) {

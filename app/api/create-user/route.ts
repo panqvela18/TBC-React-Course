@@ -8,25 +8,32 @@ export async function GET(_: NextRequest) {
     const session = await getSession();
 
     if (session?.user) {
-      const { sub, nickname,name ,email, picture } = session.user;
+      const { sub, nickname, name, email, picture } = session.user;
 
       const user = await sql`SELECT * FROM users WHERE sub = ${sub}`;
 
-      if (!user.rows.length)
-        await sql`INSERT INTO users (sub ,nickname,name, email, image_url) VALUES ( ${sub},${nickname},${name} ${email}, ${picture});`;
+      if (!user.rows.length) {
+        await sql`
+          INSERT INTO users (sub, nickname, name, email, image_url)
+          VALUES (${sub}, ${nickname}, ${name}, ${email}, ${picture});
+        `;
+      }
 
-      const users = await sql`SELECT id FROM users ORDER BY id DESC LIMIT 1;`;
+      const users = await sql`SELECT id FROM users WHERE sub = ${sub} LIMIT 1;`;
       const userId = users.rows[0].id;
 
-      if(!users.rows.length){
-
+      const cartCheck = await sql`SELECT * FROM carts WHERE user_id = ${userId}`;
+      if (!cartCheck.rows.length) {
         await sql`
-        INSERT INTO carts (user_id, products)
-        VALUES (${userId}, '{}');
-      `;
+          INSERT INTO carts (user_id, products)
+          VALUES (${userId}, '{}');
+        `;
       }
-}
+    } else {
+      return redirect("/api/auth/logout");
+    }
   } catch (error) {
+    console.error(error);
     return redirect("/api/auth/logout");
   }
 

@@ -20,6 +20,17 @@ export async function getProductDetail(id: string) {
   return {product,reviews,gallery};
 }
 
+
+export async function getBlogDetail(id: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-blogs/${id}`
+  );
+  const data = await response.json();
+  const blogDetail = data.blogs?.rows ? data.blogs.rows[0] : null;
+  
+  return blogDetail;
+}
+
 export async function getProducts() {
   const response = await fetch(
     process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-products"
@@ -239,10 +250,6 @@ export async function EditProfile(name:string,nickname:string,email:string,userS
 
 
 export async function getUserCart() {
-  // const session = await getSession();
-  // const user = session?.user;
-  // const id = user?.sub;
-  // console.log("sub", id);
   const userSubId = await getUserId()
 
   if (!userSubId) {
@@ -261,25 +268,11 @@ export async function getUserCart() {
 
   return cart;
 }
-export async function getUserId() {
-  const session = await getSession();
-  const user = session?.user;
-  const id = user?.sub;
-  const userSubId = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + `/api/getId/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
-  const userSerialId = await userSubId.json();
-  const userId = userSerialId.usersId;
 
-  return userId;
-}
 export async function getUserInfo() {
-  const session = await getSession();
-  const user = session?.user;
-  const id = user?.sub;
+  // const session = await getSession();
+  // const user = session?.user;
+  const id = await getUserId();
   const userSubId = await fetch(
     process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-users/${id}`,
     {
@@ -323,3 +316,22 @@ const session = await getSession();
 //   const userRoleInfo = await userRole.json();
 //   return userRoleInfo.userImage.rows[0]?.role
 // }
+
+
+export async function getUserId() {
+  const session = await getSession();
+  const user = session?.user;
+  const id = user?.sub;
+ 
+  const userSubId = await fetch(
+    process.env.NEXT_PUBLIC_VERCEL_URL + `/api/getId/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+  const userSerialId = await userSubId.json();
+  const userId = userSerialId.usersId;
+  console.log(userId)
+
+  return userId;
+}

@@ -14,7 +14,7 @@ export default function ProfileInfo({ user }: { user: any }) {
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [editProfileMessage, setEditProfileMessage] = useState(false);
-  const userSub = user.sub;
+  const userSub = user?.sub;
 
   console.log(user);
 

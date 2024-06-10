@@ -14,6 +14,8 @@ export default async function Profile() {
   const userImage = await getUserImage();
   const userInfo = await getUserInfo();
 
+  console.log(userInfo);
+
   return (
     <main className="bg-white dark:bg-slate-900">
       <Title titleName="PROFILE" />
@@ -25,13 +27,13 @@ export default async function Profile() {
           <div className="flex border border-blue-500 p-4 xs:p-2 rounded-lg gap-8 xs:gap-3 shadow-lg bg-white items-baseline dark:bg-slate-900">
             <div className="flex flex-1 justify-center items-center"></div>
             <div className="font-bold text-blue-500">
-              {userInfo.name && (
+              {userInfo?.name && (
                 <h3 className="text-xl  leading-6 h-8">Full Name</h3>
               )}
-              {userInfo.nickname && (
+              {userInfo?.nickname && (
                 <h3 className="text-xl  leading-6 h-8">Nickname</h3>
               )}
-              {userInfo.email && (
+              {userInfo?.email && (
                 <h3 className="text-xl leading-6 h-8">Email</h3>
               )}
             </div>

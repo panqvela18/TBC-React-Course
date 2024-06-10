@@ -1,7 +1,7 @@
-import { getUserCart } from "@/app/api";
+// import { getUserCart } from "@/app/api";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { CartOptimisticContextProvider } from "@/providers/CartOptimisticProvider";
+// import { CartOptimisticContextProvider } from "@/providers/CartOptimisticProvider";
 
 export default async function DashboardLayout({
   children,
@@ -16,17 +16,17 @@ export default async function DashboardLayout({
   // if(!cookie?.value){
   //   redirect("/login")
   // }
-  const cart = await getUserCart();
+  // const cart = await getUserCart();
 
   return (
     <>
-      <CartOptimisticContextProvider cart={cart}>
-        <div className="flex flex-col min-h-screen justify-between bg-white dark:bg-slate-900">
-          <Header />
-          {children}
-          <Footer />
-        </div>
-      </CartOptimisticContextProvider>
+      {/* <CartOptimisticContextProvider cart={cart}> */}
+      <div className="flex flex-col min-h-screen justify-between bg-white dark:bg-slate-900">
+        <Header />
+        {children}
+        <Footer />
+      </div>
+      {/* </CartOptimisticContextProvider> */}
     </>
   );
 }

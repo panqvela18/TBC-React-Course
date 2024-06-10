@@ -1,104 +1,28 @@
+import { getBlogDetail } from "@/app/api";
 import Image from "next/image";
-import defaulImage from "../../../../../public/Teamwork.png";
-import { AiFillLike } from "react-icons/ai";
-import { FetchedPost } from "@/app/interface";
-import { setStaticParamsLocale } from "next-international/server";
 
-// export async function generateMetadata({
-//   params: { id },
-// }: {
-//   params: { id: string };
-// }) {
-//   try {
-//     const blogDetail = await fetchBlog(id);
-
-//     return {
-//       title: blogDetail.title,
-//       description: blogDetail.description,
-//     };
-//   } catch (error) {
-//     console.error("Error fetching product details for metadata:", error);
-//     return {
-//       title: "Product not found",
-//       description: "The product you are looking for does not exist.",
-//     };
-//   }
-// }
-
-export async function generateStaticParams() {
-  try {
-    const res = await fetch("https://dummyjson.com/posts");
-    if (!res.ok) {
-      throw new Error("Failed to fetch posts");
-    }
-
-    const data: FetchedPost = await res.json();
-    return data?.posts?.map((post) => ({
-      id: `${post.id}`,
-    }));
-  } catch (error) {
-    console.error("Error fetching or processing posts:", error);
-    return [];
-  }
-}
-
-async function fetchBlog(id: string) {
-  const res = await fetch(`https://dummyjson.com/posts/${id}`);
-  const post = await res.json();
-
-  return post;
-}
 export default async function BlogDetail({
-  params: { id, locale },
+  params: { id },
 }: {
-  params: { id: string; locale: string };
+  params: { id: string };
 }) {
-  setStaticParamsLocale(locale);
-
-  const post = await fetchBlog(id);
+  const blogDetail = await getBlogDetail(id);
 
   return (
-    <main className="px-[4%] bg-white dark:bg-slate-900">
-      <section className="flex flex-col justify-center items-center">
-        <div className="flex items-center my-6">
-          <h1 className="text-center text-gray-500 font-bold text-2xl underline mr-5 dark:text-white">
-            {post.title}
-          </h1>
-          <div className="flex items-center">
-            <AiFillLike
-              className="text-gray-200 dark:white"
-              // color="gray"
-              fontSize={25}
-            />
-            <span>{post.reactions.likes}</span>
-          </div>
-        </div>
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+      <div className="relative h-64 w-full mb-6">
         <Image
-          className="w-screen object-cover h-96 rounded"
-          src={defaulImage}
-          alt="postImage"
-          width={500}
-          height={500}
+          src={blogDetail.image_url}
+          alt={blogDetail?.title}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-lg"
         />
-        <div className="flex flex-wrap items-center mt-5">
-          {post?.tags?.map((tag: string) => {
-            return (
-              <button
-                key={tag}
-                className="p-2 rounded-lg bg-slate-300 text-white mr-2 dark:bg-white dark:text-black w-40"
-              >
-                {tag}
-              </button>
-            );
-          })}
-        </div>
-        <div className="column-container my-6">
-          <p className="column-2 gap-x-8 text-lg text-gray-400 dark:text-white">
-            {post.body}
-          </p>
-        </div>
-      </section>
-    </main>
-    // <h1>{post.title}</h1>
+      </div>
+      <h1 className="text-4xl font-bold mb-4 text-gray-800">
+        {blogDetail?.title}
+      </h1>
+      <p className="text-lg text-gray-600">{blogDetail.description}</p>
+    </div>
   );
 }

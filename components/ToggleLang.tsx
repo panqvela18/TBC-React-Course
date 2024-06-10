@@ -5,7 +5,7 @@ import ukFlag from "../public/uk.svg";
 import geoFlag from "../public/Flag_of_Georgia.svg.png";
 import { changeLanguage } from "@/app/scripts/changeLanguage";
 
-export default function ToggleLang({ currentLang }: { currentLang: any }) {
+export default function ToggleLang({ currentLang }: { currentLang: string }) {
   const handleChangeLanguage = async () => {
     await changeLanguage();
     window.location.reload();

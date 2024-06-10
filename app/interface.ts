@@ -3,7 +3,7 @@ export interface PostData {
   id: number;
   title: string;
   description: string;
-  image_url?:string;
+  image_url:string;
   user_id:number
 }
 
@@ -50,15 +50,16 @@ export interface ProductData {
     message:string
   }
   export interface ProductFromVercel {
-    id: number | string;
+    id: number;
     description: string;
     price: string;
     title:string;
     discount:string;
     category:string;
-    stock:number | string;
+    stock:number;
     image_url:string;
     user_id:number;
+    quantity?:number
   }
 
   export interface Prod {

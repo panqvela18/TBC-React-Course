@@ -9,7 +9,9 @@ import { ChangeEvent, useState } from "react";
 import { debounce } from "@/app/utils";
 import { useI18n } from "@/locales/client";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+// import { useCartOptimistic } from "@/app/hooks/useCartOptimistic";
+// import { IStorageCart } from "@/app/providers/CartOptimisticProvider";
 
 interface HomeClientProps {
   products: ProductFromVercel[];
@@ -33,7 +35,7 @@ HomeClientProps) {
   const [loader, setLoader] = useState<boolean>(false);
   const { user } = useUser() as unknown as { user: User }; // Type assertion
 
-  const router = useRouter();
+  // const router = useRouter();
 
   console.log(userId);
 
@@ -78,13 +80,13 @@ HomeClientProps) {
     debouncedHandleChange(e.target.value);
   };
 
-  const handleAddToCartClick = (productId: string) => {
-    if (!user) {
-      router.push("/api/auth/login");
-    } else {
-      handleAddToCart(productId);
-    }
-  };
+  // const handleAddToCartClick = (productId: string) => {
+  //   if (!user) {
+  //     router.push("/api/auth/login");
+  //   } else {
+  //     handleAddToCart(productId);
+  //   }
+  // };
 
   const handleDelete = async (productId: number) => {
     await deleteProduct(productId);
@@ -92,6 +94,26 @@ HomeClientProps) {
       prevProducts.filter((product) => product.id !== productId)
     );
   };
+
+  // const [, startTransition] = useTransition();
+
+  // const { optimistic, addOptimistic } = useCartOptimistic();
+
+  // const addToCart = async (card: ProductFromVercel) => {
+  //   if (addOptimistic && optimistic) {
+  //     startTransition(() => {
+  //       const newCart: IStorageCart = {
+  //         count: optimistic.count + 1,
+  //         price: optimistic.price + card.price,
+  //         products: optimistic.products.map((p: any) =>
+  //           p.id === card.id ? { ...p, quantity: p.quantity! + 1 } : { ...p }
+  //         ),
+  //       };
+  //       return addOptimistic(newCart);
+  //     });
+  //   }
+  //   await handleAddToCartClick(card.id.toString());
+  // };
 
   return (
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
@@ -154,7 +176,7 @@ HomeClientProps) {
                   </Link>
                   <button
                     onClick={() => {
-                      handleAddToCartClick(p.id.toString());
+                      handleAddToCart(p.id.toString());
                     }}
                     className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
                   >

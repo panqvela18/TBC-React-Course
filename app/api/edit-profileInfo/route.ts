@@ -2,11 +2,13 @@ import { sql } from "@vercel/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const { name, nickname, userSub, email } = await request.json();
+  const { userSub,
+    name,
+    phone,
+    address, } = await request.json();
 
   try {
-    // Corrected SQL query with comma between 'name' and 'email'
-    await sql`UPDATE users SET nickname=${nickname}, name=${name}, email=${email} WHERE sub=${userSub};`;
+    await sql`UPDATE users SET name=${name}, phone=${phone}, address=${address} WHERE sub=${userSub};`;
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

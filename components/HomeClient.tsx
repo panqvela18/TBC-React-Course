@@ -1,186 +1,63 @@
 "use client";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import Title from "./Title";
-import Loader from "./Loader";
-import { ProductFromVercel } from "@/app/interface";
-import { useI18n } from "@/locales/client";
-import { BsCartCheckFill } from "react-icons/bs";
-import Link from "next/link";
-import { deleteProduct, handleAddToCart } from "@/app/actions";
-import Image from "next/image";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { useRouter } from "next/navigation";
-import AddNewProduct from "./AddNewProduct";
-import EditProduct from "./EditProduct";
-import { Autocomplete, TextField } from "@mui/material";
 
-interface HomeClientProps {
-  products: ProductFromVercel[];
-  userId: number;
-  // userRole: string;
-}
-
-interface User {
-  role: string[]; // Define role as an array of strings
-  [key: string]: any; // To include other properties that might exist on the user object
-}
-
-export default function HomeClient({
-  products,
-  userId,
-}: // userRole,
-HomeClientProps) {
-  const [resetProduct, setResetProduct] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>("");
-  const [loader, setLoader] = useState<boolean>(false);
-  const { user } = useUser() as unknown as { user: User }; // Type assertion
-  const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
-
-  console.log(user);
+export default function HomeClient() {
+  const [showText, setShowText] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    const handleScroll = () => {
+      if (!showText && window.scrollY >= 1) {
+        setShowText(true);
+      }
+    };
 
-  const t = useI18n();
+    window.addEventListener("scroll", handleScroll);
 
-  const handleSortChange = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    setLoader(true);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [showText]);
 
-    setTimeout(() => {
-      setResetProduct(!resetProduct);
-      setLoader(false);
-    }, 2000);
+  const buttonProps = {
+    Initial: { opacity: 0.5, scale: 0.5 },
+    whileInView: { opacity: 1, scale: 1 },
   };
-
-  const handleAddToCartClick = (productId: string) => {
-    if (!user) {
-      router.push("/api/auth/login");
-    } else {
-      handleAddToCart(productId);
-    }
-  };
-
-  const handleDelete = async (productId: number) => {
-    await deleteProduct(productId);
-  };
-
-  let filteredProducts = products.filter((prod) =>
-    prod.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  if (resetProduct) {
-    filteredProducts = filteredProducts.sort(
-      (a, b) => Number(a.price) - Number(b.price)
-    );
-  }
 
   const testVideo =
     "https://vt4mrhsohjaaqsi5.public.blob.vercel-storage.com/background-42qk0lNGxfZiKxS76DAj0G0aeb8fyb.mp4";
 
   return (
-    <>
-      <div className="w-full h-[100vh]">
+    <main>
+      <div className="w-full" style={{ height: "calc(100vh - 84px)" }}>
         <video src={testVideo} autoPlay muted loop />
-      </div>
-      <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
-        <Title titleName={t("productTitle")} />
-        <form className="flex items-center justify-center mt-4 md:flex-col">
-          {isClient ? (
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={products}
-              getOptionLabel={(option) => option.title}
-              onChange={(_event, value) => {
-                setSearch(value ? value.title : "");
-              }}
-              sx={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField
-                  onChange={(e) => setSearch(e.target.value)}
-                  {...params}
-                  label="Products"
-                />
-              )}
-            />
-          ) : (
-            ""
-          )}
-
-          <button
-            onClick={handleSortChange}
-            className="bg-blue-500 p-2 px-4 text-white font-bold rounded-r dark:bg-blac md:mt-2"
-          >
-            {resetProduct ? t("resetProduct") : t("sortByPrice")}
-          </button>
-        </form>
-        <AddNewProduct user_id={userId} />
-        {loader ? (
-          <Loader />
-        ) : (
-          <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1">
-            {filteredProducts.map((p) => {
-              const isAdmin = user?.role.includes("admin");
-              const isOwner = userId === p.user_id;
-              return (
-                <div
-                  key={p.id}
-                  className="bg-white flex flex-col justify-between dark:bg-slate-800 p-5 rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="flex flex-col">
-                    {(isAdmin || isOwner) && (
-                      <>
-                        <button onClick={() => handleDelete(+p.id)}>
-                          delete
-                        </button>
-                        <EditProduct user_id={userId} product={p} />
-                      </>
-                    )}
-                    <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                      {p.description}
-                    </p>
-                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
-                      {p.category}
-                    </span>
-                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-4 inline-block">
-                      {p.price}
-                    </span>
-                    <Image
-                      src={p.image_url}
-                      width={100}
-                      height={100}
-                      alt="image"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <Link
-                      href={`/product/${p.id}`}
-                      className="text-blue-500 hover:text-blue-700 hover:underline transition duration-200 mt-2"
-                    >
-                      {t("learnMore")}
-                    </Link>
-                    <button
-                      onClick={() => {
-                        handleAddToCartClick(p.id.toString());
-                      }}
-                      className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
-                    >
-                      Add to Cart
-                      <BsCartCheckFill className="ml-3" color="white" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+        {showText && (
+          <div className="absolute top-0 left-0 w-full h-full  text-white flex  items-center justify-center mix-blend-normal">
+            <div className="flex flex-col justify-center items-center bg-[#11545c] bg-transparent  p-5">
+              <motion.h1
+                transition={{
+                  ease: "easeInOut",
+                  duration: 1,
+                  delay: 0.2,
+                }}
+                viewport={{ once: true }}
+                variants={buttonProps}
+                whileInView={buttonProps.whileInView}
+                initial={buttonProps.Initial}
+                className="text-[150px] font-bold select-none font-montserrat"
+              >
+                TV PROJECT
+              </motion.h1>
+              <span
+                className="text-[80px] font-bold text-white select-none font-body"
+                style={{ display: "none" }}
+              >
+                PRODUCTION
+              </span>
+            </div>
           </div>
         )}
-      </section>
-    </>
+      </div>
+    </main>
   );
 }

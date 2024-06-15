@@ -1,10 +1,14 @@
-import { getProducts, getUserId } from "@/app/api";
+import { getProducts } from "@/app/api";
 import ProductClient from "@/components/ProductClient";
 
+export const metadata = {
+  title: "Products",
+  description: "Products by Next",
+};
 export default async function Profile() {
   const products = await getProducts();
-  const userId = await getUserId();
+  console.log(products);
   // const userRole = await getUserRole();
 
-  return <ProductClient userId={userId} products={products} />;
+  return <ProductClient products={products} />;
 }

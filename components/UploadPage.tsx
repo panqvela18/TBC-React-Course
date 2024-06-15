@@ -71,9 +71,7 @@ export default function AvatarUploadPage({ userImage }: { userImage: string }) {
             height={150}
           />
         )}
-        <div className="absolute right-1 bottom-1">
-          <FaCamera fontSize={20} />
-        </div>
+        <div className="absolute right-1 bottom-1"></div>
         <input
           className="text-[10px] hidden"
           name="file"
@@ -82,8 +80,8 @@ export default function AvatarUploadPage({ userImage }: { userImage: string }) {
           id="files"
           required
         />
-        <label htmlFor="files" className="absolute right-0 bottom-0 opacity-0">
-          text
+        <label htmlFor="files" className="absolute right-0 bottom-0">
+          <FaCamera fontSize={20} />
         </label>
       </div>
       <form

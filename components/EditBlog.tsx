@@ -1,10 +1,10 @@
 "use client";
-import { updateBlog } from "@/app/actions";
-import { PostData } from "@/app/interface";
+import { useState, useRef } from "react";
 import Modal from "@mui/material/Modal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { updateBlog } from "@/app/actions";
+import { PostData } from "@/app/interface";
 import { CiEdit } from "react-icons/ci";
 
 interface BlogClientProps {
@@ -58,7 +58,7 @@ export default function EditBlog({ blogData }: BlogClientProps) {
       const newBlob = await response.json();
       setBlog((prevBlog) => ({
         ...prevBlog,
-        image_url: newBlob.url, // Assuming newBlob.url contains the new image URL
+        image_url: newBlob.url,
       }));
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -92,7 +92,7 @@ export default function EditBlog({ blogData }: BlogClientProps) {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="title"
                 type="text"
-                placeholder="title"
+                placeholder="Title"
                 value={blog.title}
                 onChange={(e) => handleChange("title", e.target.value)}
               />
@@ -108,7 +108,7 @@ export default function EditBlog({ blogData }: BlogClientProps) {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="description"
                 type="text"
-                placeholder="description"
+                placeholder="Description"
                 value={blog.description}
                 onChange={(e) => handleChange("description", e.target.value)}
               />

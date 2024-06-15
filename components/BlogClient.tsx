@@ -6,17 +6,17 @@ import { useState } from "react";
 
 interface BlogClientProps {
   postData: PostData[];
-  userId: number;
+  // userId: number;
   // userRole: string;
 }
 
 export default function BlogClient({
   postData,
-  userId,
-}: // userRole,
+}: // userId,
+// userRole,
 BlogClientProps) {
   const [search, setSearch] = useState("");
-  let filteredProducts = postData.filter((prod) =>
+  let filteredBlogs = postData?.filter((prod) =>
     prod.title.toLowerCase().includes(search.toLowerCase())
   );
   return (
@@ -39,7 +39,7 @@ BlogClientProps) {
         )}
       />
       <div className="grid grid-cols-4 px-[4%] grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-1 ">
-        {filteredProducts.map((blog) => {
+        {filteredBlogs?.map((blog) => {
           return (
             <Blogs
               key={blog.id}
@@ -48,7 +48,7 @@ BlogClientProps) {
               // description={blog.description}
               // user_id={blog.user_id}
               blogData={blog}
-              userId={userId}
+              // userId={userId}
               // userRole={userRole}
             />
           );

@@ -7,6 +7,8 @@ export default {
   profile: "PROFILE",
   logout: "LOG OUT",
   admin: "ADMIN",
+  product:"PRODUCTS",
+
 
   //TITLE
   blogTitle: "BLOG",

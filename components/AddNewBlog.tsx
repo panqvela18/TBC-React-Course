@@ -1,12 +1,18 @@
 "use client";
 import { createAddBlogAction } from "@/app/actions";
 import { blogData } from "@/app/interface";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import Modal from "@mui/material/Modal";
 import { PutBlobResult } from "@vercel/blob";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 
-export default function AddNewBlog({ user_id }: any) {
+interface User {
+  role: string[];
+  [key: string]: any;
+}
+
+export default function AddNewBlog() {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -14,9 +20,12 @@ export default function AddNewBlog({ user_id }: any) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const { user } = useUser() as unknown as { user: User };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const isAdmin = user?.role.includes("admin");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,13 +33,11 @@ export default function AddNewBlog({ user_id }: any) {
       title,
       description,
       image_url,
-      user_id,
     };
 
     try {
       await createAddBlogAction(blogData);
     } catch (error) {
-      // Handle error appropriately, e.g., display an error message
       console.error("Error creating user:", error);
     }
     handleClose();
@@ -66,9 +73,7 @@ export default function AddNewBlog({ user_id }: any) {
 
   return (
     <>
-      {user_id === undefined ? (
-        ""
-      ) : (
+      {isAdmin && (
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleOpen}

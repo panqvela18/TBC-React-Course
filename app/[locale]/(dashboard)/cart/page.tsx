@@ -6,6 +6,7 @@ import ClearButton from "@/components/ClearButton";
 // import { useCart } from "@/app/providers/CartContext";
 import CheckoutButton from "@/components/CheckoutButton";
 import { redirect } from "next/navigation";
+import { getSession } from "@auth0/nextjs-auth0";
 
 export const metadata = {
   title: "Cart",
@@ -14,6 +15,9 @@ export const metadata = {
 
 export default async function page() {
   // const { optimistic } = useCartOptimistic();
+
+  const session = await getSession();
+  const user = session?.user;
 
   const cart = await getUserCart();
   const cartProductsArray = cart ? Object.entries(cart?.products) : [];
@@ -39,7 +43,7 @@ export default async function page() {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ products: filteredProducts }),
+      body: JSON.stringify({ products: filteredProducts, user }),
     })
       .then((response) => {
         return response.json();

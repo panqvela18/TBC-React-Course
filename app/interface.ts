@@ -4,14 +4,13 @@ export interface PostData {
   title: string;
   description: string;
   image_url:string;
-  user_id:number
 }
 
 export interface blogData {
   title: string;
   description: string;
   image_url?:string | undefined;
-  user_id:number
+  // user_id:number
 }
 
 export interface reviewData {
@@ -50,6 +49,7 @@ export interface ProductData {
     message:string
   }
   export interface ProductFromVercel {
+    imageGallery?: string[] | [];
     id: number;
     description: string;
     price: string;
@@ -60,19 +60,26 @@ export interface ProductData {
     image_url:string;
     user_id:number;
     quantity?:number
+    image_gallery?: Gallery[] | undefined;
   }
+  export interface Gallery {
+    id: number;
+    image_url: string;
+    name:string
+}
 
-  export interface Prod {
-    id?:number | undefined;
-    title:string;
+export interface Prod {
+    id?: number;
+    title: string;
     description: string;
     price: string;
-    category:string;
-    discount:number;
-    stock:number
-    image_url:string
-    user_id:number
-  }
+    category: string;
+    discount: number;
+    stock: number;
+    image_url: string;
+    imageGallery?: Gallery[];
+}
+
 
   export interface ProductWithQuantity extends ProductFromVercel {
     quantity: number;
@@ -104,12 +111,15 @@ export interface ProdDetail{
 
 export interface User {
   id:number;
-  name:string,
-  email:string,
+  name:string;
+  email:string;
+  image_url:string;
 }
 export interface UserData {
   name: string;
   email: string;
+  image_url:string;
+
 }
 export interface UserData1 {
   name: string;

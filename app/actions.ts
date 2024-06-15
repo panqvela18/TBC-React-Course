@@ -2,11 +2,13 @@
 // import { BASE_URL } from "@/constants";
 import { cookies } from "next/headers";
 import { PostData, Prod, UserData, blogData, reviewData } from "./interface";
-import { EditProfile, createBlog, createProduct, createReview, deleteBlogById, deleteProductById, editProduct, updateBlogById, updateUserById } from "./api";
+import { EditProfile, createBlog, createContact, createProduct, createReview, deleteBlogById, deleteContactById, deleteProductById, editProduct, updateBlogById, updateUserById } from "./api";
 import { revalidatePath } from "next/cache";
 import { deleteUserById } from "@/app/api";
 import { getUserId } from "./api";
 import { ProfileData } from "@/components/ProfileInfo";
+import {  ContactInfo1 } from "./[locale]/(dashboard)/admin/page";
+
 export async function langToggle(lang: string) {
   const cookieStore = cookies();
   cookieStore.set("lang", lang);
@@ -18,9 +20,21 @@ export async function langToggle(lang: string) {
 //    createUser(name,email)
 // }
 export async function createAddBlogAction(blogData: blogData) {
-  const {title,description,user_id,image_url} = blogData
+  const {title,description,image_url} = blogData
    revalidatePath("/blog")
-   createBlog(title,description,user_id,image_url)
+   revalidatePath("/admin")
+   createBlog(title,description,image_url)
+}
+export async function createContactAction(formData: ContactInfo1) {
+  const {name,
+    surname,
+    email,
+    message} = formData
+   revalidatePath("/admin")
+   createContact(name,
+    surname,
+    email,
+    message)
 }
 export async function createAddReviewAction(reviewData: reviewData) {
   const {user_id,
@@ -34,23 +48,27 @@ export async function createAddReviewAction(reviewData: reviewData) {
       message)
 }
 export async function createAddProductAction(productData: Prod) {
-  const {title,
-        description,
-        image_url,
-        price,
-        category,
-        discount,
-        stock,
-        user_id} = productData
-   revalidatePath("/")
-   createProduct(title,
-        description,
-        image_url,
-        price,
-        category,
-        discount,
-        stock,
-        user_id)
+  const {
+    title,
+    description,
+    image_url,
+    price,
+    category,
+    discount,
+    stock,
+    imageGallery,
+  } = productData;
+
+  await createProduct(
+    title,
+    description,
+    image_url,
+    price,
+    category,
+    discount,
+    stock,
+    imageGallery
+  );
 }
 export async function editProductAction(productData: Prod) {
   const {
@@ -62,8 +80,11 @@ export async function editProductAction(productData: Prod) {
         category,
         discount,
         stock,
-        user_id} = productData
-   revalidatePath("/")
+        imageGallery
+        // user_id
+      } = productData
+   revalidatePath("/product")
+   revalidatePath("/admin")
    editProduct(id,
     title,
         description,
@@ -72,15 +93,25 @@ export async function editProductAction(productData: Prod) {
         category,
         discount,
         stock,
-        user_id)
+        imageGallery
+        // user_id
+      )
 }
 
 
 export async function editProfileInfo(formData: ProfileData) {
-  const {name,nickname,email,userSub} = formData
-   revalidatePath("/profile")
-   EditProfile(name,nickname,email,userSub)
+  const { userSub, name, phone, address } = formData;
+  console.log(formData);
+
+  try {
+    await EditProfile(userSub, name, phone, address);
+    revalidatePath("/profile");
+  } catch (error) {
+    console.error("Error in editProfileInfo:", error);
+    throw error;
+  }
 }
+
 
 
 
@@ -92,22 +123,29 @@ export const deleteUser: (id: number) => Promise<void> = async (id: number) => {
 };
 export const deleteBlog: (id: number) => Promise<void> = async (id: number) => {
   await deleteBlogById(id);
+  revalidatePath("/admin");
   revalidatePath("/blog");
 };
 export const deleteProduct: (id: number) => Promise<void> = async (id: number) => {
   await deleteProductById(id);
-  revalidatePath("/")
+  revalidatePath("/product")
+  revalidatePath("/admin")
+};
+export const deleteContact: (id: number) => Promise<void> = async (id: number) => {
+  await deleteContactById(id);
+  revalidatePath("/admin")
 };
 
 // Updates
 
-export async function updateUserAction(id: number, userData: UserData) {
-  const { name, email } = userData;
+export async function updateUserAction(id: number, user: UserData) {
+  const { name, email,image_url } = user;
   revalidatePath("/admin");
-  updateUserById(id, name, email);
+  updateUserById(id, name, email,image_url);
 }
 export async function updateBlog( blog: PostData) {
   const {id, title,description,image_url } = blog;
+  revalidatePath("/admin");
   revalidatePath("/blog");
   updateBlogById(id,title,description,image_url);
 }
@@ -247,3 +285,14 @@ export const handleClearCart = async () => {
 // export const readCookieForClient = async (searchCookie: string) => {
 //   return cookies().get(searchCookie)?.value;
 // };
+
+export async function createRefund(charge: string) {
+  revalidatePath("/admin");
+  await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/create-refund", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ charge }),
+  });
+}

@@ -1,13 +1,11 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../public/icons8-logo.svg";
+import logo from "../public/light_logo (1).png";
+import logoDark from "../public/logo.png";
 import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineClose } from "react-icons/md";
-// import moon from "../public/moon.svg";
-// import sun from "../public/sun.svg";
-// import { ThemeContext } from "@/app/providers/ThemeContext";
 import { useI18n } from "../locales/client";
 import ToggleLang from "./ToggleLang";
 import CartBtn from "./CartBtn";
@@ -25,8 +23,24 @@ export default function HeaderClient({
   totalQuantity: number;
 }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
-
+  // const [isHidden, setIsHidden] = useState<boolean>(false);
+  // const [scrollY, setScrollY] = useState<number>(0);
   const router = useRouter();
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (window.scrollY > scrollY && window.scrollY > 100) {
+  //       setIsHidden(true);
+  //     } else {
+  //       setIsHidden(false);
+  //     }
+  //     setScrollY(window.screenY);
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [scrollY]);
 
   useEffect(() => {
     if (showBugerMenu) {
@@ -47,68 +61,98 @@ export default function HeaderClient({
   };
 
   return (
-    <header className="bg-blue-500 py-4 px-[4%] sticky top-0 left-0 z-10 dark:bg-black">
+    <header
+      className={`bg-[#ced4da] dark:bg-[#003049] py-4 px-[4%] sticky top-0 left-0 z-10 `}
+    >
       <div className="container mx-auto flex justify-between items-center">
-        <Link href={"/"}>
+        <Link href={"/"} prefetch={false}>
           <Image
             src={logo}
             width={50}
             height={50}
             alt="Picture of the author"
+            className="hidden dark:block"
+          />
+          <Image
+            src={logoDark}
+            width={50}
+            height={50}
+            alt="Picture of the author"
+            className="block dark:hidden"
           />
         </Link>
-        <nav className="flex items-center md:hidden">
-          <Link
-            href={"/"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("home")}
-          </Link>
-          <Link
-            href={"/about"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("about")}
-          </Link>
-          <Link
-            href={"/blog"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("blog")}
-          </Link>
-          <Link
-            href={"/contact"}
-            className="text-white text-sm mr-6 hover:text-gray-200"
-          >
-            {t("contact")}
-          </Link>
-          {user && (
+        <nav className="flex items-center md:hidden w-[55%] justify-between">
+          <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
             <Link
-              href={"/profile"}
-              className="text-white text-sm mr-6 hover:text-gray-200"
+              href={"/about"}
+              prefetch={false}
+              className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77] active:text-red-600"
             >
-              {t("profile")}
+              {t("about")}
             </Link>
+          </div>
+          <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
+            <Link
+              href={"/product"}
+              prefetch={false}
+              className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77]"
+            >
+              {t("product")}
+            </Link>
+          </div>
+          <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
+            <Link
+              href={"/blog"}
+              prefetch={false}
+              className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77]"
+            >
+              {t("blog")}
+            </Link>
+          </div>
+          <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
+            <Link
+              href={"/contact"}
+              prefetch={false}
+              className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77]"
+            >
+              {t("contact")}
+            </Link>
+          </div>
+          {user && (
+            <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
+              <Link
+                href={"/profile"}
+                prefetch={false}
+                className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77]"
+              >
+                {t("profile")}
+              </Link>
+            </div>
           )}
           {user?.role.length > 0 && "admin" && (
-            <Link
-              href={"/admin"}
-              className="text-white text-sm mr-6 hover:text-gray-200"
-            >
-              {t("admin")}
-            </Link>
+            <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
+              <Link
+                href={"/admin"}
+                prefetch={false}
+                className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77]"
+              >
+                {t("admin")}
+              </Link>
+            </div>
           )}
           {user ? (
-            <Link
-              href={"/api/auth/logout"}
-              className="text-white text-sm hover:text-gray-200"
-            >
-              {t("logout")}
-            </Link>
+            <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
+              <Link
+                href={"/api/auth/logout"}
+                className="text-[#003049] dark:text-white text-sm hover:text-[#1A5A77]"
+              >
+                {t("logout")}
+              </Link>
+            </div>
           ) : (
             <button
               onClick={handleLogin}
-              className="text-white text-sm  hover:text-gray-200"
+              className="text-[#003049] dark:text-white text-sm hover:text-[#1A5A77]"
             >
               {t("login")}
             </button>
@@ -117,19 +161,13 @@ export default function HeaderClient({
         <div className="flex items-center">
           {user && <CartBtn totalQuantity={totalQuantity} />}
           <ToggleLang currentLang={currentLang?.value} />
-          {/* <button onClick={handleThemeChange}>
-            {theme === "dark" ? (
-              <Image src={sun} alt="sun" width={30} height={30} />
-            ) : (
-              <Image src={moon} alt="moon" width={30} height={30} />
-            )}
-          </button> */}
+
           <DarkMode />
         </div>
         {showBugerMenu ? (
           <MdOutlineClose
             onClick={() => setShowBurgerMenu(false)}
-            className="text-3xl text-white"
+            className="text-3xl text-black dark:text-white"
           />
         ) : (
           <GiHamburgerMenu
@@ -142,58 +180,76 @@ export default function HeaderClient({
         <div className="min-h-dvh">
           <div className="h-[3px] w-full bg-white mt-3"></div>
           <nav className="flex flex-col items-center">
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"/"}
-              className="text-white text-sm  p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("home")}
-            </Link>
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"about"}
-              className="text-white text-sm  p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("about")}
-            </Link>
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"blog"}
-              className="text-white text-sm  p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("blog")}
-            </Link>
-            <Link
-              onClick={() => setShowBurgerMenu(false)}
-              href={"contact"}
-              className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-            >
-              {t("contact")}
-            </Link>
+            <div className="cursor-pointer">
+              <Link
+                onClick={() => setShowBurgerMenu(false)}
+                href={"/"}
+                prefetch={false}
+                className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+              >
+                {t("home")}
+              </Link>
+            </div>
+            <div className="cursor-pointer">
+              <Link
+                onClick={() => setShowBurgerMenu(false)}
+                href={"about"}
+                prefetch={false}
+                className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+              >
+                {t("about")}
+              </Link>
+            </div>
+            <div className="cursor-pointer">
+              <Link
+                onClick={() => setShowBurgerMenu(false)}
+                href={"blog"}
+                prefetch={false}
+                className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+              >
+                {t("blog")}
+              </Link>
+            </div>
+            <div className="cursor-pointer">
+              <Link
+                onClick={() => setShowBurgerMenu(false)}
+                href={"contact"}
+                prefetch={false}
+                className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+              >
+                {t("contact")}
+              </Link>
+            </div>
             {user ? (
               <>
-                <Link
-                  onClick={() => setShowBurgerMenu(false)}
-                  href="/profile"
-                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-                >
-                  {t("profile")}
-                </Link>
-
-                <Link
-                  onClick={() => setShowBurgerMenu(false)}
-                  href="/admin"
-                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-                >
-                  {t("admin")}
-                </Link>
-
-                <Link
-                  href={`/api/auth/logout`}
-                  className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
-                >
-                  {t("logout")}
-                </Link>
+                <div className="cursor-pointer">
+                  <Link
+                    onClick={() => setShowBurgerMenu(false)}
+                    href="/profile"
+                    prefetch={false}
+                    className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                  >
+                    {t("profile")}
+                  </Link>
+                </div>
+                <div className="cursor-pointer">
+                  <Link
+                    onClick={() => setShowBurgerMenu(false)}
+                    href="/admin"
+                    prefetch={false}
+                    className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                  >
+                    {t("admin")}
+                  </Link>
+                </div>
+                <div className="cursor-pointer">
+                  <Link
+                    href={`/api/auth/logout`}
+                    className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
+                  >
+                    {t("logout")}
+                  </Link>
+                </div>
               </>
             ) : (
               <button

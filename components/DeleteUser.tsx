@@ -10,8 +10,8 @@ export default function DeleteUser({ id }: DeleteUserProps) {
   return (
     <div>
       <TiDelete
-        className="cursor-pointer"
         onClick={() => deleteUser(id)}
+        className="cursor-pointer"
         color="red"
         fontSize={30}
       />

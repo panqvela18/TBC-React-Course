@@ -7,6 +7,7 @@ export default {
     "profile": "პროფილი",
     "logout": "გასვლა",
     "admin": "ადმინი",
+    "product":"პროდუქტები",
     //TITLE
     "blogTitle": "ბლოგი",
     "productTitle": "პროდუქტები",

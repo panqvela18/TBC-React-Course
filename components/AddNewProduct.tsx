@@ -1,11 +1,18 @@
 "use client";
 import { createAddProductAction } from "@/app/actions";
 import { Prod } from "@/app/interface";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Modal } from "@mui/material";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, useRef } from "react";
 
-export default function AddNewProduct({ user_id }: { user_id: number }) {
+interface User {
+  role: string[]; // Define role as an array of strings
+  [key: string]: any; // To include other properties that might exist on the user object
+}
+
+export default function AddNewProduct() {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -17,6 +24,12 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const [imageGallery, setImageGallery] = useState<
+    { id: number; image_url: string; name: string }[]
+  >([]);
+
+  const { user } = useUser() as unknown as { user: User };
+  console.log(imageGallery);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -31,13 +44,13 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
       category,
       discount,
       stock,
-      user_id,
+      imageGallery,
     };
 
     try {
       await createAddProductAction(productData);
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error creating product:", error);
     }
     handleClose();
     router.refresh();
@@ -48,29 +61,48 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
       throw new Error("No file selected");
     }
 
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files);
+    const newImageUrls: { id: number; image_url: string; name: string }[] = [];
     setLoading(true);
 
-    try {
-      const response = await fetch(`/api/upload?filename=${file.name}`, {
-        method: "POST",
-        body: file,
-      });
+    const startId = imageGallery.length + 1; // Start ID based on current length of imageGallery
 
-      const newBlob = await response.json();
-      setImage_url(newBlob.url);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setLoading(false);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      try {
+        const response = await fetch(`/api/upload?filename=${file.name}`, {
+          method: "POST",
+          body: file,
+        });
+
+        const newBlob = await response.json();
+        console.log("File uploaded successfully:", newBlob);
+
+        newImageUrls.push({
+          id: startId + i,
+          image_url: newBlob.url,
+          name: file.name,
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
+
+    setImage_url(newImageUrls[0]?.image_url || ""); // Set the first image as the main image URL
+    setImageGallery((prev) => [...prev, ...newImageUrls]);
   };
+
+  const handleDeleteImage = (id: number) => {
+    setImageGallery((prev) => prev.filter((image) => image.id !== id));
+  };
+
+  const isAdmin = user?.role.includes("admin");
 
   return (
     <>
-      {user_id === undefined ? (
-        ""
-      ) : (
+      {isAdmin && (
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleOpen}
@@ -126,9 +158,32 @@ export default function AddNewProduct({ user_id }: { user_id: number }) {
               type="file"
               ref={inputFileRef}
               onChange={handleFileChange}
+              multiple
             />
             {loading && <p>Uploading...</p>}
           </div>
+          <div className="mb-4">
+            {imageGallery.map((image) => (
+              <div key={image.id} className="flex items-center mb-2">
+                <Image
+                  src={image.image_url}
+                  alt={"gallery-image"}
+                  className="w-16 h-16 object-cover mr-2"
+                  width={64}
+                  height={64}
+                />
+                <span className="mr-2">{image.name}</span>
+                <button
+                  type="button"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                  onClick={() => handleDeleteImage(image.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Price

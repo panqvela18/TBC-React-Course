@@ -10,18 +10,15 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface BlogClientProps {
   blogData: PostData;
-  userId: number;
-  // userRole: string;
 }
 interface User {
   role: string[];
   [key: string]: any;
 }
-export default function Blogs({ blogData, userId }: BlogClientProps) {
+export default function Blogs({ blogData }: BlogClientProps) {
   const { user } = useUser() as unknown as { user: User };
   const t = useI18n();
   const isAdmin = user?.role.includes("admin");
-  const isOwner = userId === blogData.user_id;
 
   return (
     <div className="flex flex-col bg-white filter drop-shadow-xl min-h-[400px] justify-between border border-[#e5e7eb] rounded dark:bg-slate-900">
@@ -44,7 +41,7 @@ export default function Blogs({ blogData, userId }: BlogClientProps) {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        {(isAdmin || isOwner) && (
+        {isAdmin && (
           <>
             <button onClick={() => deleteBlog(blogData.id)}>Delete</button>
             <EditBlog blogData={blogData} />

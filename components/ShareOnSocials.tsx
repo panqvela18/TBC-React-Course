@@ -11,24 +11,25 @@ export default function ShareOnSocials({ product }: { product: any }) {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   return (
     <>
       {isClient ? (
         <>
           <TwitterShareButton
-            url={`${process.env.NEXT_PUBLIC_VERCEL_URL}/product/${product.id}`}
+            url={`https://tbc-react-course-nu.vercel.app/product/${product.id}`}
             title={product.title}
           >
-            <button>Share on Twitter</button>
+            <button style={{ backgroundColor: "red" }}>Share on Twitter</button>
           </TwitterShareButton>
           <FacebookShareButton
-            url={`${process.env.NEXT_PUBLIC_VERCEL_URL}/product/${product.id}`}
+            url={`https://tbc-react-course-nu.vercel.app/product/${product.id}`}
             title={product.title}
           >
-            <button>Share on Twitter</button>
+            <button>Share on Facebook</button>
           </FacebookShareButton>
           <LinkedinShareButton
-            url={`${process.env.NEXT_PUBLIC_VERCEL_URL}/product/${product.id}`}
+            url={`https://tbc-react-course-nu.vercel.app/product/${product.id}`}
             title={product.title}
           >
             <button>Share on LinkedIn</button>

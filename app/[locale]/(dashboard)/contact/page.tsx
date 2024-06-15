@@ -9,7 +9,8 @@ import Image from "next/image";
 import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { useI18n } from "@/locales/client";
-import { createContact } from "@/app/api";
+// import { createContact } from "@/app/api";
+import { createContactAction } from "@/app/actions";
 
 export default function Page() {
   const [contactType, setContactType] = useState<string>("staticContact");
@@ -75,7 +76,7 @@ export default function Page() {
     if (!validate()) return;
 
     try {
-      await createContact(formData);
+      await createContactAction(formData);
       setMessageSend(true);
       setFormData({
         name: "",
@@ -218,6 +219,7 @@ export default function Page() {
               type="submit"
               className="mt-2 w-full transition duration-300 ease-in-out transform bg-blue-300 p-2 border rounded text-white font-bold  hover:bg-blue-200 hover:text-black hover:border hover:rounded hover:scale-105 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-900 dark:hover:border-none dark:hover:text-white"
             >
+              <a href="mailto:someone@example.com" />
               {t("send")}
             </button>
           </form>

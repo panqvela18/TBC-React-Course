@@ -6,9 +6,10 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const payments = await stripe.checkout.sessions.list();
+    const payments = await stripe.paymentIntents.list({
+      expand: ["data.latest_charge"],
+    });
     const paymentData = payments.data;
-    console.log(paymentData)
 
     return NextResponse.json(paymentData, { status: 200 });
   } catch (error) {

@@ -11,7 +11,7 @@ const getActiveProducts = async () => {
 };
 
 export const POST = async (request: any) => {
-  const { products } = await request.json();
+  const { products,user } = await request.json();
 
   const data: ProductFromVercel[] = products;
   let activeProducts = await getActiveProducts();
@@ -51,10 +51,19 @@ for (const product of data) {
 }
 
 const session = await stripe.checkout.sessions.create({
-    line_items: stripeItems,
-    mode: "payment",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
+  line_items: stripeItems, // Ensure stripeItems is correctly defined and populated
+  mode: "payment",
+  customer_email: user.email, // Ensure user.email is correctly defined
+  payment_intent_data: {
+    metadata: {
+      id: user.sub, // Ensure user.sub is correctly defined
+      phone: user.phone, // Ensure user.phone is correctly defined
+      // city: user.city, 
+      address: user.address, // Ensure user.address is correctly defined
+    },
+  },
+  success_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/success`, // Ensure Host is correctly defined
+  cancel_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/cancel`, // Ensure Host is correctly defined
 });
 
 return NextResponse.json({ url: session.url });

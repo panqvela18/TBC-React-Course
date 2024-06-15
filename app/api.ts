@@ -1,5 +1,4 @@
 import { getSession } from "@auth0/nextjs-auth0";
-import { formData } from "./interface";
 
 export async function getUsers() {
   const response = await fetch(
@@ -73,8 +72,16 @@ export async function deleteProductById(id: number) {
     }
   );
 }
+export async function deleteContactById(id: number) {
+  return await fetch(
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/delete-contact/${id}`,
+    {
+      method: "DELETE"
+    }
+  );
+}
 
-export async function updateUserById(id: number, name: string, email: string) {
+export async function updateUserById(id: number, name: string, email: string, image_url:string) {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/update-user/${id}`,
@@ -83,7 +90,7 @@ export async function updateUserById(id: number, name: string, email: string) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email,image_url }),
       }
     );
 
@@ -92,7 +99,7 @@ export async function updateUserById(id: number, name: string, email: string) {
       throw new Error(errorData.error);
     }
 
-    return { success: true }; // Return success indicator
+    return { success: true }; 
   } catch (error) {
     console.error("Error updating user:", error);
     throw error;
@@ -161,11 +168,11 @@ export async function updateBlogById(id:number,title:string,description:string,i
 //     body: JSON.stringify({ id, name, email, img }),
 //   });
 // }
-export async function createBlog(title:string,description:string,user_id:number,image_url:string | undefined) {
+export async function createBlog(title:string,description:string,image_url:string | undefined) {
 
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-blog", {
     method: "POST",
-    body: JSON.stringify({ title,description,user_id,image_url}),
+    body: JSON.stringify({ title,description,image_url}),
   });
 }
 export async function createReview(user_id:number | undefined,
@@ -181,8 +188,10 @@ export async function createReview(user_id:number | undefined,
       message}),
   });
 }
-export async function createContact(formData:formData) {
-  const {name,surname,email,message}=formData
+export async function createContact(name:string,
+  surname:string,
+  email:string,
+  message:string) {
 
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-contact", {
     method: "POST",
@@ -196,25 +205,31 @@ export async function createContact(formData:formData) {
 //     body: JSON.stringify({name, nickname,email,userSub}),
 //   });
 // }
-export async function createProduct(title:string,
-  description:string,
-  image_url:string,
-  price:string,
-  category:string,
-  discount:number,
-  stock:number,
-  user_id:number) {
-
-  return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-product", {
+export async function createProduct(
+  title: string,
+  description: string,
+  image_url: string,
+  price: string,
+  category: string,
+  discount: number,
+  stock: number,
+  imageGallery: { id: number; image_url: string }[] | undefined
+) {
+  return await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/add-product`, {
     method: "POST",
-    body: JSON.stringify({ title,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title,
       description,
       image_url,
       price,
       category,
       discount,
       stock,
-      user_id}),
+      imageGallery,
+    }),
   });
 }
 export async function editProduct(id:number | undefined,title:string,
@@ -224,7 +239,9 @@ export async function editProduct(id:number | undefined,title:string,
   category:string,
   discount:number,
   stock:number,
-  user_id:number) {
+  imageGallery:{ id: number; image_url: string }[] | undefined
+  // user_id:number
+) {
 
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + `/api/update-product/${id}`, {
     method: "PUT",
@@ -236,16 +253,41 @@ export async function editProduct(id:number | undefined,title:string,
       category,
       discount,
       stock,
-      user_id}),
+      imageGallery
+      // user_id
+    }),
   });
 }
-export async function EditProfile(name:string,nickname:string,email:string,userSub:string) {
+export async function EditProfile(userSub: string, name: string, phone: string, address: string) {
+  console.log(userSub, name, phone, address);
 
-  return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/edit-profileInfo", {
-    method: "POST",
-    body: JSON.stringify({name, nickname,email,userSub}),
-  });
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/edit-profileInfo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userSub,
+        name,
+        phone,
+        address,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Failed to update profile:", errorData);
+      throw new Error("Failed to update profile");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    throw error;
+  }
 }
+
 
 
 
@@ -270,8 +312,6 @@ export async function getUserCart() {
 }
 
 export async function getUserInfo() {
-  // const session = await getSession();
-  // const user = session?.user;
   const id = await getUserId();
   const userSubId = await fetch(
     process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-users/${id}`,
@@ -280,12 +320,9 @@ export async function getUserInfo() {
     }
   );
 
-  
   const userInfo = await userSubId.json();
-  // console.log(userSerialId)
   const userDetail = userInfo.user.rows[0];
   return userDetail
-
 }
 
 export async function getUserImage(){
@@ -335,3 +372,20 @@ export async function getUserId() {
 
   return userId;
 }
+
+
+export const getOrders = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/orders`, {
+    cache: "no-store",
+  });
+  const orders = await res.json();
+  return orders;
+};
+export const getContact = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-contact-info`, {
+    cache: "no-store",
+  });
+  const contact = await res.json();
+  return contact?.contacts?.rows;
+};
+

@@ -1,17 +1,23 @@
 "use client";
 import { editProductAction } from "@/app/actions";
 import { Prod, ProductFromVercel } from "@/app/interface";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Modal } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CiEdit } from "react-icons/ci";
 
 interface EditProduct {
-  user_id: number;
   product: ProductFromVercel;
 }
 
-export default function EditProduct({ user_id, product }: EditProduct) {
+interface User {
+  role: string[]; // Define role as an array of strings
+  [key: string]: any; // To include other properties that might exist on the user object
+}
+
+export default function EditProduct({ product }: EditProduct) {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(product?.title || "");
   const [description, setDescription] = useState<string>(
@@ -22,12 +28,25 @@ export default function EditProduct({ user_id, product }: EditProduct) {
   const [category, setCategory] = useState<string>(product?.category || "");
   const [discount, setDiscount] = useState<any>(product?.discount || 0);
   const [stock, setStock] = useState<any>(product?.stock || 0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [imageGallery, setImageGallery] = useState<
+    { id: number; image_url: string; name: string }[]
+  >(product?.image_gallery || []);
+
+  console.log(product?.image_gallery);
+
   const router = useRouter();
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const { user } = useUser() as unknown as { user: User };
+
   const id = product.id;
+  useEffect(() => {
+    setImageGallery(product?.image_gallery || []);
+  }, [product?.image_gallery]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const isAdmin = user?.role.includes("admin");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,13 +59,12 @@ export default function EditProduct({ user_id, product }: EditProduct) {
       category,
       discount,
       stock,
-      user_id,
+      imageGallery,
     };
 
     try {
       await editProductAction(productData);
     } catch (error) {
-      // Handle error appropriately, e.g., display an error message
       console.error("Error editing product:", error);
     }
     handleClose();
@@ -58,32 +76,51 @@ export default function EditProduct({ user_id, product }: EditProduct) {
       throw new Error("No file selected");
     }
 
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files);
+    const newImageUrls: { id: number; image_url: string; name: string }[] = [];
+    setLoading(true);
 
-    try {
-      const response = await fetch(`/api/upload?filename=${file.name}`, {
-        method: "POST",
-        body: file,
-      });
+    const startId = imageGallery.length + 1;
 
-      const newBlob = await response.json();
-      setImage_url(newBlob.url);
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      try {
+        const response = await fetch(`/api/upload?filename=${file.name}`, {
+          method: "POST",
+          body: file,
+        });
+
+        const newBlob = await response.json();
+        console.log("File uploaded successfully:", newBlob);
+
+        newImageUrls.push({
+          id: startId + i,
+          image_url: newBlob.url,
+          name: file.name,
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
+
+    setImage_url(newImageUrls[0]?.image_url || ""); // Set the first image as the main image URL
+    setImageGallery((prev) => [...prev, ...newImageUrls]);
+  };
+
+  const handleDeleteImage = (id: number) => {
+    setImageGallery((prev) => prev.filter((image) => image.id !== id));
   };
 
   return (
     <>
-      {user_id === undefined ? (
-        ""
-      ) : (
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      {isAdmin && (
+        <CiEdit
+          className="cursor-pointer mr-3"
           onClick={handleOpen}
-        >
-          Edit
-        </button>
+          fontSize={30}
+        />
       )}
 
       <Modal
@@ -131,19 +168,33 @@ export default function EditProduct({ user_id, product }: EditProduct) {
                 type="file"
                 ref={inputFileRef}
                 onChange={handleFileChange}
+                multiple
               />
+              {loading && <p>Uploading...</p>}
             </div>
-            {image_url && (
-              <div className="mb-4">
-                <Image
-                  src={image_url}
-                  alt="Product Image"
-                  className="max-w-full h-auto"
-                  width={100}
-                  height={100}
-                />
-              </div>
-            )}
+
+            <div className="mb-4">
+              {imageGallery.map((image) => (
+                <div key={image.id} className="flex items-center mb-2">
+                  <Image
+                    src={image.image_url}
+                    alt={image.name}
+                    className="w-16 h-16 object-cover mr-2"
+                    width={64}
+                    height={64}
+                  />
+                  <span className="mr-2">{image.name}</span>
+                  <button
+                    type="button"
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                    onClick={() => handleDeleteImage(image.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Price

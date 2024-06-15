@@ -10,3 +10,7 @@ img {
   columns: 2;
   column-gap: 20px;
 }
+
+.active {
+  color: #11545c;
+}

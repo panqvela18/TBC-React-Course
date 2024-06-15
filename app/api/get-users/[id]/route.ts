@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(_: NextRequest,{ params: { id } }: { params: { id: string }}
 ) {
-
   try {
     const user = await sql`SELECT * FROM users WHERE id = ${+id}`;
     return NextResponse.json({ user }, { status: 200 });

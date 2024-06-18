@@ -1,4 +1,5 @@
 // import { getProducts } from "@/app/api";
+import { getPosts, getProducts } from "@/app/api";
 import HomeClient from "@/components/HomeClient";
 export const metadata = {
   title: "TV PROJECT",
@@ -6,9 +7,10 @@ export const metadata = {
 };
 
 export default async function Home() {
-  // const products = await getProducts();
+  const products = await getProducts();
+  const blogs = await getPosts();
   // const userId = await getUserId();
   // const userRole = await getUserRole();
 
-  return <HomeClient />;
+  return <HomeClient products={products} blogs={blogs} />;
 }

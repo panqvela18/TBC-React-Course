@@ -1,15 +1,13 @@
 "use client";
+
 import React from "react";
 import {
   handleAddToCart,
   handleDecrement,
   handleRemoveProductFromCart,
 } from "../app/actions";
-// import { useCart } from "@/app/providers/CartContext";
 
 export default function QuintityChangeButtons({ id }: { id: string }) {
-  // const { fetchCartData } = useCart();
-
   return (
     <div className="flex space-x-2">
       <button

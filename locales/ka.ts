@@ -13,6 +13,9 @@ export default {
     "productTitle": "პროდუქტები",
     "contactTitle": "კონტაქტი",
     "profileTitle": "პროფილი",
+    "popularproductTitle":"პოპულარული პროდუქტები",
+    "latestProductTitle":"უახლესი ბლოგები",
+    "similarBlogsTitle":"Similar Blogs",
     // search
 
     "getInTouch": "დაგვიკავშირდი",

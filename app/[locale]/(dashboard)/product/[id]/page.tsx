@@ -2,12 +2,7 @@ import Image from "next/image";
 import { getSession } from "@auth0/nextjs-auth0";
 import StarRating from "@/components/StarRating";
 import ShareOnSocials from "@/components/ShareOnSocials";
-import {
-  getProductDetail,
-  getProducts,
-  getUserId,
-  getUserInfo,
-} from "@/app/api";
+import { getProductDetail, getProducts, getUserId } from "@/app/api";
 import { ProductFromVercel } from "@/app/interface";
 
 interface ProductsDetailsProps {
@@ -39,9 +34,7 @@ export default async function ProductDetail({
   const user = await getSession();
   const userName = user?.user.name;
   const user_id = await getUserId();
-  const userInfo = await getUserInfo();
   console.log(product);
-  console.log(userInfo);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
@@ -53,7 +46,12 @@ export default async function ProductDetail({
           product_id={product.id}
           userName={userName}
         />
-        <Image src={product.image_url} width={100} height={100} alt="image" />
+        <Image
+          src={product.image_gallery[0].image_url}
+          width={100}
+          height={100}
+          alt="image"
+        />
       </div>
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">

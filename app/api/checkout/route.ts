@@ -11,7 +11,7 @@ const getActiveProducts = async () => {
 };
 
 export const POST = async (request: any) => {
-  const { products,user } = await request.json();
+  const { products, user } = await request.json();
 
   const data: ProductFromVercel[] = products;
   let activeProducts = await getActiveProducts();
@@ -19,14 +19,18 @@ export const POST = async (request: any) => {
     for (const product of data) {
       const stripeProduct = activeProducts.find(
         (stripeProduct: any) =>
-          stripeProduct?.name?.toLowerCase() == product?.title?.toLowerCase()
+          stripeProduct?.name?.toLowerCase() == product?.title?.toLowerCase() &&
+          stripeProduct?.metadata?.price === product.price
       );
       if (stripeProduct == undefined) {
-         await stripe.products.create({
+        await stripe.products.create({
           name: product.title,
           default_price_data: {
             unit_amount: Number(product.price) * 100,
             currency: "usd",
+          },
+          metadata: {
+            price: product.price,
           },
         });
       }
@@ -35,36 +39,38 @@ export const POST = async (request: any) => {
     console.error(error);
   }
   activeProducts = await getActiveProducts();
-let stripeItems: any = [];
+  let stripeItems: any = [];
 
-for (const product of data) {
+  for (const product of data) {
     const stripeProduct = activeProducts?.find(
-        (prod: any) => prod?.name?.toLowerCase() == product?.title?.toLowerCase()
+      (prod: any) =>
+        prod?.name?.toLowerCase() == product?.title?.toLowerCase() &&
+        prod?.metadata?.price === product.price
     );
 
     if (stripeProduct) {
-        stripeItems.push({
-            price: stripeProduct?.default_price,
-            quantity: product?.quantity,
-        });
+      stripeItems.push({
+        price: stripeProduct?.default_price,
+        quantity: product?.quantity,
+      });
     }
-}
+  }
 
-const session = await stripe.checkout.sessions.create({
-  line_items: stripeItems, // Ensure stripeItems is correctly defined and populated
-  mode: "payment",
-  customer_email: user.email, // Ensure user.email is correctly defined
-  payment_intent_data: {
-    metadata: {
-      id: user.sub, // Ensure user.sub is correctly defined
-      phone: user.phone, // Ensure user.phone is correctly defined
-      // city: user.city, 
-      address: user.address, // Ensure user.address is correctly defined
+  const session = await stripe.checkout.sessions.create({
+    line_items: stripeItems,
+    mode: "payment",
+    customer_email: user.email,
+    payment_intent_data: {
+      metadata: {
+        id: user.sub,
+        phone: user.phone,
+        address: user.address,
+        name: user.name,
+      },
     },
-  },
-  success_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/success`, // Ensure Host is correctly defined
-  cancel_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/cancel`, // Ensure Host is correctly defined
-});
+    success_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/profile/orders`,
+    cancel_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/cart`,
+  });
 
-return NextResponse.json({ url: session.url });
+  return NextResponse.json({ url: session.url });
 };

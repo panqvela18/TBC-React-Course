@@ -11,10 +11,13 @@ export default {
 
 
   //TITLE
-  blogTitle: "BLOG",
-  productTitle: "PRODUCTS",
-  contactTitle: "CONTACT",
-  profileTitle: "PROFILE",
+  blogTitle: "Blog",
+  productTitle: "Products",
+  contactTitle: "Contact",
+  profileTitle: "Profile",
+  popularproductTitle:"Popular Products",
+  latestProductTitle:"Latest Blogs",
+  similarBlogsTitle:"Similar Blogs",
   // search
 
   getInTouch: "GET IN TOUCH",

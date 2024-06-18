@@ -1,16 +1,10 @@
 "use client";
 import { createAddProductAction } from "@/app/actions";
 import { Prod } from "@/app/interface";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Modal } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, useRef } from "react";
-
-interface User {
-  role: string[]; // Define role as an array of strings
-  [key: string]: any; // To include other properties that might exist on the user object
-}
 
 export default function AddNewProduct() {
   const [open, setOpen] = useState<boolean>(false);
@@ -28,7 +22,6 @@ export default function AddNewProduct() {
     { id: number; image_url: string; name: string }[]
   >([]);
 
-  const { user } = useUser() as unknown as { user: User };
   console.log(imageGallery);
 
   const handleOpen = () => setOpen(true);
@@ -98,18 +91,14 @@ export default function AddNewProduct() {
     setImageGallery((prev) => prev.filter((image) => image.id !== id));
   };
 
-  const isAdmin = user?.role.includes("admin");
-
   return (
     <>
-      {isAdmin && (
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleOpen}
-        >
-          Add New Product
-        </button>
-      )}
+      <button
+        className="bg-[#11545c] hover:bg-[#11545c] text-white font-bold py-2 px-4 rounded"
+        onClick={handleOpen}
+      >
+        Add New Product
+      </button>
 
       <Modal
         open={open}
@@ -120,7 +109,7 @@ export default function AddNewProduct() {
       >
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-h-full overflow-y-auto"
         >
           <div className="mb-4">
             <label

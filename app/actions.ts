@@ -8,6 +8,7 @@ import { deleteUserById } from "@/app/api";
 import { getUserId } from "./api";
 import { ProfileData } from "@/components/ProfileInfo";
 import {  ContactInfo1 } from "./[locale]/(dashboard)/admin/page";
+import { redirect } from "next/navigation";
 
 export async function langToggle(lang: string) {
   const cookieStore = cookies();
@@ -58,7 +59,8 @@ export async function createAddProductAction(productData: Prod) {
     stock,
     imageGallery,
   } = productData;
-
+  revalidatePath("/product")
+  revalidatePath("/admin")
   await createProduct(
     title,
     description,
@@ -84,6 +86,7 @@ export async function editProductAction(productData: Prod) {
         // user_id
       } = productData
    revalidatePath("/product")
+   revalidatePath(`/product${id}`)
    revalidatePath("/admin")
    editProduct(id,
     title,
@@ -296,3 +299,24 @@ export async function createRefund(charge: string) {
     body: JSON.stringify({ charge }),
   });
 }
+
+export const checkout = async (filteredProducts: any[],
+  user: any) => {
+  await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/checkout`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ products: filteredProducts, user }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+      if (response.url) {
+        handleClearCart();
+        redirect(response.url);
+      }
+    });
+};

@@ -112,6 +112,16 @@ export default function EditProduct({ product }: EditProduct) {
   const handleDeleteImage = (id: number) => {
     setImageGallery((prev) => prev.filter((image) => image.id !== id));
   };
+  const handleMoveToFirst = (id: number) => {
+    setImageGallery((prev) => {
+      const index = prev.findIndex((image) => image.id === id);
+      if (index > -1) {
+        const [selectedImage] = prev.splice(index, 1);
+        return [selectedImage, ...prev];
+      }
+      return prev;
+    });
+  };
 
   return (
     <>
@@ -190,6 +200,13 @@ export default function EditProduct({ product }: EditProduct) {
                     onClick={() => handleDeleteImage(image.id)}
                   >
                     Delete
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ml-2"
+                    onClick={() => handleMoveToFirst(image.id)}
+                  >
+                    Make Primary
                   </button>
                 </div>
               ))}

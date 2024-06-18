@@ -1,16 +1,10 @@
 "use client";
 import { createAddBlogAction } from "@/app/actions";
 import { blogData } from "@/app/interface";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import Modal from "@mui/material/Modal";
 import { PutBlobResult } from "@vercel/blob";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
-
-interface User {
-  role: string[];
-  [key: string]: any;
-}
 
 export default function AddNewBlog() {
   const [open, setOpen] = useState<boolean>(false);
@@ -20,12 +14,9 @@ export default function AddNewBlog() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const { user } = useUser() as unknown as { user: User };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const isAdmin = user?.role.includes("admin");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,14 +64,12 @@ export default function AddNewBlog() {
 
   return (
     <>
-      {isAdmin && (
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleOpen}
-        >
-          Add New Blog
-        </button>
-      )}
+      <button
+        className="bg-[#11545c] hover:bg-[#11545c] text-white font-bold py-2 px-4 rounded"
+        onClick={handleOpen}
+      >
+        Add New Blog
+      </button>
 
       <Modal
         open={open}

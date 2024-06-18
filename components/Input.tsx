@@ -14,11 +14,11 @@ export default function Input({
 }: InputProps) {
   return (
     <>
-      <label className="text-blue-300 mb-2 text-lg font-semibold dark:text-slate-50">
+      <label className="text-[#11545c] mb-2 text-lg font-semibold dark:text-slate-50">
         {labelName}
       </label>
       <input
-        className="border outline-none p-3 text-blue-300 rounded dark:text-slate-50"
+        className="border outline-none p-3 text-[#11545c] rounded dark:bg-slate-900"
         type="text"
         name={name}
         value={value}

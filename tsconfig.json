@@ -41,6 +41,6 @@
     "middleware.js",
     "middleware.js",
     "app/[locale]/(dashboard)/profile/page.tsx"
-  ],
+, "components/CheckoutButton.jsx"  ],
   "exclude": ["node_modules"]
 }

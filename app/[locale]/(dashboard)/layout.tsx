@@ -21,7 +21,7 @@ export default async function DashboardLayout({
   return (
     <>
       {/* <CartOptimisticContextProvider cart={cart}> */}
-      <div className="flex flex-col min-h-screen justify-between bg-white dark:bg-slate-900">
+      <div className="flex flex-col min-h-screen justify-between bg-[#adb5bd] dark:bg-slate-900">
         <Header />
         {children}
         <Footer />

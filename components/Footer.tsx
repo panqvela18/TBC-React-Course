@@ -9,7 +9,7 @@ export default function Footer() {
   const t = useI18n();
 
   return (
-    <footer className="flex flex-col bg-[#ced4da] py-10 px-[4%] md:flex-col md:items-center dark:bg-[#003049]">
+    <footer className="flex flex-col bg-[#ced4da]  dark:bg-[#003049] py-10 px-[4%] md:flex-col md:items-center ">
       <div className="flex items-center justify-between mb-5 md:flex-col">
         <Link href={"/"}>
           <Image

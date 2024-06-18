@@ -2,7 +2,9 @@ import { getSession } from "@auth0/nextjs-auth0";
 
 export async function getUsers() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-users"
+    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-users", {
+      cache: "no-store",
+    }
   );
   const { users } = await response.json();
   return users?.rows;
@@ -10,7 +12,9 @@ export async function getUsers() {
 
 export async function getProductDetail(id: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-products/${id}`
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-products/${id}`, {
+      cache: "no-store",
+    }
   );
   const data = await response.json();
   const product = data.products?.rows ? data.products.rows[0] : null;
@@ -22,7 +26,9 @@ export async function getProductDetail(id: string) {
 
 export async function getBlogDetail(id: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-blogs/${id}`
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-blogs/${id}`, {
+      cache: "no-store",
+    }
   );
   const data = await response.json();
   const blogDetail = data.blogs?.rows ? data.blogs.rows[0] : null;
@@ -32,7 +38,9 @@ export async function getBlogDetail(id: string) {
 
 export async function getProducts() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-products"
+    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-products", {
+      cache: "no-store",
+    }
   );
   const { products } = await response.json();
   return products?.rows;
@@ -40,7 +48,10 @@ export async function getProducts() {
 
 export async function getPosts(){
   const response = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-blogs"
+    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-blogs", {
+      cache: "no-store",
+      
+    }
   );
   const { blogs } = await response.json();
   return blogs?.rows;
@@ -53,6 +64,9 @@ export async function deleteUserById(id: number) {
     `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/delete-user/${id}`,
     {
       method: "DELETE",
+      cache: "no-store",
+
+
     }
   );
 }
@@ -61,6 +75,8 @@ export async function deleteBlogById(id: number) {
     `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/delete-blog/${id}`,
     {
       method: "DELETE",
+      cache: "no-store",
+
     }
   );
 }
@@ -68,7 +84,9 @@ export async function deleteProductById(id: number) {
   return await fetch(
     `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/delete-product/${id}`,
     {
-      method: "DELETE"
+      method: "DELETE",
+      cache: "no-store",
+
     }
   );
 }
@@ -87,8 +105,11 @@ export async function updateUserById(id: number, name: string, email: string, im
       `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/update-user/${id}`,
       {
         method: "PUT",
+        cache: "no-store",
+
         headers: {
           "Content-Type": "application/json",
+
         },
         body: JSON.stringify({ name, email,image_url }),
       }
@@ -111,6 +132,7 @@ export async function updateBlogById(id:number,title:string,description:string,i
       `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/update-blog/${id}`,
       {
         method: "PUT",
+        cache: "no-store",
         headers: {
           "Content-Type": "application/json",
         },
@@ -172,6 +194,8 @@ export async function createBlog(title:string,description:string,image_url:strin
 
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-blog", {
     method: "POST",
+    cache: "no-store",
+
     body: JSON.stringify({ title,description,image_url}),
   });
 }
@@ -182,6 +206,8 @@ export async function createReview(user_id:number | undefined,
 
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-review", {
     method: "POST",
+    cache: "no-store",
+
     body: JSON.stringify({ user_id,
       product_id,
       rating,
@@ -195,6 +221,8 @@ export async function createContact(name:string,
 
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/add-contact", {
     method: "POST",
+    cache: "no-store",
+
     body: JSON.stringify({ name,surname,email,message}),
   });
 }
@@ -217,8 +245,11 @@ export async function createProduct(
 ) {
   return await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/add-product`, {
     method: "POST",
+    cache: "no-store",
+
     headers: {
       "Content-Type": "application/json",
+
     },
     body: JSON.stringify({
       title,
@@ -245,6 +276,7 @@ export async function editProduct(id:number | undefined,title:string,
 
   return await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + `/api/update-product/${id}`, {
     method: "PUT",
+    cache: "no-store",
     body: JSON.stringify({ 
       title,
       description,
@@ -264,8 +296,10 @@ export async function EditProfile(userSub: string, name: string, phone: string, 
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_VERCEL_URL + "/api/edit-profileInfo", {
       method: "POST",
+      cache: "no-store",
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": "no-store",
       },
       body: JSON.stringify({
         userSub,

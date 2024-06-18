@@ -12,10 +12,12 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      textColor: {
+        lightModeBg: "#adb5bd",
+      },
     },
     screens: {
       md: { max: "1023px" },
-
       sm: { max: "640px" },
       xs: { max: "480px" },
     },

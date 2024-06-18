@@ -4,6 +4,7 @@ export interface PostData {
   title: string;
   description: string;
   image_url:string;
+  created_at:string;
 }
 
 export interface blogData {
@@ -49,7 +50,6 @@ export interface ProductData {
     message:string
   }
   export interface ProductFromVercel {
-    imageGallery?: string[] | [];
     id: number;
     description: string;
     price: string;
@@ -133,4 +133,21 @@ export interface Cart {
     [key: string]: number;
   };
   added_on: string;
+}
+
+export interface Order {
+  id: string;
+  metadata: {
+    name: string;
+    id: string;
+    address: string;
+    phone: string;
+  };
+  amount: number;
+  latest_charge: {
+    id: string;
+    amount: number;
+    refunded: boolean;
+    receipt_url: string;
+  };
 }

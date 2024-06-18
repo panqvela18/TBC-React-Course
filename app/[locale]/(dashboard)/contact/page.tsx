@@ -90,7 +90,7 @@ export default function Page() {
   };
 
   return (
-    <main className="py-8 bg-white dark:bg-slate-900">
+    <main className="py-8 bg-[#adb5bd] dark:bg-slate-900">
       <Title titleName={t("contactTitle")} />
       <div className="flex items-center justify-center mb-5">
         <span
@@ -100,7 +100,7 @@ export default function Page() {
           }}
           className={`mr-10 ${
             contactType === "staticContact"
-              ? "border-b text-blue-400 dark:text-gray-400"
+              ? "border-b text-[#11545c] dark:text-gray-400"
               : "text-gray-400 dark:text-gray-200"
           } p-2  font-bold cursor-pointer text-2xl`}
         >
@@ -113,7 +113,7 @@ export default function Page() {
           }}
           className={`${
             contactType === "messageUs"
-              ? "border-b text-blue-400 dark:text-gray-400"
+              ? "border-b text-[#11545c] dark:text-gray-400"
               : "text-gray-400 dark:text-gray-200"
           } p-2  font-bold cursor-pointer text-2xl`}
         >
@@ -122,7 +122,7 @@ export default function Page() {
       </div>
       {contactType === "staticContact" ? (
         <section className="px-[20%] py-4  md:px-[4%]">
-          <div className="flex justify-between bg-white filter drop-shadow-xl rounded md:flex-col-reverse dark:bg-black">
+          <div className="flex justify-between bg-white filter drop-shadow-xl rounded md:flex-col-reverse dark:bg-[#1e293b]">
             <div className="px-20 py-10 w-1/2 flex flex-col justify-center md:w-full md:px-4 md:py-4">
               <ContactInfo
                 iconImage={
@@ -163,7 +163,7 @@ export default function Page() {
         <section className="px-[20%] py-4 md:px-[4%] ">
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded p-10 md:p-4 dark:bg-black"
+            className="bg-white rounded p-10 md:p-4 dark:bg-[#1e293b]"
           >
             <div className="flex items-center justify-between md:flex-col">
               <div className="flex flex-col w-1/2 mr-2 md:w-full">
@@ -200,7 +200,7 @@ export default function Page() {
               {errors.email && <p className="text-red-500">{errors.email}</p>}
             </div>
             <div className="flex flex-col">
-              <label className="text-blue-300 mb-2 text-lg font-semibold mt-2 dark:text-slate-50">
+              <label className="text-[#11545c] mb-2 text-lg font-semibold mt-2 dark:text-slate-50">
                 {t("message")}
               </label>
               <textarea
@@ -208,7 +208,7 @@ export default function Page() {
                 value={formData.message}
                 onChange={handleChange}
                 placeholder={`${t("message")}...`}
-                className="border outline-none p-3 text-blue-300 rounded resize-none h-[300px] dark:text-slate-50"
+                className="border outline-none p-3 text-[#11545c] rounded resize-none h-[300px] dark:bg-slate-900"
               />
               {errors.message && (
                 <p className="text-red-500">{errors.message}</p>
@@ -217,7 +217,7 @@ export default function Page() {
             {messageSend && <p>Message Sent</p>}
             <button
               type="submit"
-              className="mt-2 w-full transition duration-300 ease-in-out transform bg-blue-300 p-2 border rounded text-white font-bold  hover:bg-blue-200 hover:text-black hover:border hover:rounded hover:scale-105 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-900 dark:hover:border-none dark:hover:text-white"
+              className="mt-2 w-full transition duration-300 ease-in-out transform bg-[#11545c] p-2 border rounded text-white font-bold  hover:bg-[#1A5A77] hover:text-white hover:border hover:rounded hover:scale-105 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-900 dark:hover:border-none dark:hover:text-white"
             >
               <a href="mailto:someone@example.com" />
               {t("send")}

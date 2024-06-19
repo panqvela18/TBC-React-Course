@@ -68,7 +68,7 @@ export const POST = async (request: any) => {
         name: user.name,
       },
     },
-    success_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/profile/orders`,
+    success_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/profile/orders?status=success`,
     cancel_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/cart`,
   });
 

@@ -1,8 +1,8 @@
 "use server";
 // import { BASE_URL } from "@/constants";
 import { cookies } from "next/headers";
-import { PostData, Prod, UserData, blogData, reviewData } from "./interface";
-import { EditProfile, createBlog, createContact, createProduct, createReview, deleteBlogById, deleteContactById, deleteProductById, editProduct, updateBlogById, updateUserById } from "./api";
+import { EditreviewData, PostData, Prod, UserData, blogData, reviewData } from "./interface";
+import { EditProfile, createBlog, createContact, createProduct, createReview, deleteBlogById, deleteContactById, deleteProductById, deleteReviewById, editProduct, updateBlogById, updateReviewById, updateUserById } from "./api";
 import { revalidatePath } from "next/cache";
 import { deleteUserById } from "@/app/api";
 import { getUserId } from "./api";
@@ -134,6 +134,11 @@ export const deleteProduct: (id: number) => Promise<void> = async (id: number) =
   revalidatePath("/product")
   revalidatePath("/admin")
 };
+export const deleteReview: (id: number) => Promise<void> = async (id: number) => {
+  await deleteReviewById(id);
+  revalidatePath("/product")
+  revalidatePath("/admin")
+};
 export const deleteContact: (id: number) => Promise<void> = async (id: number) => {
   await deleteContactById(id);
   revalidatePath("/admin")
@@ -151,6 +156,18 @@ export async function updateBlog( blog: PostData) {
   revalidatePath("/admin");
   revalidatePath("/blog");
   updateBlogById(id,title,description,image_url);
+}
+export async function createEditReviewAction( reviewData: EditreviewData) {
+  const {id, user_id,
+    product_id,
+    rating,
+    message, } = reviewData;
+  revalidatePath("/admin");
+  revalidatePath(`/product/${product_id}`);
+  updateReviewById(id,user_id,
+    product_id,
+    rating,
+    message);
 }
 // export async function updateProduct( product: Prod) {
 //   const {id, title,description,image_url } = product;
@@ -315,7 +332,6 @@ export const checkout = async (filteredProducts: any[],
     .then((response) => {
       console.log(response);
       if (response.url) {
-        handleClearCart();
         redirect(response.url);
       }
     });

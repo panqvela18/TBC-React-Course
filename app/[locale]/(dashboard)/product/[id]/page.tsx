@@ -1,9 +1,15 @@
 import Image from "next/image";
-import { getSession } from "@auth0/nextjs-auth0";
 import StarRating from "@/components/StarRating";
 import ShareOnSocials from "@/components/ShareOnSocials";
-import { getProductDetail, getProducts, getUserId } from "@/app/api";
+import {
+  getProductDetail,
+  getProducts,
+  getUserId,
+  getUserInfo,
+} from "@/app/api";
 import { ProductFromVercel } from "@/app/interface";
+import EditReview from "@/components/EditReview";
+import DeleteReview from "@/components/DeleteReview";
 
 interface ProductsDetailsProps {
   params: {
@@ -31,20 +37,24 @@ export default async function ProductDetail({
 }) {
   const { product, reviews }: { product: any; reviews: any } =
     await getProductDetail(id);
-  const user = await getSession();
-  const userName = user?.user.name;
+
+  const user = await getUserInfo();
+  const userName = user?.name;
   const user_id = await getUserId();
-  console.log(product);
+  console.log(user, "rev");
+
+  const userReviewIds = reviews.map((review: any) => review.user_id);
+  const userAlreadyWriteReview = userReviewIds.includes(user_id);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-      {product?.likes}
-      <button>Like</button>
       <div className="flex justify-center items-center">
         <StarRating
           user_id={user_id}
           product_id={product.id}
           userName={userName}
+          reviews={reviews}
+          userAlreadyWriteReview={userAlreadyWriteReview}
         />
         <Image
           src={product.image_gallery[0].image_url}
@@ -102,7 +112,22 @@ export default async function ProductDetail({
         <ShareOnSocials product={product} />
       </div>
       {reviews?.map((rev: any, index: any) => (
-        <p key={index}>{rev.message}</p>
+        <div key={index}>
+          <p>{rev.message}</p>
+          {user_id === rev.user_id && (
+            <div>
+              <EditReview
+                user_id={rev.user_id}
+                id={rev.id}
+                product_id={rev.product_id}
+                userName={userName}
+                reviewMessage={rev.message}
+                star={rev.star}
+              />
+              <DeleteReview id={rev.id} />
+            </div>
+          )}
+        </div>
       ))}
       {product?.image_gallery?.map((item: any) => (
         <Image

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { BsCartCheckFill } from "react-icons/bs";
 import Loader from "./Loader";
 import Title from "./Title";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "@/locales/client";
 // import { useUser } from "@auth0/nextjs-auth0/client";
 import { Autocomplete, TextField } from "@mui/material";
@@ -30,11 +30,6 @@ export default function ProductClient({ products }: HomeClientProps) {
   const [loader, setLoader] = useState<boolean>(false);
   const { user } = useUser();
   const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const t = useI18n();
 
@@ -53,6 +48,7 @@ export default function ProductClient({ products }: HomeClientProps) {
   const handleAddToCartClick = (productId: string) => {
     if (!user) {
       router.push("/api/auth/login");
+      handleAddToCart(productId);
     } else {
       handleAddToCart(productId);
     }
@@ -76,27 +72,27 @@ export default function ProductClient({ products }: HomeClientProps) {
     <section className="px-[4%] min-h-screen bg-white dark:bg-slate-900">
       <Title titleName={t("productTitle")} />
       <form className="flex items-center justify-center mt-4 md:flex-col">
-        {isClient ? (
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={products}
-            getOptionLabel={(option) => option.title}
-            onChange={(_event, value) => {
-              setSearch(value ? value.title : "");
-            }}
-            sx={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField
-                onChange={(e) => setSearch(e.target.value)}
-                {...params}
-                label="Products"
-              />
-            )}
-          />
-        ) : (
+        {/* {isClient ? ( */}
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={products}
+          getOptionLabel={(option) => option.title}
+          onChange={(_event, value) => {
+            setSearch(value ? value.title : "");
+          }}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField
+              onChange={(e) => setSearch(e.target.value)}
+              {...params}
+              label="Products"
+            />
+          )}
+        />
+        {/* ) : (
           ""
-        )}
+        )} */}
 
         <button
           onClick={handleSortChange}

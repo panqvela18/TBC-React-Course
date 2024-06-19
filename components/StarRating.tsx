@@ -1,19 +1,23 @@
 "use client";
 import { createAddReviewAction } from "@/app/actions";
-import { reviewData } from "@/app/interface";
+import { Reviews, reviewData } from "@/app/interface";
 import { Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 export default function StarRating({
   userName,
   user_id,
+  reviews,
   product_id,
+  userAlreadyWriteReview,
 }: {
   userName: string;
   user_id: number;
   product_id: number;
+  reviews: Reviews[];
+  userAlreadyWriteReview: boolean;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [rating, setRating] = useState<number>(0);
@@ -35,11 +39,48 @@ export default function StarRating({
       await createAddReviewAction(revieData);
       console.log("ssssss");
     } catch (error) {
-      // Handle error appropriately, e.g., display an error message
       console.error("Error creating user:", error);
     }
     handleClose();
     router.refresh();
+  };
+
+  const reviewsData: Reviews[] = reviews;
+
+  const totalStars = reviewsData.reduce((sum, review) => sum + review.star, 0);
+  const averageStars =
+    reviewsData.length > 0 ? totalStars / reviewsData.length : 0;
+
+  const generateStars = (averageStars = 0) => {
+    averageStars = Math.max(0, Math.min(averageStars, 5));
+
+    const fullStars = Math.floor(averageStars);
+    const halfStar = averageStars % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <>
+        {Array.from({ length: fullStars }).map((_, index) => (
+          <FaStar
+            key={`full-${index}`}
+            className="stars"
+            size={30}
+            color={"#F6BE59"}
+          />
+        ))}
+        {halfStar && (
+          <FaStarHalfAlt className="stars" size={30} color={"#F6BE59"} />
+        )}
+        {Array.from({ length: emptyStars }).map((_, index) => (
+          <FaRegStar
+            key={`empty-${index}`}
+            className="stars"
+            size={30}
+            color={"#F6BE59"}
+          />
+        ))}
+      </>
+    );
   };
 
   const stars = [];
@@ -56,32 +97,19 @@ export default function StarRating({
   }
   return (
     <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-md">
-      <div className="flex mb-4">
-        {[...Array(5)].map((_star, index) => {
-          const ratingValue = index + 1;
-          return (
-            <label key={index} className="cursor-pointer">
-              <input
-                className="hidden"
-                type="radio"
-                name="rating"
-                value={ratingValue}
-                onClick={() => {
-                  setRating(ratingValue);
-                  setOpen(true);
-                }}
-              />
-              <FaStar
-                className="stars"
-                size={30}
-                onMouseEnter={() => setHover(ratingValue)}
-                onMouseLeave={() => setHover(null)}
-                color={ratingValue <= (hover || rating) ? "#F6BE59" : "#e4e5e9"}
-              />
-            </label>
-          );
-        })}
-      </div>
+      <label className="cursor-pointer flex">
+        <input className="hidden" type="radio" name="rating" value={4} />
+        {generateStars(averageStars)}
+        <p className="text-black">{averageStars.toFixed(2)}</p>
+      </label>
+      {userAlreadyWriteReview || userName === undefined ? (
+        ""
+      ) : (
+        <button className="text-black" onClick={() => setOpen(true)}>
+          Add reviews
+        </button>
+      )}
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -95,6 +123,36 @@ export default function StarRating({
               onSubmit={handleSendReview}
               className="bg-white p-6 rounded-lg shadow-md"
             >
+              <div className="flex mb-4">
+                {[...Array(5)].map((_star, index) => {
+                  const ratingValue = index + 1;
+                  return (
+                    <label key={index} className="cursor-pointer">
+                      <input
+                        className="hidden"
+                        type="radio"
+                        name="rating"
+                        value={ratingValue}
+                        onClick={() => {
+                          setRating(ratingValue);
+                          setOpen(true);
+                        }}
+                      />
+                      <FaStar
+                        className="stars"
+                        size={30}
+                        onMouseEnter={() => setHover(ratingValue)}
+                        onMouseLeave={() => setHover(null)}
+                        color={
+                          ratingValue <= (hover || rating)
+                            ? "#F6BE59"
+                            : "#e4e5e9"
+                        }
+                      />
+                    </label>
+                  );
+                })}
+              </div>
               <p className="text-gray-600 mb-4">({rating} out of 5)</p>
               <div className="mb-4">
                 <label

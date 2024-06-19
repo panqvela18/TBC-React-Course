@@ -1,10 +1,17 @@
 // pages/admin.tsx
-import { Order, PostData, ProductFromVercel, User } from "@/app/interface";
+import {
+  Order,
+  PostData,
+  ProductFromVercel,
+  Reviews,
+  User,
+} from "@/app/interface";
 import {
   getContact,
   getOrders,
   getPosts,
   getProducts,
+  getReviews,
   getUsers,
 } from "@/app/api";
 // import DarkModeToggle from "@/components/DarkModeToggle"; // Import the DarkModeToggle component
@@ -45,9 +52,8 @@ export default async function Admin() {
   const postData: PostData[] = await getPosts();
   const products: ProductFromVercel[] = await getProducts();
   const orders = await getOrders();
+  const reviews = await getReviews();
   const contactInfo: ContactInfo[] = await getContact();
-
-  console.log(contactInfo);
 
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -238,7 +244,40 @@ export default async function Admin() {
           </table>
         </div>
       </div>
-      {/* <OrdersList orders={orders} /> */}
+      <div className="container mx-auto px-[4%] py-4">
+        <h2 className="text-2xl font-semibold mb-4">Product Reviews</h2>
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Product Name</th>
+                <th className="px-4 py-2">Star</th>
+                <th className="px-4 py-2">Message</th>
+                <th className="px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {reviews.reviews?.map((review: Reviews) => (
+                <tr
+                  key={review.review_id}
+                  className="bg-white dark:bg-gray-800 rounded-md shadow-md mb-4"
+                >
+                  <td className="border px-4 py-2">{review.user_name}</td>
+                  <td className="border px-4 py-2">{review.product_name}</td>
+                  <td className="border px-4 py-2">{review.star}</td>
+                  <td className="border px-4 py-2">{review.message}</td>
+                  <td className="border px-4 py-2 flex justify-center">
+                    {/* <div className="flex items-center">
+                      <DeleteContact id={contact.id} />
+                    </div> */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div className="container mx-auto px-[4%] py-4">
         <h2 className="text-2xl font-semibold mb-4">Contact Messages</h2>
         <div className="overflow-x-auto">

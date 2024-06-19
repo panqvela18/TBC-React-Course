@@ -1,12 +1,21 @@
+import { handleClearCart } from "@/app/actions";
 import { getOrders } from "@/app/api";
 import { Order } from "@/app/interface";
 import { getSession } from "@auth0/nextjs-auth0";
 
-export default async function Orders() {
+export default async function Orders({
+  searchParams,
+}: {
+  searchParams: { status: string };
+}) {
   const orders = await getOrders();
 
   const session = await getSession();
   const sub = session?.user?.sub;
+
+  if (searchParams.status === "success") {
+    await handleClearCart();
+  }
 
   const userOrders = orders.filter((order: any) => order.metadata.id === sub);
 

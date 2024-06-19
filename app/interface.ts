@@ -20,6 +20,13 @@ export interface reviewData {
       rating:number,
       message:string
 }
+export interface EditreviewData {
+  id:number,
+  user_id:number,
+      product_id:number,
+      rating:number,
+      message:string
+}
 
 
 export interface ProductData {
@@ -150,4 +157,15 @@ export interface Order {
     refunded: boolean;
     receipt_url: string;
   };
+}
+
+export interface Reviews{
+  review_id:number;
+  user_name:string;
+  email:string;
+  user_id:number;
+  star:number;
+  message:string;
+  product_id:number;
+  product_name:string
 }

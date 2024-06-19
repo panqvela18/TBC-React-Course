@@ -3,6 +3,7 @@ import UploadPage from "@/components/UploadPage";
 // import { getSession } from "@auth0/nextjs-auth0";
 import { getUserImage, getUserInfo } from "@/app/api";
 import ProfileInfo from "@/components/ProfileInfo";
+import Link from "next/link";
 
 export const metadata = {
   title: "Profile",
@@ -28,6 +29,8 @@ export default async function Profile() {
           <ProfileInfo user={userInfo} />
         </div>
       </div>
+      <Link href={"profile/orders"}>See Your Orders</Link>
+      <Link href={"profile/reviews"}>See Your Reviews</Link>
     </main>
   );
 }

@@ -2,7 +2,8 @@ import { getSession } from "@auth0/nextjs-auth0";
 
 export async function getUsers() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-users", {
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-users`
+      , {
       cache: "no-store",
     }
   );
@@ -19,8 +20,7 @@ export async function getProductDetail(id: string) {
   const data = await response.json();
   const product = data.products?.rows ? data.products.rows[0] : null;
   const reviews = data.reviews?.rows ? data.reviews.rows : null;
-  const gallery = data.gallery?.rows ? data.gallery.rows : null;
-  return {product,reviews,gallery};
+  return {product,reviews};
 }
 
 
@@ -38,7 +38,7 @@ export async function getBlogDetail(id: string) {
 
 export async function getProducts() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-products", {
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-products`, {
       cache: "no-store",
     }
   );
@@ -48,7 +48,7 @@ export async function getProducts() {
 
 export async function getPosts(){
   const response = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + "/api/get-blogs", {
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-blogs`, {
       cache: "no-store",
       
     }
@@ -83,6 +83,16 @@ export async function deleteBlogById(id: number) {
 export async function deleteProductById(id: number) {
   return await fetch(
     `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/delete-product/${id}`,
+    {
+      method: "DELETE",
+      cache: "no-store",
+
+    }
+  );
+}
+export async function deleteReviewById(id: number) {
+  return await fetch(
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/delete-review/${id}`,
     {
       method: "DELETE",
       cache: "no-store",
@@ -137,6 +147,37 @@ export async function updateBlogById(id:number,title:string,description:string,i
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ title,description,image_url }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error);
+    }
+
+    return { success: true }; // Return success indicator
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+}
+export async function updateReviewById(id:number,user_id:number,
+  product_id:number,
+  rating:number,
+  message:string,) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/update-review/${id}`,
+      {
+        method: "PUT",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id,
+          product_id,
+          rating,
+          message, }),
       }
     );
 
@@ -347,17 +388,28 @@ export async function getUserCart() {
 
 export async function getUserInfo() {
   const id = await getUserId();
+
+  if (!id) {
+    return null;
+  }
+
   const userSubId = await fetch(
-    process.env.NEXT_PUBLIC_VERCEL_URL + `/api/get-users/${id}`,
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-users/${id}`,
     {
       cache: "no-store",
     }
   );
 
   const userInfo = await userSubId.json();
+
+  if (!userInfo || !userInfo.user || !userInfo.user.rows || userInfo.user.rows.length === 0) {
+    return null;
+  }
+
   const userDetail = userInfo.user.rows[0];
-  return userDetail
+  return userDetail;
 }
+
 
 export async function getUserImage(){
 const session = await getSession();
@@ -415,6 +467,24 @@ export const getOrders = async () => {
   const orders = await res.json();
   return orders;
 };
+export const getReviews = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-reviews`, {
+    cache: "no-store",
+  });
+  const reviews = await res.json();
+  return reviews;
+};
+export const getReviewsForUser = async () => {
+  const id = await getUserId()
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-reviews/${id}`, {
+    cache: "no-store",
+  });
+  const reviews = await res.json();
+  return reviews;
+};
+
+
 export const getContact = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-contact-info`, {
     cache: "no-store",

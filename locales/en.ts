@@ -11,13 +11,66 @@ export default {
 
 
   //TITLE
-  blogTitle: "Blog",
+  blogTitle: "Blogs",
   productTitle: "Products",
   contactTitle: "Contact",
   profileTitle: "Profile",
   popularproductTitle:"Popular Products",
   latestProductTitle:"Latest Blogs",
   similarBlogsTitle:"Similar Blogs",
+  //Home Page
+  readMore:"Read More...",
+  SeeAll:"See All",
+
+  //Profile Page
+  seeOrders:"See Your Orders",
+  seeReviews:"See Your Reviews",
+  userInformation: "User Information",
+  upload: "Upload",
+  loading: "Loading",
+  change: "Change",
+  save: "Save",
+  yourInfoIsUpdated: "Your info is updated",
+  phone:"ტელეფონი",
+  Update:"განახლება",
+  Address:"მისამართი",
+
+  //Admin Page
+  users: "Users",
+  actions: "Actions",
+  addUser: "Add User",
+  addBlog: "Add Blog",
+  addProduct: "Add Product",
+  delete: "Delete",
+  makePrimary: "Make Primary",
+  role: "Role",
+  user: "User",
+  status: "Status",
+  refund: "Refund",
+  receipt: "Receipt",
+  viewReceipt: "View Receipt",
+  refunded: "Refunded",
+  paid: "Paid",
+  orders: "Orders",
+  image: "Image",
+  title:"Title",
+  description:"Description",
+  price:"Price",
+  
+
+  
+
+  //About
+  longText:"Our leaders are service-driven industry experts, dedicated to providing our clients with everything they need to execute world-class productions and events. With their deep industry knowledge, they are helping TV PROJECT to lead the way in providing our clients with the best technical resources and the most advanced technology available in the industry.",
+  Team:"Team",
+  // Product Page
+  addToCart: "Add to Cart",
+  category:"Category",
+  discount:"Discount",
+  stock:"Stock",
+
+
+
   // search
 
   getInTouch: "GET IN TOUCH",

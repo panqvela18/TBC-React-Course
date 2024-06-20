@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 
+export const revalidate = 0;
+
+
 type Products = {
   [key: string]: number;
 };

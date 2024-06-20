@@ -12,7 +12,7 @@ import { useI18n } from "@/locales/client";
 // import { createContact } from "@/app/api";
 import { createContactAction } from "@/app/actions";
 
-export default function Page() {
+export default function Contact() {
   const [contactType, setContactType] = useState<string>("staticContact");
   const t = useI18n();
   const [formData, setFormData] = useState({

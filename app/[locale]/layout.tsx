@@ -24,17 +24,16 @@ export default async function RootLayout({
 }) {
   return (
     <html lang={locale}>
-      <body className={inter.className}>
-        <div className="flex flex-col min-h-screen justify-between">
-          <I18nProviderClient locale={locale}>
-            {/* <ThemeProvider> */}
-            <UserProvider>
-              <Providers>{children}</Providers>{" "}
-            </UserProvider>
-            {/* </ThemeProvider> */}
-          </I18nProviderClient>
-        </div>
-      </body>
+      <UserProvider>
+        <body className={inter.className}>
+          <div className="flex flex-col min-h-screen justify-between">
+            <I18nProviderClient locale={locale}>
+              {/* <ThemeProvider> */}
+              <Providers>{children}</Providers> {/* </ThemeProvider> */}
+            </I18nProviderClient>
+          </div>
+        </body>
+      </UserProvider>
     </html>
   );
 }

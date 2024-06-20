@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 
+export const revalidate = 0;
+
+
 export async function DELETE(req: NextRequest) {
   try {
     const { userId } = await req.json();

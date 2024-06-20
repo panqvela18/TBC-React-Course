@@ -13,6 +13,9 @@ const getActiveProducts = async () => {
 export const POST = async (request: any) => {
   const { products, user } = await request.json();
 
+  console.log(products);
+  
+
   const data: ProductFromVercel[] = products;
   let activeProducts = await getActiveProducts();
   try {

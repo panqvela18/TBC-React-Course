@@ -1,5 +1,8 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
+
+export const revalidate = 0;
+
  
 export async function POST(request: Request) {
   const { name, surname, email, message } = await request.json();

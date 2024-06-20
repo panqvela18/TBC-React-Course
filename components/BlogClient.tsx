@@ -3,6 +3,7 @@ import { PostData } from "@/app/interface";
 import Blogs from "./Blogs";
 import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
+import { useI18n } from "@/locales/client";
 
 interface BlogClientProps {
   postData: PostData[];
@@ -16,6 +17,9 @@ export default function BlogClient({
 // userRole,
 BlogClientProps) {
   const [search, setSearch] = useState("");
+
+  const t = useI18n();
+
   let filteredBlogs = postData?.filter((prod) =>
     prod.title.toLowerCase().includes(search.toLowerCase())
   );
@@ -34,7 +38,7 @@ BlogClientProps) {
           <TextField
             onChange={(e) => setSearch(e.target.value)}
             {...params}
-            label="Blogs"
+            label={t("blog")}
           />
         )}
       />

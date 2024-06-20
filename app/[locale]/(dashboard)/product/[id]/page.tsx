@@ -10,6 +10,7 @@ import {
 import { ProductFromVercel } from "@/app/interface";
 import EditReview from "@/components/EditReview";
 import DeleteReview from "@/components/DeleteReview";
+import { getI18n } from "@/locales/server";
 
 interface ProductsDetailsProps {
   params: {
@@ -46,6 +47,8 @@ export default async function ProductDetail({
   const userReviewIds = reviews.map((review: any) => review.user_id);
   const userAlreadyWriteReview = userReviewIds.includes(user_id);
 
+  const t = await getI18n();
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <div className="flex justify-center items-center">
@@ -79,7 +82,7 @@ export default async function ProductDetail({
       <div className="flex flex-wrap justify-center items-center space-x-4 mt-4">
         <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
           <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
-            Category
+            {t("category")}
           </h4>
           <span className="text-gray-600 dark:text-gray-300">
             {product.category}
@@ -87,15 +90,15 @@ export default async function ProductDetail({
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
           <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
-            Discount
+            {t("discount")}
           </h4>
           <span className="text-green-500 dark:text-green-300">
-            {product.discount}%
+            ${product.discount}
           </span>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
           <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
-            Stock
+            {t("stock")}
           </h4>
           <span
             className={`text-lg font-bold ${

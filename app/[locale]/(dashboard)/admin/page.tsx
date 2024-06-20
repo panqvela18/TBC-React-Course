@@ -1,4 +1,3 @@
-// pages/admin.tsx
 import {
   Order,
   PostData,
@@ -27,6 +26,7 @@ import DeleteProduct from "@/components/DeleteProduct";
 // import OrdersList from "@/components/OrdersList";
 import DeleteContact from "@/components/DeleteContact";
 import RefaundButton from "@/components/RefaundButton";
+import { getI18n } from "@/locales/server";
 
 export interface ContactInfo {
   id: number;
@@ -43,7 +43,7 @@ export interface ContactInfo1 {
 }
 
 export const metadata = {
-  title: "Admin Portal",
+  title: "Admin Panel",
   description: "Admin by Next",
 };
 
@@ -54,6 +54,7 @@ export default async function Admin() {
   const orders = await getOrders();
   const reviews = await getReviews();
   const contactInfo: ContactInfo[] = await getContact();
+  const t = await getI18n();
 
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -63,13 +64,13 @@ export default async function Admin() {
             <thead>
               <tr>
                 <th className="px-4 py-2 dark:text-white text-[#11545c]">
-                  Name
+                  {t("name")}
                 </th>
                 <th className="px-4 py-2 dark:text-white text-[#11545c]">
-                  Email
+                  {t("email")}
                 </th>
                 <th className="px-4 py-2 dark:text-white text-[#11545c]">
-                  Actions
+                  {t("actions")}
                 </th>
               </tr>
             </thead>
@@ -99,10 +100,10 @@ export default async function Admin() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="px-4 py-2">Image</th>
-                <th className="px-4 py-2">Title</th>
-                <th className="px-4 py-2">Description</th>
-                <th className="px-4 py-2">Actions</th>
+                <th className="px-4 py-2">{t("image")}</th>
+                <th className="px-4 py-2">{t("title")}</th>
+                <th className="px-4 py-2">{t("description")}</th>
+                <th className="px-4 py-2"> {t("actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -140,12 +141,12 @@ export default async function Admin() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="px-4 py-2">Image</th>
-                <th className="px-4 py-2">Title</th>
-                <th className="px-4 py-2">Description</th>
-                <th className="px-4 py-2">Price</th>
-                <th className="px-4 py-2">Category</th>
-                <th className="px-4 py-2">Actions</th>
+                <th className="px-4 py-2">{t("image")}</th>
+                <th className="px-4 py-2">{t("title")}</th>
+                <th className="px-4 py-2">{t("description")}</th>
+                <th className="px-4 py-2">{t("price")}</th>
+                <th className="px-4 py-2">{t("category")}</th>
+                <th className="px-4 py-2">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>

@@ -3,7 +3,7 @@ import Title from "@/components/Title";
 import React from "react";
 import { getI18n } from "../../../../locales/server";
 import { getPosts } from "@/app/api";
-import AddNewBlog from "@/components/AddNewBlog";
+// import AddNewBlog from "@/components/AddNewBlog";
 
 export const metadata = {
   title: "Blog",
@@ -19,7 +19,7 @@ export default async function Blog() {
   return (
     <main className="bg-white dark:bg-slate-900">
       <Title titleName={t("blogTitle")} />
-      <AddNewBlog />
+      {/* <AddNewBlog /> */}
       <BlogClient postData={postData} />
     </main>
   );

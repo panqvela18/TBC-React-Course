@@ -63,7 +63,7 @@ export default async function BlogDetail({
             href="/blog"
             className="bg-[#11545c] text-white py-2 px-6 rounded font-bold hover:bg-[#11545c] transition-colors duration-300"
           >
-            See All Blogs
+            {t("SeeAll")}
           </Link>
         </div>
 

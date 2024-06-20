@@ -1,6 +1,9 @@
 import { sql } from '@vercel/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 
+
+export const revalidate = 0;
+
 export async function PUT(request: NextRequest) {
   const id = request.nextUrl.pathname.replace('/api/update-user/', '');
   const {name,email,image_url}= await request.json()

@@ -116,7 +116,7 @@ export default function HomeClient({
               href={"/about"}
               className="w-32 flex justify-center items-center mt-5 text-[#003049] dark:text-white font-bold hover:text-[#11545c]"
             >
-              <span className="pr-2 ">Read More...</span>
+              <span className="pr-2 ">{t("readMore")}</span>
             </Link>
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function HomeClient({
             href="/product"
             className="bg-[#11545c] text-white py-2 px-6 rounded font-bold hover:bg-[#11545c] transition-colors duration-300"
           >
-            See All Products
+            {t("SeeAll")}
           </Link>
         </div>
 
@@ -210,7 +210,7 @@ export default function HomeClient({
             href="/blog"
             className="bg-[#11545c] text-white py-2 px-6 rounded font-bold hover:bg-[#11545c] transition-colors duration-300"
           >
-            See All Blogs
+            {t("SeeAll")}
           </Link>
         </div>
 

@@ -76,6 +76,7 @@ export default function ProductClient({ products }: HomeClientProps) {
         <Autocomplete
           disablePortal
           id="combo-box-demo"
+          className="text-white"
           options={products}
           getOptionLabel={(option) => option.title}
           onChange={(_event, value) => {
@@ -86,7 +87,7 @@ export default function ProductClient({ products }: HomeClientProps) {
             <TextField
               onChange={(e) => setSearch(e.target.value)}
               {...params}
-              label="Products"
+              label={t("product")}
             />
           )}
         />
@@ -153,7 +154,7 @@ export default function ProductClient({ products }: HomeClientProps) {
                     }}
                     className="mt-2 bg-blue-500 text-white flex items-center justify-center py-2 px-4 rounded font-bold hover:bg-blue-600 transition-colors duration-300"
                   >
-                    Add to Cart
+                    {t("addToCart")}
                     <BsCartCheckFill className="ml-3" color="white" />
                   </button>
                 </div>

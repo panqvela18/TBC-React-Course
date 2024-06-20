@@ -1,5 +1,6 @@
 "use client";
 import { editProfileInfo } from "@/app/actions";
+import { useI18n } from "@/locales/client";
 import { useState } from "react";
 
 export interface ProfileData {
@@ -17,7 +18,7 @@ export default function ProfileInfo({ user }: { user: any }) {
   const [errorMessage, setErrorMessage] = useState("");
   const userSub = user?.sub;
 
-  console.log(userSub);
+  const t = useI18n();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,57 +40,72 @@ export default function ProfileInfo({ user }: { user: any }) {
   };
 
   return (
-    <form className="text-gray-700" onSubmit={handleSubmit}>
-      <table className="min-w-full bg-white">
+    <form
+      className="text-gray-700 dark:text-gray-200 max-w-lg mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg"
+      onSubmit={handleSubmit}
+    >
+      <table className="min-w-full">
         <tbody>
           <tr>
-            <td className="border px-4 py-2">Name</td>
-            <td className="border px-4 py-2">
+            <td className="border-b py-2 px-4 font-medium dark:border-gray-700">
+              {t("name")}
+            </td>
+            <td className="border-b py-2 px-4 dark:border-gray-700">
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="text-lg leading-6 h-8"
+                className="text-lg leading-6 h-10 w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
               />
             </td>
           </tr>
           <tr>
-            <td className="border px-4 py-2">Phone</td>
-            <td className="border px-4 py-2">
+            <td className="border-b py-2 px-4 font-medium dark:border-gray-700">
+              {t("phone")}
+            </td>
+            <td className="border-b py-2 px-4 dark:border-gray-700">
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="text-lg leading-6 h-8"
+                className="text-lg leading-6 h-10 w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
               />
             </td>
           </tr>
           <tr>
-            <td className="border px-4 py-2">Address</td>
-            <td className="border px-4 py-2">
+            <td className="border-b py-2 px-4 font-medium dark:border-gray-700">
+              {t("Address")}
+            </td>
+            <td className="border-b py-2 px-4 dark:border-gray-700">
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="text-lg leading-6 h-8"
+                className="text-lg leading-6 h-10 w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
               />
             </td>
           </tr>
           <tr>
-            <td className="border px-4 py-2">Email</td>
-            <td className="border px-4 py-2">
-              <span className="opacity-50">{user?.email}</span>
+            <td className="py-2 px-4 font-medium">{t("email")}</td>
+            <td className="py-2 px-4">
+              <span className="opacity-75">{user?.email}</span>
             </td>
           </tr>
         </tbody>
       </table>
-      {editProfileMessage && <p>Profile updated successfully</p>}
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      {editProfileMessage && (
+        <p className="mt-4 text-green-600 dark:text-green-400">
+          {t("yourInfoIsUpdated")}
+        </p>
+      )}
+      {errorMessage && (
+        <p className="mt-4 text-red-500 dark:text-red-400">{errorMessage}</p>
+      )}
       <button
         type="submit"
-        className="text-lg leading-6 h-8 mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+        className="mt-6 text-lg leading-6 h-10 bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 dark:hover:bg-blue-600 transition duration-300"
       >
-        Submit
+        {t("Update")}
       </button>
     </form>
   );

@@ -280,7 +280,7 @@ export async function createProduct(
   image_url: string,
   price: string,
   category: string,
-  discount: number,
+  discount: number | string,
   stock: number,
   imageGallery: { id: number; image_url: string }[] | undefined
 ) {
@@ -309,7 +309,7 @@ export async function editProduct(id:number | undefined,title:string,
   image_url:string,
   price:string,
   category:string,
-  discount:number,
+  discount:number | string,
   stock:number,
   imageGallery:{ id: number; image_url: string }[] | undefined
   // user_id:number

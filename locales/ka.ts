@@ -27,11 +27,15 @@ export default {
     "category":"კატეგორია",
     "discount":"ფასდაკლება",
     "stock":"მარაგი",
+    "productAddedToCart":"პროდუქტი კალათაში დამატებულია",
+    "productRemovedFromCart":"პროდუქტი წაშლილია კალათიდან",
     // Profile Page
     "seeOrders":"ორდერების ნახვა",
     "seeReviews":"შეკვეთების ნახვა",
     "userInformation": "მომხმარებლის ინფორმაცია",
     "upload": "ატვირთვა",
+    "uploading": "იტვირთება",
+
     "loading": "იტვირთება",
     "change": "შეცვლა",
     "save": "შენახვა",
@@ -65,10 +69,21 @@ export default {
   "remove": "წაშლა",
   "totalPrice": "სულ ფასი",
   "backToShop": "მაღაზიაში დაბრუნება",
+  "UsersReviews":"მომხმარებლების შეფასებები",
+  "productName":"პროდუქტის სახელი",
+  "star":"ვარსკვლავი",
+  "UsersMessages":"მომხმარებლების შეტყობინებები",
+  "ViewReceipt":"ინვოისის ნახვა",
+  "edit":"შეცვლა",  
+  "blogs":"ბლოგები",
+  "addnewproduct":"პროდუქტის დამატება",
+  "Makeprimary" : "მთავარ ფოტოდ არჩევა",
 
-
-
-
+  "addReview":"შეფასების დაწერა",
+  "outof5":"5-დან",
+  "userName":"მომხმარებელი",
+  "Review":"შეფასება",
+  "Yourmessage":"თქვენი შეტყობინება",
 
 
 
@@ -98,6 +113,36 @@ export default {
      //login
      "username":"სახელი",
      "password":"პაროლი",
-     "login":"შესვლა"
+     "login":"შესვლა",
+
+     // Validation
+     "titleRequired":"სათაური სავალდებულოა",
+     "descriptionRequired":"აღწერა სავალდებულოა",
+     "imageRequired":"სურათი სავალდებულოა",
+     "Tooshort":"მოკლე სათაურია!",
+     "Toolong":"გრძელი სათაურია!",
+     "Namerequired":"სახელი სავალდებულოა",
+     "Surnamerequired":"გვარი სავალდებულოა",
+     "mailIsnotValid":"ელ-ფოსტა არ არის ვალიდური",
+     "Emailrequired":"ელ-ფოსტა სავალდებულოა",
+      "minmessage":"მესიჯი უნდა შეიცავდეს მინიმუმ 10 სიმბოლოს",
+      "Messagerequired":"მესიჯი სავალდებულოა",
+      "MessageSent":"შეტყობინება გაგზავნილია",
+      "Ratingrequired":"შეფასება სავალდებულოა",
+      "Reviewmessage":"შეფასების შეტყობინება სავალდებულოა",
+      "phoneIsRequired":"ტელეფონის ნომერი სავალდებულოა",
+      "addressIsRequired":"მისამართი სავალდებულოა",
+      "PriceNumber":"ფასი უნდა იყოს რიცხვი",
+      "PriceRequiared":"ფასი სავალდებულოა",
+      "categoryRequiared":"კატეგორია სავალდებულოა",
+      "discountRequiared":"ფასდაკლება სავალდებულოა ან უნდა იყოს 0",
+      "StockNumber":"მარაგი უნდა იყოს რიცხვი",
+      "StockRequired":"მარაგი სავალდებულოა",
+      "seemore":"მეტის ნახვა",
+
+
+
+
+
 
   } as const

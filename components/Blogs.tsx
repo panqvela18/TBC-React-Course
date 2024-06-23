@@ -13,33 +13,35 @@ interface BlogClientProps {
 
 export default function Blogs({ blogData }: BlogClientProps) {
   const t = useI18n();
+  const date = blogData.created_at.split("T")[0];
 
   return (
-    <div className="flex flex-col bg-white filter drop-shadow-xl min-h-[400px] justify-between border border-[#e5e7eb] rounded dark:bg-slate-900">
-      <div>
+    <div
+      key={blogData.id}
+      className="bg-white dark:bg-slate-800 flex flex-col justify-between p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300   "
+    >
+      <div className="flex flex-col items-center">
         <Image
-          className="rounded-tl rounded-tr w-full"
           src={blogData.image_url}
-          alt="blog"
-          width={100}
-          height={100}
+          width={200}
+          height={200}
+          alt="image"
+          className="rounded mb-4 object-cover w-[300px] h-[200px]"
         />
-        <div className="px-4">
-          <h3 className=" text-black text-xl font-bold mb-4 dark:text-slate-200">
-            {blogData.title}
-          </h3>
-          <p className="text-medium_grey opacity-60 mb-4 dark:text-white">{`${blogData.description
-            .split(" ")
-            .slice(0, 30)
-            .join(" ")} ...`}</p>
-        </div>
+        <span>{date}</span>
+        <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100 text-center">
+          {blogData.title}
+        </h3>
+        <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 text-center">
+          {`${blogData.description.split(" ").slice(0, 20).join(" ")} ...`}
+        </p>
       </div>
       <div className="flex flex-col items-center">
         <Link
-          className="bg-blue-500 p-4 text-white cursor-pointer w-full dark:bg-white dark:text-black text-center"
           href={`/blog/${blogData.id}`}
+          className="text-[#003049] hover:text-[#1A5A77] dark:text-[#D3D3D3] dark:hover:text-[#A9A9A9] hover:underline transition duration-200 mt-2"
         >
-          {t("seeMore")}
+          {t("learnMore")}
         </Link>
       </div>
     </div>

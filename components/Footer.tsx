@@ -30,7 +30,7 @@ export default function Footer() {
         <nav className="flex items-center md:mb-4 md:flex-col">
           <Link
             href="/"
-            className="text-[#003049] dark:text-white   hover:text-[#1A5A77] text-sm mr-2  md:mr:0 md:mb-4"
+            className="text-[#003049]    hover:text-[#1A5A77] dark:text-white text-sm mr-2  md:mr:0 md:mb-4"
           >
             {t("TermsAndConditions")}
           </Link>

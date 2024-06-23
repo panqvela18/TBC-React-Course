@@ -5,6 +5,7 @@ import Title from "@/components/Title";
 import Image from "next/image";
 import Link from "next/link";
 import { getI18n } from "../../../../../locales/server";
+import { unstable_noStore as noStore } from "next/cache";
 
 interface ProductsDetailsProps {
   params: {
@@ -16,6 +17,7 @@ interface ProductsDetailsProps {
 export async function generateMetadata({ params }: ProductsDetailsProps) {
   const blogData = await getPosts();
   const blog = blogData.find((blog: PostData) => blog.id == params.id);
+  noStore();
 
   return {
     title: `${blog.title}`,
@@ -68,44 +70,47 @@ export default async function BlogDetail({
         </div>
 
         <div className="grid grid-cols-4 gap-8">
-          {blogs.slice(0, 4).map((blog) => {
-            const date = blog.created_at.split("T")[0];
+          {blogs
+            .filter((blog) => blog.id !== blogDetail.id)
+            .slice(0, 4)
+            .map((blog) => {
+              const date = blog.created_at.split("T")[0];
 
-            return (
-              <div
-                key={blog.id}
-                className="bg-white dark:bg-slate-800 flex flex-col justify-between p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300   "
-              >
-                <div className="flex flex-col items-center">
-                  <Image
-                    src={blog.image_url}
-                    width={200}
-                    height={200}
-                    alt="image"
-                    className="rounded mb-4 object-cover w-[300px] h-[200px]"
-                  />
-                  <span>{date}</span>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100 text-center">
-                    {blog.title}
-                  </h3>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 text-center">
-                    {`${blog.description
-                      .split(" ")
-                      .slice(0, 20)
-                      .join(" ")} ...`}
-                  </p>
+              return (
+                <div
+                  key={blog.id}
+                  className="bg-white dark:bg-slate-800 flex flex-col justify-between p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div className="flex flex-col items-center">
+                    <Image
+                      src={blog.image_url}
+                      width={200}
+                      height={200}
+                      alt="image"
+                      className="rounded mb-4 object-cover w-[300px] h-[200px]"
+                    />
+                    <span>{date}</span>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100 text-center">
+                      {blog.title}
+                    </h3>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 text-center">
+                      {`${blog.description
+                        .split(" ")
+                        .slice(0, 20)
+                        .join(" ")} ...`}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <Link
+                      href={`/blog/${blog.id}`}
+                      className="text-indigo-500 hover:text-indigo-700 hover:underline transition duration-200 mt-2"
+                    >
+                      {t("learnMore")}
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex flex-col items-center">
-                  <Link
-                    href={`/blog/${blog.id}`}
-                    className="text-indigo-500 hover:text-indigo-700 hover:underline transition duration-200 mt-2"
-                  >
-                    {t("learnMore")}
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </section>
     </>

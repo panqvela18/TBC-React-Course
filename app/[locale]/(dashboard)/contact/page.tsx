@@ -6,84 +6,43 @@ import { BsTelephoneFill } from "react-icons/bs";
 import { GrMail } from "react-icons/gr";
 import { HiOfficeBuilding } from "react-icons/hi";
 import Image from "next/image";
-import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { useI18n } from "@/locales/client";
-// import { createContact } from "@/app/api";
 import { createContactAction } from "@/app/actions";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default function Contact() {
   const [contactType, setContactType] = useState<string>("staticContact");
   const t = useI18n();
-  const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    message: "",
-  });
-  const [errors, setErrors] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    message: "",
-  });
   const [messageSend, setMessageSend] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  noStore();
+  const initialValues = {
+    name: "",
+    surname: "",
+    email: "",
+    message: "",
+  };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required(t("Namerequired")),
+    surname: Yup.string().required(t("Surnamerequired")),
+    email: Yup.string().email(t("mailIsnotValid")).required(t("Emailrequired")),
+    message: Yup.string()
+      .min(10, t("minmessage"))
+      .required(t("Messagerequired")),
+  });
+
+  const handleSubmit = async (
+    values: typeof initialValues,
+    { resetForm }: any
   ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: "",
-    }));
-  };
-
-  const validate = () => {
-    const newErrors = { name: "", surname: "", email: "", message: "" };
-    let isValid = true;
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-      isValid = false;
-    }
-    if (!formData.surname.trim()) {
-      newErrors.surname = "Surname is required";
-      isValid = false;
-    }
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is not valid";
-      isValid = false;
-    }
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-
     try {
-      await createContactAction(formData);
+      await createContactAction(values);
       setMessageSend(true);
-      setFormData({
-        name: "",
-        surname: "",
-        email: "",
-        message: "",
-      });
+      resetForm();
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -102,7 +61,7 @@ export default function Contact() {
             contactType === "staticContact"
               ? "border-b text-[#11545c] dark:text-gray-400"
               : "text-gray-400 dark:text-gray-200"
-          } p-2  font-bold cursor-pointer text-2xl`}
+          } p-2 font-bold cursor-pointer text-2xl`}
         >
           {t("getInTouch")}
         </span>
@@ -115,13 +74,13 @@ export default function Contact() {
             contactType === "messageUs"
               ? "border-b text-[#11545c] dark:text-gray-400"
               : "text-gray-400 dark:text-gray-200"
-          } p-2  font-bold cursor-pointer text-2xl`}
+          } p-2 font-bold cursor-pointer text-2xl`}
         >
           {t("messageUs")}
         </span>
       </div>
       {contactType === "staticContact" ? (
-        <section className="px-[20%] py-4  md:px-[4%]">
+        <section className="px-[20%] py-4 md:px-[4%]">
           <div className="flex justify-between bg-white filter drop-shadow-xl rounded md:flex-col-reverse dark:bg-[#1e293b]">
             <div className="px-20 py-10 w-1/2 flex flex-col justify-center md:w-full md:px-4 md:py-4">
               <ContactInfo
@@ -153,76 +112,102 @@ export default function Contact() {
               />
             </div>
             <Image
-              className="rounded w-1/2 object-cover select-none  md:w-full"
+              className="rounded w-1/2 object-cover select-none md:w-full"
               src={contactImage}
               alt="contact-img"
             />
           </div>
         </section>
       ) : (
-        <section className="px-[20%] py-4 md:px-[4%] ">
-          <form
+        <section className="px-[20%] py-4 md:px-[4%]">
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
             onSubmit={handleSubmit}
-            className="bg-white rounded p-10 md:p-4 dark:bg-[#1e293b]"
           >
-            <div className="flex items-center justify-between md:flex-col">
-              <div className="flex flex-col w-1/2 mr-2 md:w-full">
-                <Input
-                  value={formData.name}
-                  onChange={handleChange}
-                  labelName={t("name")}
-                  placeholder="John"
-                  name="name"
-                />
-                {errors.name && <p className="text-red-500">{errors.name}</p>}
-              </div>
-              <div className="flex flex-col w-1/2 md:w-full">
-                <Input
-                  value={formData.surname}
-                  onChange={handleChange}
-                  labelName={t("surname")}
-                  placeholder="Doe"
-                  name="surname"
-                />
-                {errors.surname && (
-                  <p className="text-red-500">{errors.surname}</p>
+            {({ isSubmitting }) => (
+              <Form className="bg-white rounded p-10 md:p-4 dark:bg-[#1e293b]">
+                <div className="flex items-center justify-between md:flex-col">
+                  <div className="flex flex-col w-1/2 mr-2 md:w-full">
+                    <label className="text-[#11545c] mb-2 text-lg font-semibold dark:text-slate-50">
+                      {t("name")}
+                    </label>
+                    <Field
+                      name="name"
+                      type="text"
+                      placeholder="John"
+                      className="border outline-none p-3 text-[#11545c] rounded dark:bg-slate-900"
+                    />
+                    <ErrorMessage
+                      name="name"
+                      component="div"
+                      className="text-red-500"
+                    />
+                  </div>
+                  <div className="flex flex-col w-1/2 md:w-full">
+                    <label className="text-[#11545c] mb-2 text-lg font-semibold dark:text-slate-50">
+                      {t("surname")}
+                    </label>
+                    <Field
+                      name="surname"
+                      type="text"
+                      placeholder="Doe"
+                      className="border outline-none p-3 text-[#11545c] rounded dark:bg-slate-900"
+                    />
+                    <ErrorMessage
+                      name="surname"
+                      component="div"
+                      className="text-red-500"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col mt-2">
+                  <label className="text-[#11545c] mb-2 text-lg font-semibold dark:text-slate-50">
+                    {t("email")}
+                  </label>
+                  <Field
+                    name="email"
+                    type="email"
+                    placeholder="example@gmail.com"
+                    className="border outline-none p-3 text-[#11545c] rounded dark:bg-slate-900"
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-[#11545c] mb-2 text-lg font-semibold mt-2 dark:text-slate-50">
+                    {t("message")}
+                  </label>
+                  <Field
+                    as="textarea"
+                    name="message"
+                    placeholder={`${t("message")}...`}
+                    className="border outline-none p-3 text-[#11545c] rounded resize-none h-[300px] dark:bg-slate-900"
+                  />
+                  <ErrorMessage
+                    name="message"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+                {messageSend && (
+                  <p className="text-[#11545c] mb-2 text-lg font-semibold ">
+                    {t("MessageSent")}
+                  </p>
                 )}
-              </div>
-            </div>
-            <div className="flex flex-col mt-2">
-              <Input
-                value={formData.email}
-                onChange={handleChange}
-                labelName={t("email")}
-                placeholder="example@gmail.com"
-                name="email"
-              />
-              {errors.email && <p className="text-red-500">{errors.email}</p>}
-            </div>
-            <div className="flex flex-col">
-              <label className="text-[#11545c] mb-2 text-lg font-semibold mt-2 dark:text-slate-50">
-                {t("message")}
-              </label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder={`${t("message")}...`}
-                className="border outline-none p-3 text-[#11545c] rounded resize-none h-[300px] dark:bg-slate-900"
-              />
-              {errors.message && (
-                <p className="text-red-500">{errors.message}</p>
-              )}
-            </div>
-            {messageSend && <p>Message Sent</p>}
-            <button
-              type="submit"
-              className="mt-2 w-full transition duration-300 ease-in-out transform bg-[#11545c] p-2 border rounded text-white font-bold  hover:bg-[#1A5A77] hover:text-white hover:border hover:rounded hover:scale-105 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-900 dark:hover:border-none dark:hover:text-white"
-            >
-              <a href="mailto:someone@example.com" />
-              {t("send")}
-            </button>
-          </form>
+                <button
+                  type="submit"
+                  className="mt-2 w-full transition duration-300 ease-in-out transform bg-[#11545c] p-2 border rounded text-white font-bold hover:bg-[#1A5A77] hover:text-white hover:border hover:rounded hover:scale-105 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-900 dark:hover:border-none dark:hover:text-white"
+                  disabled={isSubmitting}
+                >
+                  {t("send")}
+                </button>
+              </Form>
+            )}
+          </Formik>
         </section>
       )}
     </main>

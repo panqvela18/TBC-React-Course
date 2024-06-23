@@ -5,6 +5,7 @@ import { getUserImage, getUserInfo } from "@/app/api";
 import ProfileInfo from "@/components/ProfileInfo";
 import Link from "next/link";
 import { getI18n } from "@/locales/server";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
   title: "Profile",
@@ -17,6 +18,7 @@ export default async function Profile() {
   const userImage = await getUserImage();
   const userInfo = await getUserInfo();
   const t = await getI18n();
+  noStore();
 
   console.log(userInfo);
 

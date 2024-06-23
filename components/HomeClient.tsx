@@ -104,7 +104,7 @@ export default function HomeClient({
           <h3 className="text-4xl text-[#11545c] dark:text-[#ececec] font-bold mb-8">
             WELCOME TO TV PROJECT PRODUCTION
           </h3>
-          <div className="px-[25%] flex flex-col items-center">
+          <div className="flex flex-col items-center w-1/2">
             <p className="text-[18px] text-[#11545c] dark:text-[#ececec]">
               Bringing your stories to life with innovative TV production
               solutions. From concept to final cut, we handle all aspects of
@@ -114,7 +114,7 @@ export default function HomeClient({
 
             <Link
               href={"/about"}
-              className="w-32 flex justify-center items-center mt-5 text-[#003049] dark:text-white font-bold hover:text-[#11545c]"
+              className="whitespace-nowrap flex justify-center items-center mt-5 text-[#003049] dark:text-white font-bold hover:text-[#11545c]"
             >
               <span className="pr-2 ">{t("readMore")}</span>
             </Link>
@@ -183,7 +183,7 @@ export default function HomeClient({
                 <div className="flex flex-col items-center">
                   <Link
                     href={`/product/${p.id}`}
-                    className="text-indigo-500 hover:text-indigo-700 hover:underline transition duration-200 mt-2"
+                    className="text-[#003049] hover:text-[#1A5A77] dark:text-[#D3D3D3] dark:hover:text-[#A9A9A9] hover:underline transition duration-200 mt-2"
                   >
                     {t("learnMore")}
                   </Link>
@@ -245,7 +245,7 @@ export default function HomeClient({
                 <div className="flex flex-col items-center">
                   <Link
                     href={`/blog/${blog.id}`}
-                    className="text-indigo-500 hover:text-indigo-700 hover:underline transition duration-200 mt-2"
+                    className="text-[#003049] hover:text-[#1A5A77] dark:text-[#D3D3D3] dark:hover:text-[#A9A9A9] hover:underline transition duration-200 mt-2"
                   >
                     {t("learnMore")}
                   </Link>

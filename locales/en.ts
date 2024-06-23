@@ -27,6 +27,7 @@ export default {
   seeReviews:"See Your Reviews",
   userInformation: "User Information",
   upload: "Upload",
+  uploading: "Uploading",
   loading: "Loading",
   change: "Change",
   save: "Save",
@@ -56,10 +57,16 @@ export default {
   title:"Title",
   description:"Description",
   price:"Price",
-  
+  totalPrice: "Total Price",
+  UsersReviews:"Users Reviews",
+  productName:"Product Name",
+  star:"Star",
+  UsersMessages:"Users Messages",
+  ViewReceipt:"View Receipt",
 
-  
-
+  //Blog 
+  edit:"Edit",  
+  blogs:"Blogs",
   //About
   longText:"Our leaders are service-driven industry experts, dedicated to providing our clients with everything they need to execute world-class productions and events. With their deep industry knowledge, they are helping TV PROJECT to lead the way in providing our clients with the best technical resources and the most advanced technology available in the industry.",
   Team:"Team",
@@ -68,8 +75,17 @@ export default {
   category:"Category",
   discount:"Discount",
   stock:"Stock",
+  addnewproduct:"Add New Product",
+  Makeprimary : "Make Primary",
+  productAddedToCart:"Product Added To Cart",
+  productRemovedFromCart:"Product removed from cart",
 
-
+//reviews
+  addReview:"Add reviews",
+  outof5:"out of 5",
+  userName:"User Name",
+  Review:"Review",
+  Yourmessage:"Your message",
 
   // search
 
@@ -97,4 +113,29 @@ export default {
   username: "Username",
   password: "Password",
   login: "LOG IN",
+
+  //Validation
+  titleRequired:"Title is requared",
+  descriptionRequired:"Description is requared",
+  imageRequired:"Image is requared",
+  Tooshort:"To Short!",
+  Toolong:"To Long",
+  Namerequired:"Name is Required",
+  phoneIsRequired:"Phone is Required",
+  Surnamerequired:"Surname is Required",
+  mailIsnotValid:"Email is not valid",
+  Emailrequired:"Email is Required",
+  minmessage:"message must be at least 10 characters",
+  Messagerequired:"Message is Required",
+  MessageSent:"Message Sent",
+  Ratingrequired:"Rating is required",
+  Reviewmessage:"Review message is required",
+  addressIsRequired:"Address is required",
+  PriceNumber:"Price must be number",
+  PriceRequiared:"Price is required",
+  categoryRequiared:"Category is required",
+  discountRequiared:"Discount is required",
+  StockNumber:"Stock must be a number",
+  StockRequired:"Stock is required",
+  seemore:"See More",
 } as const;

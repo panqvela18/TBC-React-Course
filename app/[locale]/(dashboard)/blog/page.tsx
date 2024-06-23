@@ -1,9 +1,8 @@
 import BlogClient from "@/components/BlogClient";
-import Title from "@/components/Title";
 import React from "react";
-import { getI18n } from "../../../../locales/server";
 import { getPosts } from "@/app/api";
 // import AddNewBlog from "@/components/AddNewBlog";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
   title: "Blog",
@@ -12,14 +11,10 @@ export const metadata = {
 
 export default async function Blog() {
   const postData = await getPosts();
-  const t = await getI18n();
-  // const userId = await getUserId();
-  // const userRole = await getUserRole();
+  noStore();
 
   return (
-    <main className="bg-white dark:bg-slate-900">
-      <Title titleName={t("blogTitle")} />
-      {/* <AddNewBlog /> */}
+    <main className="bg-[#adb5bd] dark:bg-slate-900">
       <BlogClient postData={postData} />
     </main>
   );

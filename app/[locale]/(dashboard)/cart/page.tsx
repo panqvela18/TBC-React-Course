@@ -3,6 +3,9 @@ import { getProducts, getUserCart } from "../../../api";
 import QuintityChangeButtons from "../../../../components/QuintityChangeButtons";
 import ClearButton from "@/components/ClearButton";
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
   title: "Cart",
@@ -13,6 +16,7 @@ export default async function Page() {
   const cart = await getUserCart();
   const cartProductsArray = cart ? Object.entries(cart?.products) : [];
   const cartProducts = await getProducts();
+  noStore();
 
   const cartProductMap = new Map(cartProductsArray);
 
@@ -59,6 +63,16 @@ export default async function Page() {
         </Link>
         {/* <CheckoutButton selectedProducts={filteredProducts} authUser={user} /> */}
       </div>
+      <ToastContainer
+        position="bottom-right"
+        hideProgressBar={false}
+        autoClose={5000}
+        theme="colored"
+        newestOnTop={false}
+        draggable
+        pauseOnHover
+        closeOnClick
+      />
     </div>
   );
 }

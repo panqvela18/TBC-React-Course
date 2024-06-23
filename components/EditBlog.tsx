@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 import { updateBlog } from "@/app/actions";
 import { PostData } from "@/app/interface";
 import { CiEdit } from "react-icons/ci";
+import { useI18n } from "@/locales/client";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 interface BlogClientProps {
   blogData: PostData;
@@ -13,41 +16,62 @@ interface BlogClientProps {
 
 export default function EditBlog({ blogData }: BlogClientProps) {
   const [open, setOpen] = useState<boolean>(false);
-  const [blog, setBlog] = useState<PostData>(blogData);
+  const [loading, setLoading] = useState<boolean>(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const t = useI18n();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const initialValues: PostData = {
+    id: blogData.id,
+    title: blogData.title,
+    description: blogData.description,
+    image_url: blogData.image_url,
+    created_at: blogData.created_at,
+  };
+
+  const blogValidation = Yup.object({
+    title: Yup.string()
+      .min(20, t("Tooshort"))
+      .max(50, t("Toolong"))
+      .required(t("titleRequired")),
+    description: Yup.string()
+      .min(20, t("Tooshort"))
+      .max(50, t("Toolong"))
+      .required(t("descriptionRequired")),
+    image_url: Yup.string().required(t("imageRequired")),
+  });
+
+  const handleSubmit = async (
+    values: PostData,
+    { setSubmitting, resetForm }: any
+  ) => {
     try {
-      await updateBlog(blog);
+      await updateBlog(values);
       console.log("Blog updated successfully");
+      resetForm();
+      handleClose();
+      router.refresh();
     } catch (error) {
       console.error("Failed to update blog:", error);
     }
-    router.refresh();
-    handleClose();
+    setSubmitting(false);
   };
 
-  const handleChange = (
-    field: keyof PostData,
-    value: string | number | null
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: any
   ) => {
-    setBlog((prevBlog) => ({
-      ...prevBlog,
-      [field]: value,
-    }));
-  };
+    event.preventDefault();
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
+    if (!inputFileRef.current?.files) {
       throw new Error("No file selected");
     }
 
-    const file = e.target.files[0];
+    const file = inputFileRef.current.files[0];
+    setLoading(true);
 
     try {
       const response = await fetch(`/api/upload?filename=${file.name}`, {
@@ -56,12 +80,11 @@ export default function EditBlog({ blogData }: BlogClientProps) {
       });
 
       const newBlob = await response.json();
-      setBlog((prevBlog) => ({
-        ...prevBlog,
-        image_url: newBlob.url,
-      }));
+      setFieldValue("image_url", newBlob.url);
+      setLoading(false);
     } catch (error) {
       console.error("Error uploading file:", error);
+      setLoading(false);
     }
   };
 
@@ -80,70 +103,94 @@ export default function EditBlog({ blogData }: BlogClientProps) {
         className="flex items-center justify-center"
       >
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-2xl max-h-full overflow-y-auto">
-          <form onSubmit={handleSubmit} className="w-full">
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="title"
-              >
-                Title
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="title"
-                type="text"
-                placeholder="Title"
-                value={blog.title}
-                onChange={(e) => handleChange("title", e.target.value)}
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="description"
-              >
-                Description
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="description"
-                type="text"
-                placeholder="Description"
-                value={blog.description}
-                onChange={(e) => handleChange("description", e.target.value)}
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Image
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="file"
-                ref={inputFileRef}
-                onChange={handleFileChange}
-              />
-            </div>
-            {blog.image_url && (
-              <div className="mb-4">
-                <Image
-                  src={blog.image_url}
-                  alt="Blog Image"
-                  className="max-w-full h-auto"
-                  width={100}
-                  height={100}
-                />
-              </div>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={blogValidation}
+            onSubmit={handleSubmit}
+          >
+            {({ setFieldValue, isSubmitting }) => (
+              <Form className="w-full">
+                <div className="mb-4 max-h-16">
+                  <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="title"
+                  >
+                    {t("title")}
+                  </label>
+                  <Field
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black leading-tight focus:outline-none focus:shadow-outline"
+                    id="title"
+                    name="title"
+                    type="text"
+                    placeholder={t("title")}
+                  />
+                  <ErrorMessage
+                    name="title"
+                    component="div"
+                    className="text-red-500 text-xs italic"
+                  />
+                </div>
+                <div className="mb-4 max-h-16">
+                  <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="description"
+                  >
+                    {t("description")}
+                  </label>
+                  <Field
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black leading-tight focus:outline-none focus:shadow-outline"
+                    id="description"
+                    name="description"
+                    as="textarea"
+                    placeholder={t("description")}
+                  />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className="text-red-500 text-xs italic"
+                  />
+                </div>
+                <div className="mb-4 max-h-16">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    {t("image")}
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black leading-tight focus:outline-none focus:shadow-outline"
+                    type="file"
+                    ref={inputFileRef}
+                    onChange={(event) => handleFileUpload(event, setFieldValue)}
+                  />
+                  <Field type="hidden" name="image_url" />
+                  <ErrorMessage
+                    name="image_url"
+                    component="div"
+                    className="text-red-500 text-xs italic"
+                  />
+                  {loading && <p>{t("upload")}...</p>}
+                </div>
+                {initialValues.image_url && (
+                  <div className="mb-4">
+                    <Image
+                      src={initialValues.image_url}
+                      alt="Blog Image"
+                      className="max-w-full h-auto"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                )}
+                <div className="flex items-center justify-between">
+                  <button
+                    className="bg-[#11545c] hover:bg-[#11545c] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit"
+                    disabled={isSubmitting || loading}
+                  >
+                    {t("edit")}
+                  </button>
+                </div>
+              </Form>
             )}
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+          </Formik>
         </div>
       </Modal>
     </div>

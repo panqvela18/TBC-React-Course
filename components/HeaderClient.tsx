@@ -11,6 +11,7 @@ import ToggleLang from "./ToggleLang";
 import CartBtn from "./CartBtn";
 import { useRouter } from "next/navigation";
 import DarkMode from "./ChangeTheme";
+// import DropDown from "./DropDown";
 
 export default function HeaderClient({
   currentLang,
@@ -109,6 +110,7 @@ export default function HeaderClient({
               {t("blog")}
             </Link>
           </div>
+          {/* <DropDown /> */}
           <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
             <Link
               href={"/contact"}
@@ -142,12 +144,12 @@ export default function HeaderClient({
           )}
           {user ? (
             <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
-              <Link
+              <a
                 href={"/api/auth/logout"}
                 className="text-[#003049] dark:text-white text-sm hover:text-[#1A5A77]"
               >
                 {t("logout")}
-              </Link>
+              </a>
             </div>
           ) : (
             <button
@@ -243,12 +245,12 @@ export default function HeaderClient({
                   </Link>
                 </div>
                 <div className="cursor-pointer">
-                  <Link
+                  <a
                     href={`/api/auth/logout`}
                     className="text-white text-sm p-6 border-b-[3px] w-full flex justify-center hover:text-gray-200"
                   >
                     {t("logout")}
-                  </Link>
+                  </a>
                 </div>
               </>
             ) : (

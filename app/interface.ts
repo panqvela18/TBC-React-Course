@@ -81,10 +81,10 @@ export interface Prod {
     description: string;
     price: string;
     category: string;
-    discount: number;
+    discount: number | string;
     stock: number;
     image_url: string;
-    imageGallery?: Gallery[];
+    imageGallery?: Gallery[] | undefined;
 }
 
 
@@ -169,3 +169,16 @@ export interface Reviews{
   product_id:number;
   product_name:string
 }
+
+export  interface Review {
+  id: number;
+  review_id: number;
+  user_name: string;
+  email: string;
+  user_id: number;
+  star: number;
+  message: string;
+  product_id: number;
+  product_name: string;
+}
+

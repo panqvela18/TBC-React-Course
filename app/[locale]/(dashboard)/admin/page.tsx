@@ -2,7 +2,7 @@ import {
   Order,
   PostData,
   ProductFromVercel,
-  Reviews,
+  Review,
   User,
 } from "@/app/interface";
 import {
@@ -27,6 +27,8 @@ import DeleteProduct from "@/components/DeleteProduct";
 import DeleteContact from "@/components/DeleteContact";
 import RefaundButton from "@/components/RefaundButton";
 import { getI18n } from "@/locales/server";
+import DeleteReview from "@/components/DeleteReview";
+import { unstable_noStore as noStore } from "next/cache";
 
 export interface ContactInfo {
   id: number;
@@ -55,11 +57,13 @@ export default async function Admin() {
   const reviews = await getReviews();
   const contactInfo: ContactInfo[] = await getContact();
   const t = await getI18n();
+  noStore();
 
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto px-[4%] py-4">
         <div className="mt-8 overflow-x-auto">
+          <h2 className="text-2xl font-semibold mb-4">{t("users")}</h2>
           <table className="table-auto w-full">
             <thead>
               <tr>
@@ -95,6 +99,7 @@ export default async function Admin() {
         </div>
       </div>
       <div className="container mx-auto px-[4%] py-4">
+        <h2 className="text-2xl font-semibold mb-4">{t("blogs")}</h2>
         <AddNewBlog />
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
@@ -136,6 +141,7 @@ export default async function Admin() {
         </div>
       </div>
       <div className="container mx-auto px-[4%] py-4">
+        <h2 className="text-2xl font-semibold mb-4">{t("product")}</h2>
         <AddNewProduct />
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
@@ -189,17 +195,17 @@ export default async function Admin() {
         </div>
       </div>
       <div className="container mx-auto px-[4%] py-4">
-        <h2 className="text-2xl font-semibold mb-4">Orders</h2>
+        <h2 className="text-2xl font-semibold mb-4">{t("orders")}</h2>
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="px-4 py-2 dark:text-white">Total Price</th>
-                <th className="px-4 py-2 dark:text-white">Status</th>
-                <th className="px-4 py-2 dark:text-white">Address</th>
-                <th className="px-4 py-2 dark:text-white">Phone</th>
-                <th className="px-4 py-2 dark:text-white">Receipt</th>
-                <th className="px-4 py-2 dark:text-white">Actions</th>
+                <th className="px-4 py-2 dark:text-white">{t("totalPrice")}</th>
+                <th className="px-4 py-2 dark:text-white">{t("status")}</th>
+                <th className="px-4 py-2 dark:text-white">{t("Address")}</th>
+                <th className="px-4 py-2 dark:text-white">{t("phone")}</th>
+                <th className="px-4 py-2 dark:text-white">{t("receipt")}</th>
+                <th className="px-4 py-2 dark:text-white">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -230,7 +236,7 @@ export default async function Admin() {
                       className="text-red-600 dark:text-red-400 underline"
                       rel="noopener noreferrer"
                     >
-                      View Receipt
+                      {t("ViewReceipt")}
                     </a>
                   </td>
                   <td className="border px-4 py-2 dark:border-gray-700 dark:text-white flex justify-center">
@@ -246,20 +252,20 @@ export default async function Admin() {
         </div>
       </div>
       <div className="container mx-auto px-[4%] py-4">
-        <h2 className="text-2xl font-semibold mb-4">Product Reviews</h2>
+        <h2 className="text-2xl font-semibold mb-4">{t("UsersReviews")}</h2>
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Product Name</th>
-                <th className="px-4 py-2">Star</th>
-                <th className="px-4 py-2">Message</th>
-                <th className="px-4 py-2">Actions</th>
+                <th className="px-4 py-2">{t("name")}</th>
+                <th className="px-4 py-2">{t("productName")}</th>
+                <th className="px-4 py-2">{t("star")}</th>
+                <th className="px-4 py-2">{t("message")}</th>
+                <th className="px-4 py-2">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
-              {reviews.reviews?.map((review: Reviews) => (
+              {reviews.reviews?.map((review: Review) => (
                 <tr
                   key={review.review_id}
                   className="bg-white dark:bg-gray-800 rounded-md shadow-md mb-4"
@@ -269,9 +275,9 @@ export default async function Admin() {
                   <td className="border px-4 py-2">{review.star}</td>
                   <td className="border px-4 py-2">{review.message}</td>
                   <td className="border px-4 py-2 flex justify-center">
-                    {/* <div className="flex items-center">
-                      <DeleteContact id={contact.id} />
-                    </div> */}
+                    <div className="flex items-center">
+                      <DeleteReview id={review.review_id} />
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -280,16 +286,16 @@ export default async function Admin() {
         </div>
       </div>
       <div className="container mx-auto px-[4%] py-4">
-        <h2 className="text-2xl font-semibold mb-4">Contact Messages</h2>
+        <h2 className="text-2xl font-semibold mb-4">{t("UsersMessages")}</h2>
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Surname</th>
-                <th className="px-4 py-2">Email</th>
-                <th className="px-4 py-2">Message</th>
-                <th className="px-4 py-2">Actions</th>
+                <th className="px-4 py-2">{t("name")}</th>
+                <th className="px-4 py-2">{t("surname")}</th>
+                <th className="px-4 py-2">{t("email")}</th>
+                <th className="px-4 py-2">{t("message")}</th>
+                <th className="px-4 py-2">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>

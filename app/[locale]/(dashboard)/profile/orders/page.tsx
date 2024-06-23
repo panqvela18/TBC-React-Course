@@ -2,6 +2,7 @@ import { handleClearCart } from "@/app/actions";
 import { getOrders } from "@/app/api";
 import { Order } from "@/app/interface";
 import { getSession } from "@auth0/nextjs-auth0";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function Orders({
   searchParams,
@@ -12,6 +13,7 @@ export default async function Orders({
 
   const session = await getSession();
   const sub = session?.user?.sub;
+  noStore();
 
   if (searchParams.status === "success") {
     await handleClearCart();

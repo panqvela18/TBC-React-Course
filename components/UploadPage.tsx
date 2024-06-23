@@ -5,12 +5,14 @@ import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useEffect } from "react";
 import { FaCamera } from "react-icons/fa";
+import { useI18n } from "@/locales/client";
 
 export default function AvatarUploadPage({ userImage }: { userImage: string }) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const { user } = useUser();
   const [loader, setLoader] = useState(false);
+  const t = useI18n();
 
   useEffect(() => {
     setLoader(true);
@@ -51,7 +53,7 @@ export default function AvatarUploadPage({ userImage }: { userImage: string }) {
   return (
     <>
       <div className="relative rounded-full ">
-        {loader && <p className="absolute top-0 left-0 ">loading....</p>}
+        {loader && <p className="absolute top-0 left-0 ">{t("loading")}....</p>}
         {blob ? (
           <Image
             src={blob.url}
@@ -107,10 +109,10 @@ export default function AvatarUploadPage({ userImage }: { userImage: string }) {
         }}
       >
         <button
-          className="bg-blue-500 w-32 text-white text-[12px] py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+          className="bg-[#11545c] hover:bg-[#11545c] text-white text-[12px] py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
           type="submit"
         >
-          Upload
+          {t("upload")}
         </button>
       </form>
     </>

@@ -1,22 +1,15 @@
 import { getReviewsForUser } from "@/app/api";
+import { Review } from "@/app/interface";
 import DeleteReview from "@/components/DeleteReview";
 import EditReview from "@/components/EditReview";
 import React from "react";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function Reviews() {
   const reviews = await getReviewsForUser();
-  interface Reviews {
-    id: number;
-    review_id: number;
-    user_name: string;
-    email: string;
-    user_id: number;
-    star: number;
-    message: string;
-    product_id: number;
-    product_name: string;
-  }
+  noStore();
 
+  console.log(reviews);
   return (
     <main>
       <div className="container mx-auto px-[4%] py-4">
@@ -33,7 +26,7 @@ export default async function Reviews() {
               </tr>
             </thead>
             <tbody>
-              {reviews.reviews?.map((review: Reviews) => (
+              {reviews.reviews?.map((review: Review) => (
                 <tr
                   key={review.review_id}
                   className="bg-white dark:bg-gray-800 rounded-md shadow-md mb-4"

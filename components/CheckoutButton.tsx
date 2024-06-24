@@ -1,6 +1,7 @@
 "use client";
-
 import { checkout } from "@/app/actions";
+import { useI18n } from "@/locales/client";
+import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 export default function CheckoutButton({
@@ -18,11 +19,11 @@ export default function CheckoutButton({
     sub: "",
   });
 
-  // const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     setCartProducts(selectedProducts);
-  }, []);
+  }, [selectedProducts]);
+
+  const t = useI18n();
 
   useEffect(() => {
     if (authUser) {
@@ -41,10 +42,8 @@ export default function CheckoutButton({
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    // setLoading(true);
     e.preventDefault();
     await checkout(cartProducts, profile);
-    // setLoading(false);
   };
 
   const countSubtotal = cartProducts.reduce((curr: number, acc: any) => {
@@ -52,91 +51,100 @@ export default function CheckoutButton({
   }, 0);
 
   const subtotal = Math.round(countSubtotal * 100) / 100;
-  console.log(selectedProducts);
 
   return (
-    <>
-      <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-        <div>
-          {selectedProducts.map((product) => {
-            return (
-              <>
-                <h4 className="text-black">{product.title}</h4>
-                <span className="text-black">{product.price}</span>
-                <span className="text-black">{product.quantity}</span>
-              </>
-            );
-          })}
-          <p className="text-black">{subtotal}</p>
-        </div>
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">
-            Contact Information
-          </h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
-                htmlFor="phone"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Phone
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={profile.phone}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your phone number"
-                required
+    <div className="bg-[#adb5bd] dark:bg-slate-900 min-h-screen flex items-center justify-center sm:flex-col sm:p-8 ">
+      <div className="text-black dark:text-white mr-10 sm:mr-0 sm:mb-2">
+        {selectedProducts.map((product, index) => (
+          <div key={index} className="flex items-center mb-4">
+            <div className="w-16 h-16 relative overflow-hidden rounded-md mr-4">
+              <Image
+                layout="fill"
+                objectFit="cover"
+                alt="product"
+                src={product?.image_gallery[0].image_url}
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Name
-              </label>
-              <input
-                type="tel"
-                id="name"
-                name="name"
-                value={profile.name}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your name number"
-                required
-              />
+            <div>
+              <h4 className="text-lg font-semibold">{product.title}</h4>
+              <p className="text-sm">{product.price}</p>
+              <p className="text-sm">
+                {t("quantity")}: {product.quantity}
+              </p>
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="address"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Address
-              </label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                value={profile.address}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your address"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-[#11545c] text-white p-3 rounded-md font-medium hover:bg-[#11555cc9] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
+          </div>
+        ))}
+        <p className="text-lg font-semibold">
+          {t("totalPrice")}: ${subtotal}
+        </p>
       </div>
-    </>
+      <div className="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
+          {t("ContactInformation")}
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="phone"
+              className="block text-gray-700 dark:text-white font-medium mb-2"
+            >
+              {t("phone")}
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={profile.phone}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder={t("phone")}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 dark:text-white font-medium mb-2"
+            >
+              {t("name")}
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={profile.name}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder={t("name")}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="address"
+              className="block text-gray-700 dark:text-white font-medium mb-2"
+            >
+              {t("Address")}
+            </label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={profile.address}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder={t("Address")}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#11545c] dark:bg-[#0f3d47] text-white dark:text-gray-200 p-3 rounded-md font-medium hover:bg-[#11555cc9] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            {t("buy")}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Title from "./Title";
 import { useI18n } from "@/locales/client";
 import { PostData, ProductFromVercel } from "@/app/interface";
@@ -48,6 +48,22 @@ export default function HomeClient({
   const testVideo =
     "https://vt4mrhsohjaaqsi5.public.blob.vercel-storage.com/background-42qk0lNGxfZiKxS76DAj0G0aeb8fyb.mp4";
 
+  const sortedProducts = useMemo(() => {
+    return [...products].sort(
+      (a, b) =>
+        new Date(b.created_at ?? "").getTime() -
+        new Date(a.created_at ?? "").getTime()
+    );
+  }, [products]);
+
+  const sortedBlogs = useMemo(() => {
+    return [...blogs].sort(
+      (a, b) =>
+        new Date(b.created_at ?? "").getTime() -
+        new Date(a.created_at ?? "").getTime()
+    );
+  }, [blogs]);
+
   return (
     <>
       <main className="relative">
@@ -75,16 +91,13 @@ export default function HomeClient({
                   variants={buttonProps}
                   whileInView={buttonProps.whileInView}
                   initial={buttonProps.Initial}
-                  className="text-[150px] font-bold select-none"
+                  className=" font-bold select-none"
+                  style={{
+                    fontSize: "clamp(80px, 8vw, 200px)",
+                  }}
                 >
                   TV PROJECT
                 </motion.h1>
-                <span
-                  className="text-[80px] font-bold text-white select-none font-body"
-                  style={{ display: "none" }}
-                >
-                  PRODUCTION
-                </span>
               </div>
             </div>
           )}
@@ -132,7 +145,7 @@ export default function HomeClient({
         }}
         className="px-[4%] mb-5"
       >
-        <Title titleName={t("popularproductTitle")} />
+        <Title titleName={t("newProducts")} />
         <div className="flex justify-end mb-3">
           <Link
             href="/product"
@@ -143,11 +156,11 @@ export default function HomeClient({
         </div>
 
         <div className="grid grid-cols-4 gap-8 md:grid-cols-2 sm:grid-cols-1">
-          {products.map((p) => {
+          {sortedProducts.slice(0, 4).map((p) => {
             return (
               <div
                 key={p.id}
-                className="bg-white dark:bg-slate-800 p-6 flex flex-col justify-between rounded-lg shadow hover:shadow-lg transition-shadow duration-300  h-[450px] "
+                className="bg-white dark:bg-slate-800 p-6 flex flex-col justify-between rounded-lg shadow hover:shadow-lg transition-shadow duration-300  h-auto "
               >
                 <div className="flex flex-col items-center">
                   {p.image_gallery?.[0]?.image_url ? (
@@ -215,7 +228,7 @@ export default function HomeClient({
         </div>
 
         <div className="grid grid-cols-4 gap-8 md:grid-cols-2 sm:grid-cols-1">
-          {blogs.slice(0, 4).map((blog) => {
+          {sortedBlogs.slice(0, 4).map((blog) => {
             const date = blog.created_at.split("T")[0];
 
             return (

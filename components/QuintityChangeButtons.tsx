@@ -9,13 +9,13 @@ import {
 import { toast } from "react-toastify";
 import { useI18n } from "@/locales/client";
 
-export default function QuintityChangeButtons({ id }: { id: string }) {
+export default function QuintityChangeButtons({ id }: { id: number }) {
   const t = useI18n();
   return (
     <div className="flex space-x-2">
       <button
         onClick={() => {
-          handleDecrement(id);
+          handleDecrement(id.toString());
           toast.info(t("productRemovedFromCart"), {
             position: "top-right",
             autoClose: 2000,
@@ -33,7 +33,7 @@ export default function QuintityChangeButtons({ id }: { id: string }) {
 
       <button
         onClick={() => {
-          handleAddToCart(id);
+          handleAddToCart(id.toString());
           toast.success(t("productAddedToCart"), {
             position: "top-right",
             autoClose: 2000,
@@ -50,7 +50,7 @@ export default function QuintityChangeButtons({ id }: { id: string }) {
       </button>
       <button
         onClick={() => {
-          handleRemoveProductFromCart(id);
+          handleRemoveProductFromCart(id.toString());
         }}
         className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded"
       >

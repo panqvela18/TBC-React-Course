@@ -127,7 +127,10 @@ export default async function Admin() {
                     />
                   </td>
                   <td className="border px-4 py-2">{blog.title}</td>
-                  <td className="border px-4 py-2">{blog.description}</td>
+                  <td className="border px-4 py-2">{`${blog.description
+                    .split(" ")
+                    .slice(0, 20)
+                    .join(" ")}} ...`}</td>
                   <td className="px-4 py-2 border-t flex justify-center">
                     <div className="flex items-center">
                       <EditBlog blogData={blog} />
@@ -179,7 +182,10 @@ export default async function Admin() {
                   <td className="border px-4 py-2 text-black dark:text-white">
                     {product.title}
                   </td>
-                  <td className="border px-4 py-2">{product.description}</td>
+                  <td className="border px-4 py-2">{`${product.description
+                    .split(" ")
+                    .slice(0, 20)
+                    .join(" ")}} ...`}</td>
                   <td className="border px-4 py-2">{product.price}</td>
                   <td className="border px-4 py-2">{product.category}</td>
                   <td className="border-t px-4 py-2 flex justify-center">

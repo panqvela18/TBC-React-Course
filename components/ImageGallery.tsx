@@ -19,7 +19,7 @@ export default function ImageGallery({ gallery }: { gallery: Gallery[] }) {
       <section>
         <div className="container">
           <Swiper
-            loop={true}
+            loop={false}
             spaceBetween={10}
             thumbs={{
               swiper:
@@ -28,46 +28,51 @@ export default function ImageGallery({ gallery }: { gallery: Gallery[] }) {
                   : undefined,
             }}
             modules={[FreeMode, Thumbs]}
-            className="h-96 w-full rounded-lg"
+            className="main-swiper rounded-lg"
+            initialSlide={0}
           >
             {gallery.map((img, index) => (
               <SwiperSlide key={index} className="relative">
                 <PhotoView src={img.image_url}>
-                  <div className="flex h-full w-full justify-center cursor-pointer">
+                  <button className="flex h-full w-full items-center justify-center">
                     <Image
                       src={img.image_url}
-                      alt="galleryImg"
-                      width={300}
-                      height={300}
-                      className="block h-full w-full object-cover "
+                      alt={`Image ${index + 1}`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-lg"
                     />
-                  </div>
+                  </button>
                 </PhotoView>
               </SwiperSlide>
             ))}
           </Swiper>
+
           <Swiper
             onSwiper={setThumbSwiper}
-            loop={true}
+            loop={false}
             spaceBetween={12}
             slidesPerView={4}
             freeMode={true}
             watchSlidesProgress={true}
             modules={[FreeMode, Navigation, Thumbs]}
-            className="thumbs mt-3 h-32 w-full rounded-lg"
+            className="thumbs mt-3 rounded-lg"
           >
             {gallery.map((img, index) => (
               <SwiperSlide key={index} className="relative group">
-                <button className="flex h-full w-full items-center justify-center">
-                  <Image
-                    src={img.image_url}
-                    alt="galleryImg"
-                    width={300}
-                    height={300}
-                    className="block h-full w-full object-cover group-hover:before:opacity-0"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-0 transition-opacity"></div>
-                </button>
+                <PhotoView src={img.image_url}>
+                  <button className="flex h-full w-full items-center justify-center">
+                    <Image
+                      src={img.image_url}
+                      alt={`Thumbnail ${index + 1}`}
+                      width={120}
+                      height={120}
+                      objectFit="cover"
+                      className="rounded-lg group-hover:opacity-75 transition-opacity duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gray-300 dark:bg-black bg-opacity-50 dark:bg-opacity-50 group-hover:bg-opacity-0 transition-opacity dark:group-hover:bg-opacity-75"></div>
+                  </button>
+                </PhotoView>
               </SwiperSlide>
             ))}
           </Swiper>

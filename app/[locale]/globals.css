@@ -14,3 +14,9 @@ img {
 .active {
   color: #11545c;
 }
+
+@media (max-width: 767px) {
+  .column-container {
+    columns: 1;
+  }
+}

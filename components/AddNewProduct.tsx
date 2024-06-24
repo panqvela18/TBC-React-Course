@@ -35,14 +35,22 @@ export default function AddNewProduct() {
   };
 
   const validationSchema = Yup.object({
-    title: Yup.string().required(t("titleRequired")),
-    description: Yup.string().required(t("descriptionRequired")),
+    title: Yup.string()
+      .min(10, t("Tooshort"))
+      .max(255, t("Toolong"))
+      .required(t("titleRequired")),
+    description: Yup.string()
+      .min(10, t("Tooshort"))
+      .max(255, t("Toolong"))
+      .required(t("descriptionRequired")),
     image_url: Yup.string().required(t("imageRequired")),
     price: Yup.string()
       .matches(/^[0-9]+(\.[0-9]{1,2})?$/, t("PriceNumber"))
       .required(t("PriceRequiared")),
     category: Yup.string().required(t("categoryRequiared")),
-    discount: Yup.string().required(t("discountRequiared")),
+    discount: Yup.string()
+      .matches(/^[0-9]+(\.[0-9]{1,2})?$/, t("PriceNumber"))
+      .required(t("discountRequiared")),
     stock: Yup.string()
       .matches(/^[0-9]+$/, t("StockNumber"))
       .required(t("StockRequired")),
@@ -146,7 +154,7 @@ export default function AddNewProduct() {
                     {t("title")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black leading-tight focus:outline-none focus:shadow-outline"
                     id="title"
                     name="title"
                     type="text"
@@ -163,7 +171,7 @@ export default function AddNewProduct() {
                     {t("description")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="description"
                     name="description"
                     as="textarea"
@@ -180,7 +188,7 @@ export default function AddNewProduct() {
                     {t("image")}
                   </label>
                   <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     type="file"
                     ref={inputFileRef}
                     onChange={(e) => handleFileChange(e, setFieldValue)}
@@ -221,7 +229,7 @@ export default function AddNewProduct() {
                     {t("price")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="price"
                     name="price"
                     type="text"
@@ -238,7 +246,7 @@ export default function AddNewProduct() {
                     {t("category")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="category"
                     name="category"
                     type="text"
@@ -255,7 +263,7 @@ export default function AddNewProduct() {
                     {t("discount")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="discount"
                     name="discount"
                     type="text"
@@ -272,7 +280,7 @@ export default function AddNewProduct() {
                     {t("stock")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="stock"
                     name="stock"
                     type="text"

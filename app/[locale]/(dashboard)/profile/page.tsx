@@ -3,7 +3,6 @@ import UploadPage from "@/components/UploadPage";
 // import { getSession } from "@auth0/nextjs-auth0";
 import { getUserImage, getUserInfo } from "@/app/api";
 import ProfileInfo from "@/components/ProfileInfo";
-import Link from "next/link";
 import { getI18n } from "@/locales/server";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -33,8 +32,6 @@ export default async function Profile() {
           <ProfileInfo user={userInfo} />
         </div>
       </div>
-      <Link href={"profile/orders"}>{t("seeOrders")}</Link>
-      <Link href={"profile/reviews"}>{t("seeReviews")}</Link>
     </main>
   );
 }

@@ -68,6 +68,7 @@ export interface ProductData {
     user_id:number;
     quantity?:number
     image_gallery?: Gallery[] | undefined;
+    created_at?:string;
   }
   export interface Gallery {
     id: number;

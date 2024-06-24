@@ -13,17 +13,16 @@ interface BlogClientProps {
 
 export default function BlogClient({ postData }: BlogClientProps) {
   const [search, setSearch] = useState("");
-  const [visibleBlogs, setVisibleBlogs] = useState(4); // State to control number of visible blogs
+  const [visibleBlogs, setVisibleBlogs] = useState(4);
 
+  const showMoreBlogs = () => {
+    setVisibleBlogs((prevVisibleBlogs) => prevVisibleBlogs + 4);
+  };
   const t = useI18n();
 
   let filteredBlogs = postData?.filter((prod) =>
     prod.title.toLowerCase().includes(search.toLowerCase())
   );
-
-  const showMoreBlogs = () => {
-    setVisibleBlogs((prevVisibleBlogs) => prevVisibleBlogs + 4); // Increment by 4
-  };
 
   return (
     <>

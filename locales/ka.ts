@@ -7,7 +7,11 @@ export default {
     "profile": "პროფილი",
     "logout": "გასვლა",
     "admin": "ადმინი",
+    
     "product":"პროდუქტები",
+    "myOrders":"ჩემი ორდერები",
+    "myReviews":"ჩემი შეფასებები",
+
     //TITLE
     "blogTitle": "ბლოგი",
     "productTitle": "პროდუქტები",
@@ -29,6 +33,9 @@ export default {
     "stock":"მარაგი",
     "productAddedToCart":"პროდუქტი კალათაში დამატებულია",
     "productRemovedFromCart":"პროდუქტი წაშლილია კალათიდან",
+    "newProducts":"ახალი პროდუქტები",
+    "quantity":"რაოდენობა",
+
     // Profile Page
     "seeOrders":"ორდერების ნახვა",
     "seeReviews":"შეკვეთების ნახვა",
@@ -43,6 +50,11 @@ export default {
     "phone":"ტელეფონი",
     "Update":"განახლება",
     "Address":"მისამართი",
+    "ContactInformation":"საკონტაქტო ინფორმაცია",
+    "buy":"ყიდვა",
+    "similarProducts":"მსგავსი პროდუქტები",
+
+
 
     // ADMIN PAGE
   "users": "მომხმარებლები",
@@ -84,7 +96,9 @@ export default {
   "userName":"მომხმარებელი",
   "Review":"შეფასება",
   "Yourmessage":"თქვენი შეტყობინება",
-
+  "customerReviews":"მომხმარებლების შეფასებები",
+  "Available":"ხელმისაწვდომი",
+  "noReviews":"ამ პროდუქტს მომხმარებლის შეფასება არ აქვს",
 
 
 
@@ -139,10 +153,4 @@ export default {
       "StockNumber":"მარაგი უნდა იყოს რიცხვი",
       "StockRequired":"მარაგი სავალდებულოა",
       "seemore":"მეტის ნახვა",
-
-
-
-
-
-
   } as const

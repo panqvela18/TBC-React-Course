@@ -11,7 +11,8 @@ import ToggleLang from "./ToggleLang";
 import CartBtn from "./CartBtn";
 import { useRouter } from "next/navigation";
 import DarkMode from "./ChangeTheme";
-// import DropDown from "./DropDown";
+import DropDown from "./DropDown";
+import { IoLogIn } from "react-icons/io5";
 
 export default function HeaderClient({
   currentLang,
@@ -24,24 +25,21 @@ export default function HeaderClient({
   totalQuantity: number;
 }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
-  // const [isHidden, setIsHidden] = useState<boolean>(false);
-  // const [scrollY, setScrollY] = useState<number>(0);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (window.scrollY > scrollY && window.scrollY > 100) {
-  //       setIsHidden(true);
-  //     } else {
-  //       setIsHidden(false);
-  //     }
-  //     setScrollY(window.screenY);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [scrollY]);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileOrTablet(window.innerWidth <= 768);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (showBugerMenu) {
@@ -82,7 +80,7 @@ export default function HeaderClient({
             className="block dark:hidden"
           />
         </Link>
-        <nav className="flex items-center md:hidden w-[55%] justify-between">
+        <nav className="flex items-center md:hidden w-[30%] justify-between">
           <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
             <Link
               href={"/about"}
@@ -110,7 +108,6 @@ export default function HeaderClient({
               {t("blog")}
             </Link>
           </div>
-          {/* <DropDown /> */}
           <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
             <Link
               href={"/contact"}
@@ -120,51 +117,21 @@ export default function HeaderClient({
               {t("contact")}
             </Link>
           </div>
-          {user && (
-            <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
-              <Link
-                href={"/profile"}
-                prefetch={false}
-                className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77]"
-              >
-                {t("profile")}
-              </Link>
-            </div>
-          )}
-          {user?.role.length > 0 && "admin" && (
-            <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
-              <Link
-                href={"/admin"}
-                prefetch={false}
-                className="text-[#003049] dark:text-white text-sm  hover:text-[#1A5A77]"
-              >
-                {t("admin")}
-              </Link>
-            </div>
-          )}
-          {user ? (
-            <div className=" cursor-pointer after:content-[''] after:h-1 after:bg-[#11545c] after:w-full after:block after:scale-x-0 after:transition-transform after:transition-duration-[500ms] after:hover:scale-x-100">
-              <a
-                href={"/api/auth/logout"}
-                className="text-[#003049] dark:text-white text-sm hover:text-[#1A5A77]"
-              >
-                {t("logout")}
-              </a>
-            </div>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="text-[#003049] dark:text-white text-sm hover:text-[#1A5A77]"
-            >
-              {t("login")}
-            </button>
-          )}
         </nav>
         <div className="flex items-center">
           {user && <CartBtn totalQuantity={totalQuantity} />}
           <ToggleLang currentLang={currentLang?.value} />
-
           <DarkMode />
+
+          {!isMobileOrTablet &&
+            (user ? (
+              <DropDown />
+            ) : (
+              <IoLogIn
+                className="text-4xl text-[#003049] dark:text-white cursor-pointer"
+                onClick={handleLogin}
+              />
+            ))}
         </div>
         {showBugerMenu ? (
           <MdOutlineClose

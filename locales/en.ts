@@ -4,10 +4,11 @@ export default {
   about: "ABOUT",
   blog: "BLOG",
   contact: "CONTACT",
-  profile: "PROFILE",
-  logout: "LOG OUT",
-  admin: "ADMIN",
+  profile: "Profile",
+  logout: "Log Out",
+  admin: "Admin",
   product:"PRODUCTS",
+  myOrders:"My Orders",
 
 
   //TITLE
@@ -32,9 +33,9 @@ export default {
   change: "Change",
   save: "Save",
   yourInfoIsUpdated: "Your info is updated",
-  phone:"ტელეფონი",
-  Update:"განახლება",
-  Address:"მისამართი",
+  phone:"Phone",
+  Update:"Update",
+  Address:"Address",
 
   //Admin Page
   users: "Users",
@@ -63,6 +64,9 @@ export default {
   star:"Star",
   UsersMessages:"Users Messages",
   ViewReceipt:"View Receipt",
+  ContactInformation:"Contact Information",
+  buy:"Buy Now",
+  similarProducts:"Similar Products",
 
   //Blog 
   edit:"Edit",  
@@ -70,6 +74,8 @@ export default {
   //About
   longText:"Our leaders are service-driven industry experts, dedicated to providing our clients with everything they need to execute world-class productions and events. With their deep industry knowledge, they are helping TV PROJECT to lead the way in providing our clients with the best technical resources and the most advanced technology available in the industry.",
   Team:"Team",
+
+
   // Product Page
   addToCart: "Add to Cart",
   category:"Category",
@@ -79,13 +85,19 @@ export default {
   Makeprimary : "Make Primary",
   productAddedToCart:"Product Added To Cart",
   productRemovedFromCart:"Product removed from cart",
-
+  newProducts:"New Products",
+  quantity:"Quantity",
 //reviews
-  addReview:"Add reviews",
+  addReview:"Add Review",
   outof5:"out of 5",
   userName:"User Name",
   Review:"Review",
   Yourmessage:"Your message",
+  myReviews:"My Reviews",
+  customerReviews:"Customer Reviews",
+  Available:"Available",
+  noReviews:"There are no reviews for this product yet.",
+
 
   // search
 

@@ -86,7 +86,7 @@ export default function StarRating({
         {userAlreadyWriteReview || userName === undefined ? (
           ""
         ) : (
-          <button className="text-black" onClick={() => setOpen(true)}>
+          <button className="text-white" onClick={() => setOpen(true)}>
             {t("addReview")}
           </button>
         )}

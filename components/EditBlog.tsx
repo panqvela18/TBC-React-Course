@@ -110,7 +110,7 @@ export default function EditBlog({ blogData }: BlogClientProps) {
           >
             {({ setFieldValue, isSubmitting }) => (
               <Form className="w-full">
-                <div className="mb-4 max-h-16">
+                <div className="mb-4">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="title"
@@ -130,7 +130,7 @@ export default function EditBlog({ blogData }: BlogClientProps) {
                     className="text-red-500 text-xs italic"
                   />
                 </div>
-                <div className="mb-4 max-h-16">
+                <div className="mb-4">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="description"
@@ -150,7 +150,7 @@ export default function EditBlog({ blogData }: BlogClientProps) {
                     className="text-red-500 text-xs italic"
                   />
                 </div>
-                <div className="mb-4 max-h-16">
+                <div className="mb-4">
                   <label className="block text-gray-700 text-sm font-bold mb-2">
                     {t("image")}
                   </label>

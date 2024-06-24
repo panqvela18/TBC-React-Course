@@ -17,7 +17,6 @@ interface ProductsDetailsProps {
 export async function generateMetadata({ params }: ProductsDetailsProps) {
   const blogData = await getPosts();
   const blog = blogData.find((blog: PostData) => blog.id == params.id);
-  noStore();
 
   return {
     title: `${blog.title}`,
@@ -32,6 +31,7 @@ export default async function BlogDetail({
 }) {
   const blogDetail = await getBlogDetail(id);
   const blogs: PostData[] = await getPosts();
+  noStore();
 
   const t = await getI18n();
 
@@ -44,7 +44,7 @@ export default async function BlogDetail({
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="text-white p-4 flex items-center justify-center text-center">
+          <div className="text-white p-4 flex items-center justify-center text-center w-1/2">
             <h1 className="text-4xl font-bold">{blogDetail.title}</h1>
           </div>
         </div>
@@ -63,13 +63,13 @@ export default async function BlogDetail({
         <div className="flex justify-end mb-3">
           <Link
             href="/blog"
-            className="bg-[#11545c] text-white py-2 px-6 rounded font-bold hover:bg-[#11545c] transition-colors duration-300"
+            className="bg-[#11545c] hover:bg-[#11545c] text-white py-2 px-6 rounded font-bold  transition-colors duration-300"
           >
             {t("SeeAll")}
           </Link>
         </div>
 
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid grid-cols-4 gap-8 sm:grid-cols-1">
           {blogs
             .filter((blog) => blog.id !== blogDetail.id)
             .slice(0, 4)
@@ -103,7 +103,7 @@ export default async function BlogDetail({
                   <div className="flex flex-col items-center">
                     <Link
                       href={`/blog/${blog.id}`}
-                      className="text-indigo-500 hover:text-indigo-700 hover:underline transition duration-200 mt-2"
+                      className="text-[#003049] hover:text-[#1A5A77] dark:text-[#D3D3D3] dark:hover:text-[#A9A9A9] hover:underline transition duration-200 mt-2"
                     >
                       {t("learnMore")}
                     </Link>

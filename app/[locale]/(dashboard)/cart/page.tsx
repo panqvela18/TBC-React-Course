@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { unstable_noStore as noStore } from "next/cache";
+import { ProductFromVercel } from "@/app/interface";
 
 export const metadata = {
   title: "Cart",
@@ -33,13 +34,13 @@ export default async function Page() {
 
   return (
     <div className="container mx-auto p-6 flex space-x-8">
-      <div className="w-2/3">
+      <div className="w-2/3 md:w-full">
         <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
         <div className="grid grid-cols-1 gap-4">
-          {filteredProducts.map((prod: any) => (
+          {filteredProducts.map((prod: ProductFromVercel) => (
             <div
               key={prod.id}
-              className="p-4 border rounded-lg shadow-sm flex items-center justify-between"
+              className="p-4 border rounded-lg shadow-sm flex items-center justify-between md:flex-col"
             >
               <div>
                 <p className="text-lg font-semibold">{prod.title}</p>
@@ -49,20 +50,20 @@ export default async function Page() {
             </div>
           ))}
         </div>
-        <ClearButton />
+        <div>
+          <ClearButton />
+          <Link
+            href={"/checkout"}
+            className="mt-4 font-bold w-full md:w-auto bg-[#11545c] hover:bg-[#11545c] text-white hover:underline py-2 px-4 rounded"
+          >
+            Checkout
+          </Link>
+        </div>
         <h5 className="mt-4 text-xl font-semibold">
           Total: ${totalPrice.toFixed(2)}
         </h5>
       </div>
-      <div className="w-1/3">
-        <Link
-          href={"/checkout"}
-          className="block mt-4 text-blue-500 hover:underline"
-        >
-          Go to checkout page
-        </Link>
-        {/* <CheckoutButton selectedProducts={filteredProducts} authUser={user} /> */}
-      </div>
+
       <ToastContainer
         position="bottom-right"
         hideProgressBar={false}

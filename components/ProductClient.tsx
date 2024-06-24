@@ -22,10 +22,14 @@ export default function ProductClient({ products }: HomeClientProps) {
   const [resetProduct, setResetProduct] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
+  const [visibleProducts, setVisibleProducts] = useState(4);
   const { user } = useUser();
   const router = useRouter();
   const t = useI18n();
 
+  const showMoreProducts = () => {
+    setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 4);
+  };
   const handleSortChange = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -108,8 +112,8 @@ export default function ProductClient({ products }: HomeClientProps) {
         {loader ? (
           <Loader />
         ) : (
-          <div className="grid grid-cols-4 grid-rows-2 justify-between gap-4 pb-20 pt-5 md:grid-cols-2 sm:grid-cols-1">
-            {filteredProducts.map((p) => (
+          <div className="grid grid-cols-4  justify-between gap-4 pb-20 pt-5 md:grid-cols-2 sm:grid-cols-1">
+            {filteredProducts.slice(0, visibleProducts).map((p) => (
               <div
                 key={p.id}
                 className="bg-white dark:bg-slate-800 p-6 flex flex-col justify-between rounded-lg shadow hover:shadow-lg transition-shadow duration-300 "
@@ -166,7 +170,26 @@ export default function ProductClient({ products }: HomeClientProps) {
             ))}
           </div>
         )}
-        <ToastContainer position="bottom-right" />
+        {visibleProducts < filteredProducts.length && (
+          <div className="flex justify-center py-5">
+            <button
+              onClick={showMoreProducts}
+              className="px-4 py-2 bg-[#11545c] hover:bg-[#11545c] text-white rounded-md "
+            >
+              {t("seemore")}
+            </button>
+          </div>
+        )}
+        <ToastContainer
+          position="bottom-right"
+          hideProgressBar={false}
+          autoClose={5000}
+          theme="colored"
+          newestOnTop={false}
+          draggable
+          pauseOnHover
+          closeOnClick
+        />
       </section>
     </main>
   );

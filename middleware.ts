@@ -1,22 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createI18nMiddleware } from "next-international/middleware";
+import { getSession } from "@auth0/nextjs-auth0/edge";
+
+function isPathProtected(pathName: string) {
+  const protectedRoutes = [
+    "/profile",
+    "/cart",
+    "/checkout",
+    "/admin"
+  ];
+
+  for (const route of protectedRoutes) {
+    if (pathName.startsWith(route)) {
+      return true;
+    }
+  }
+  return false;
+}
 
 export default async function middleware(request: NextRequest) {
-  const cookieStore = request.cookies;
-  const appSessionCookie = cookieStore.get("appSession")
-  const { pathname } = request.nextUrl;
-  if (
-    !appSessionCookie &&
-    (pathname.startsWith("/profile") ||
-      pathname.startsWith("/checkout") ||
-      pathname.startsWith("/cart"))
-  ) {
-    return NextResponse.redirect(new URL("/api/auth/login", request.url));
-  }
+  const response = NextResponse.next();
+  const session = await getSession(request, response);
 
-  if (appSessionCookie && pathname.startsWith("/login")) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  const pathName = request.nextUrl.pathname;
+
+  if (!session?.user && isPathProtected(pathName))
+    return NextResponse.redirect(new URL("/api/auth/login", request.nextUrl));
+
+  if (!session?.user?.role.includes("admin") && pathName.startsWith("/admin"))
+    return NextResponse.redirect(new URL("/", request.nextUrl));
 
   const I18nMiddleware = createI18nMiddleware({
     locales: ["en", "ka"],
@@ -24,11 +36,11 @@ export default async function middleware(request: NextRequest) {
     urlMappingStrategy: "rewrite",
   });
 
-  const response =  I18nMiddleware(request);
-
-  return response;
+  return I18nMiddleware(request);
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|static|.*\\..*|favicon.ico|robots.txt).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|images|favicon.ico|robots.txt).*)",
+  ],
 };

@@ -26,6 +26,7 @@ export default function EditProduct({ product }: EditProduct) {
   const t = useI18n();
 
   const id = product.id;
+
   useEffect(() => {
     setImageGallery(product?.image_gallery || []);
   }, [product?.image_gallery]);
@@ -46,14 +47,22 @@ export default function EditProduct({ product }: EditProduct) {
   };
 
   const validationSchema = Yup.object({
-    title: Yup.string().required(t("titleRequired")),
-    description: Yup.string().required(t("descriptionRequired")),
+    title: Yup.string()
+      .min(10, t("Tooshort"))
+      .max(255, t("Toolong"))
+      .required(t("titleRequired")),
+    description: Yup.string()
+      .min(10, t("Tooshort"))
+      .max(255, t("Toolong"))
+      .required(t("descriptionRequired")),
     image_url: Yup.string().required(t("imageRequired")),
     price: Yup.string()
       .matches(/^[0-9]+(\.[0-9]{1,2})?$/, t("PriceNumber"))
       .required(t("PriceRequiared")),
     category: Yup.string().required(t("categoryRequiared")),
-    discount: Yup.string().required(t("discountRequiared")),
+    discount: Yup.string()
+      .matches(/^[0-9]+(\.[0-9]{1,2})?$/, t("PriceNumber"))
+      .required(t("discountRequiared")),
     stock: Yup.string()
       .matches(/^[0-9]+$/, t("StockNumber"))
       .required(t("StockRequired")),
@@ -173,7 +182,7 @@ export default function EditProduct({ product }: EditProduct) {
                     {t("title")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="title"
                     name="title"
                     type="text"
@@ -190,7 +199,7 @@ export default function EditProduct({ product }: EditProduct) {
                     {t("description")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="description"
                     name="description"
                     as="textarea"
@@ -207,7 +216,7 @@ export default function EditProduct({ product }: EditProduct) {
                     {t("image")}
                   </label>
                   <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     type="file"
                     ref={inputFileRef}
                     onChange={(e) => handleFileChange(e, setFieldValue)}
@@ -242,7 +251,7 @@ export default function EditProduct({ product }: EditProduct) {
                       </button>
                       <button
                         type="button"
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ml-2"
+                        className="bg-[#11545c] hover:bg-[#11545c] text-white font-bold py-1 px-2 rounded ml-2"
                         onClick={() =>
                           handleMoveToFirst(image.id, setFieldValue)
                         }
@@ -257,7 +266,7 @@ export default function EditProduct({ product }: EditProduct) {
                     {t("price")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="price"
                     name="price"
                     type="text"
@@ -274,7 +283,7 @@ export default function EditProduct({ product }: EditProduct) {
                     {t("category")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="category"
                     name="category"
                     type="text"
@@ -291,7 +300,7 @@ export default function EditProduct({ product }: EditProduct) {
                     {t("discount")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="discount"
                     name="discount"
                     type="text"
@@ -308,7 +317,7 @@ export default function EditProduct({ product }: EditProduct) {
                     {t("stock")}
                   </label>
                   <Field
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black  leading-tight focus:outline-none focus:shadow-outline"
                     id="stock"
                     name="stock"
                     type="text"

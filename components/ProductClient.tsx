@@ -61,7 +61,6 @@ export default function ProductClient({ products }: HomeClientProps) {
     }
   };
 
-  // Extract unique categories
   const uniqueCategories = Array.from(
     new Set(products.map((prod) => prod.category))
   );
@@ -70,14 +69,12 @@ export default function ProductClient({ products }: HomeClientProps) {
     prod.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Apply category filter
   if (selectedCategory !== null) {
     filteredProducts = filteredProducts.filter(
       (prod) => prod.category === selectedCategory
     );
   }
 
-  // Apply price sorting
   if (resetProduct) {
     filteredProducts = filteredProducts.sort(
       (a, b) => Number(a.price) - Number(b.price)
@@ -105,7 +102,39 @@ export default function ProductClient({ products }: HomeClientProps) {
             onChange={(_event, value) => {
               setSearch(value ? value.title : "");
             }}
-            sx={{ width: 300 }}
+            sx={{
+              width: 300,
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "inherit",
+                },
+                "&:hover fieldset": {
+                  borderColor: "inherit",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "inherit",
+                },
+              },
+              "& .MuiInputBase-input": {
+                color: "inherit",
+              },
+              "& .MuiInputBase-input::placeholder": {
+                color: "inherit",
+                opacity: 1,
+              },
+              "& .MuiFormLabel-root": {
+                color: "black",
+              },
+              "&.Mui-focused .MuiFormLabel-root": {
+                color: "black",
+              },
+              "& .dark .MuiFormLabel-root": {
+                color: "white",
+              },
+              "& .dark.Mui-focused .MuiFormLabel-root": {
+                color: "white",
+              },
+            }}
             renderInput={(params) => (
               <TextField
                 onChange={(e) => setSearch(e.target.value)}
@@ -118,7 +147,7 @@ export default function ProductClient({ products }: HomeClientProps) {
           />
           <button
             onClick={handleSortChange}
-            className="bg-[#11545c] hover:bg-[#0a3b4a] text-white font-bold px-4 py-2 rounded-md h-[56px] transition-colors duration-300"
+            className="bg-[#11545c] hover:bg-[#0a3b4a] text-white font-bold px-4 py-2 rounded-md transition-colors duration-300"
           >
             {resetProduct ? t("resetProduct") : t("sortByPrice")}
           </button>

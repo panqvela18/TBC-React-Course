@@ -17,14 +17,12 @@ export default function HeaderClient({
   currentLang,
   user,
   totalQuantity,
-}: // userRole,
-{
+}: {
   currentLang: any;
   user: any;
   totalQuantity: number;
 }) {
   const [showBugerMenu, setShowBurgerMenu] = useState<boolean>(false);
-  // const router = useRouter();
 
   useEffect(() => {
     if (showBugerMenu) {
@@ -39,10 +37,6 @@ export default function HeaderClient({
   }, [showBugerMenu]);
 
   const t = useI18n();
-
-  // const handleLogin = () => {
-  //   router.push("/api/auth/login");
-  // };
 
   return (
     <header

@@ -28,7 +28,7 @@ export default async function About() {
           </div>
         </div>
       </div>
-      <div className="px-[4%] container pb-20">
+      <div className="px-[4%] container pb-20 flex flex-col items-center">
         <Title titleName={t("Team")} />
         <div className="grid grid-cols-3 gap-8 justify-between px-[4%] md:grid-cols-2 sm:grid-cols-1">
           {teamDatas.map((member) => (

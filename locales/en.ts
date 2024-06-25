@@ -105,6 +105,7 @@ export default {
   previewImage:"Preview Image",
   filterByCategory:"Filter By Category",
   
+  
 
   // search
 

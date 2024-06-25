@@ -84,6 +84,13 @@ export default function AddNewProduct() {
     }
 
     const files = Array.from(e.target.files);
+
+    // Check if adding these files exceeds the limit
+    if (imageGallery.length + files.length > 3) {
+      alert("You can upload a maximum of 3 images.");
+      return;
+    }
+
     const newImageUrls: { id: number; image_url: string; name: string }[] = [];
     setLoading(true);
 
@@ -120,6 +127,19 @@ export default function AddNewProduct() {
     const newImageGallery = imageGallery.filter((image) => image.id !== id);
     setImageGallery(newImageGallery);
     setFieldValue("image_url", newImageGallery[0]?.image_url || "");
+  };
+
+  const handleMoveToFirst = (id: number, setFieldValue: any) => {
+    setImageGallery((prev) => {
+      const index = prev.findIndex((image) => image.id === id);
+      if (index > -1) {
+        const [selectedImage] = prev.splice(index, 1);
+        const updatedGallery = [selectedImage, ...prev];
+        setFieldValue("image_url", updatedGallery[0]?.image_url || "");
+        return updatedGallery;
+      }
+      return prev;
+    });
   };
 
   return (
@@ -203,7 +223,10 @@ export default function AddNewProduct() {
                 </div>
                 <div className="mb-4">
                   {imageGallery.map((image) => (
-                    <div key={image.id} className="flex items-center mb-2">
+                    <div
+                      key={image.id}
+                      className="flex items-center mb-2 justify-between"
+                    >
                       <Image
                         src={image.image_url}
                         alt={"gallery-image"}
@@ -211,7 +234,15 @@ export default function AddNewProduct() {
                         width={64}
                         height={64}
                       />
-                      <span className="mr-2">{image.name}</span>
+                      <button
+                        type="button"
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded mr-2"
+                        onClick={() =>
+                          handleMoveToFirst(image.id, setFieldValue)
+                        }
+                      >
+                        Move to First
+                      </button>
                       <button
                         type="button"
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"

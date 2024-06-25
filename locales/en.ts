@@ -97,15 +97,23 @@ export default {
   customerReviews:"Customer Reviews",
   Available:"Available",
   noReviews:"There are no reviews for this product yet.",
-
+  cart:"Your Cart",
+  Checkout:"Checkout",
+  cartIsEmpty:"Your cart is empty.",
+  clearCart:"Clear Cart",
+  currentImage:"Current Image",
+  previewImage:"Preview Image",
+  filterByCategory:"Filter By Category",
+  
 
   // search
 
   getInTouch: "GET IN TOUCH",
   messageUs: "MESSAGE US",
   search: "Search",
-  resetProduct: "Reset Products",
+  resetProduct: "Reset Price",
   sortByPrice: "Sorts By Price",
+  allCategories:"All Categories",
   // Footer
   allRight: "All rights reserved.",
   TermsAndConditions: "Terms and Conditions",

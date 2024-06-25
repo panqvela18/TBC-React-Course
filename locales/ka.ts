@@ -77,7 +77,7 @@ export default {
   "title":"სათაური",
   "description":"აღწერა",
   "price":"ფასი",
-  "clearCart": "კალათის გასუფთავება",
+  "clearCart": "გასუფთავება",
   "remove": "წაშლა",
   "totalPrice": "სულ ფასი",
   "backToShop": "მაღაზიაში დაბრუნება",
@@ -90,6 +90,10 @@ export default {
   "blogs":"ბლოგები",
   "addnewproduct":"პროდუქტის დამატება",
   "Makeprimary" : "მთავარ ფოტოდ არჩევა",
+  "currentImage":"მიმდინარე სურათი",
+  "previewImage":"ახალი სურათი",
+  "filterByCategory":"გაფილტვრა კატეგორიით",
+
 
   "addReview":"შეფასების დაწერა",
   "outof5":"5-დან",
@@ -99,6 +103,10 @@ export default {
   "customerReviews":"მომხმარებლების შეფასებები",
   "Available":"ხელმისაწვდომი",
   "noReviews":"ამ პროდუქტს მომხმარებლის შეფასება არ აქვს",
+  "cart":"კალათა",
+  "cartIsEmpty":"კალათა ცარიელია.",
+  "Checkout":"გადახდა",
+
 
 
 
@@ -109,6 +117,7 @@ export default {
     "search": "ძიება",
     "resetProduct": "აღდგენა",
     "sortByPrice": "დალაგება ფასის ზრდადობით",
+    "allCategories":"ყველა კატეგორია",
     // Footer
     "allRight": "ყველა უფლება დაცულია",
     "TermsAndConditions": "წესები და პირობები",

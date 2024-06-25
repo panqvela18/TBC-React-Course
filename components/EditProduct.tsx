@@ -231,7 +231,10 @@ export default function EditProduct({ product }: EditProduct) {
                 </div>
                 <div className="mb-4">
                   {imageGallery.map((image) => (
-                    <div key={image.id} className="flex items-center mb-2">
+                    <div
+                      key={image.id}
+                      className="flex items-center mb-2 justify-between"
+                    >
                       <Image
                         src={image.image_url}
                         alt={"gallery-image"}
@@ -239,25 +242,26 @@ export default function EditProduct({ product }: EditProduct) {
                         width={64}
                         height={64}
                       />
-                      <span className="mr-2">{image.name}</span>
-                      <button
-                        type="button"
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                        onClick={() =>
-                          handleDeleteImage(image.id, setFieldValue)
-                        }
-                      >
-                        {t("delete")}
-                      </button>
-                      <button
-                        type="button"
-                        className="bg-[#11545c] hover:bg-[#11545c] text-white font-bold py-1 px-2 rounded ml-2"
-                        onClick={() =>
-                          handleMoveToFirst(image.id, setFieldValue)
-                        }
-                      >
-                        {t("Makeprimary")}
-                      </button>
+                      <div>
+                        <button
+                          type="button"
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                          onClick={() =>
+                            handleDeleteImage(image.id, setFieldValue)
+                          }
+                        >
+                          {t("delete")}
+                        </button>
+                        <button
+                          type="button"
+                          className="bg-[#11545c] hover:bg-[#11545c] text-white font-bold py-1 px-2 rounded ml-2"
+                          onClick={() =>
+                            handleMoveToFirst(image.id, setFieldValue)
+                          }
+                        >
+                          {t("Makeprimary")}
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

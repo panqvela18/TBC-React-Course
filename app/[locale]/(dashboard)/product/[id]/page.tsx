@@ -67,30 +67,30 @@ export default async function ProductDetail({
   return (
     <section className="bg-gray-100 dark:bg-slate-900 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 rounded-xl py-5 px-20 bg-white dark:bg-slate-900">
+        <div className="mb-8 rounded-xl py-5 px-10  bg-white dark:bg-slate-900">
           <div className="bg-gray-200 dark:bg-gray-700 w-48 h-28 flex flex-col items-center justify-center rounded-3xl mb-5 text-center">
             <span className="dark:text-white mb-2 text-sm uppercase font-semibold">
               {t("category")}
             </span>
             <span className="dark:text-white text-lg font-bold">
-              {product.category}
+              {product?.category}
             </span>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="w-full md:w-1/2">
+          <div className="flex flex-col  gap-6">
+            <div className="w-full">
               <ImageGallery gallery={product?.image_gallery} />
             </div>
 
-            <div className="w-full md:w-1/2">
+            <div className="w-full">
               <div className="flex flex-col h-full">
                 <div className="flex-grow">
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                    {product.title}
+                    {product?.title}
                   </h1>
                   <StarRating
                     user_id={user_id}
-                    product_id={product.id}
+                    product_id={product?.id}
                     userName={userName}
                     reviews={reviews}
                     userAlreadyWriteReview={userAlreadyWriteReview}
@@ -98,20 +98,20 @@ export default async function ProductDetail({
                   <h3 className="mb-3 text-xl text-gray-700 dark:text-gray-400">
                     {t("stock")}
                     <span className="dark:text-green-400 ml-2">
-                      {product.stock} {t("Available")}
+                      {product?.stock} {t("Available")}
                     </span>
                   </h3>
                   <div className="flex items-center mb-4">
                     <span className="text-blue-500 mr-5 text-2xl font-bold">
-                      ${product.price}
+                      ${product?.price}
                     </span>
-                    {product.discount !== "0.00" && (
+                    {product?.discount !== "0.00" && (
                       <span className="line-through text-gray-500 text-2xl">
-                        ${Number(product.price) + Number(product.discount)}
+                        ${Number(product?.price) + Number(product?.discount)}
                       </span>
                     )}
                   </div>
-                  <p className="dark:text-gray-400 text-lg mb-5 w-2/3">
+                  <p className="dark:text-gray-400 text-lg mb-5 md:w-2/3">
                     {product.description}
                   </p>
                   <ShareOnSocials product={product} />
@@ -155,7 +155,7 @@ export default async function ProductDetail({
         </div>
       </div>
       <Title titleName={t("similarProducts")} />
-      <div className="grid grid-cols-4 sm:grid-cols-2 px-[4%] md:grid-cols-2 lg:grid-cols-4 gap-8 pb-20 pt-5">
+      <div className="grid grid-cols-4 px-[4%] sm:grid-cols-1 md:grid-cols-2 gap-8  md:px-[4%] pb-20 pt-5">
         {products
           .filter(
             (prod: ProductFromVercel) => prod.category === product.category

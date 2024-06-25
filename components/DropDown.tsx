@@ -16,8 +16,13 @@ function DropdownMenu() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useI18n();
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
+  const toggleDropdown = () => {
+    if (!user) {
+      window.location.href = "/api/auth/login"; // Redirect to login if user is not authenticated
+    } else {
+      setIsOpen(!isOpen); // Toggle dropdown if user is authenticated
+    }
+  };
   const handleItemClick = () => {
     setIsOpen(false);
   };

@@ -1,22 +1,21 @@
 "use client";
-import { createAddBlogAction } from "@/app/actions";
-import { blogData } from "@/app/interface";
-import { useI18n } from "@/locales/client";
-import Modal from "@mui/material/Modal";
-import { PutBlobResult } from "@vercel/blob";
-import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { useI18n } from "@/locales/client";
+import Modal from "@mui/material/Modal";
+import { useRouter } from "next/navigation";
+import { createAddBlogAction } from "@/app/actions";
+import { blogData } from "@/app/interface";
+import { PutBlobResult } from "@vercel/blob";
+import Image from "next/image";
 
 export default function AddNewBlog() {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview URL
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const t = useI18n();
 
   const initialValues = {
@@ -33,6 +32,12 @@ export default function AddNewBlog() {
     image_url: Yup.string().required(t("imageRequired")),
   });
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setPreviewImage(null); // Reset preview image when modal is closed
+  };
+
   const handleSubmit = async (
     values: blogData,
     { setSubmitting, resetForm }: any
@@ -43,7 +48,7 @@ export default function AddNewBlog() {
       handleClose();
       router.refresh();
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error creating blog:", error);
     }
     setSubmitting(false);
   };
@@ -69,6 +74,7 @@ export default function AddNewBlog() {
 
       const newBlob = (await response.json()) as PutBlobResult;
       setFieldValue("image_url", newBlob.url);
+      setPreviewImage(URL.createObjectURL(file)); // Set preview image URL
       setLoading(false);
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -115,6 +121,9 @@ export default function AddNewBlog() {
                   type="text"
                   placeholder={t("title")}
                 />
+                {errors.title && touched.title && (
+                  <p className="text-red-500 text-xs italic">{errors.title}</p>
+                )}
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -130,6 +139,11 @@ export default function AddNewBlog() {
                   as="textarea"
                   placeholder={t("description")}
                 />
+                {errors.description && touched.description && (
+                  <p className="text-red-500 text-xs italic">
+                    {errors.description}
+                  </p>
+                )}
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -145,7 +159,14 @@ export default function AddNewBlog() {
                   ref={inputFileRef}
                   onChange={(event) => handleFileUpload(event, setFieldValue)}
                 />
-                <Field type="hidden" name="image_url" />
+                {previewImage && (
+                  <Image
+                    src={previewImage}
+                    alt="Preview"
+                    className="mt-2 rounded-lg shadow-md"
+                    style={{ maxWidth: "100%", maxHeight: "200px" }}
+                  />
+                )}
                 {loading && <p>{t("upload")}...</p>}
               </div>
               <div className="flex items-center justify-between">

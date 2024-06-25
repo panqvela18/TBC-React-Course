@@ -91,10 +91,7 @@ export default function HomeClient({
                   variants={buttonProps}
                   whileInView={buttonProps.whileInView}
                   initial={buttonProps.Initial}
-                  className=" font-bold select-none"
-                  style={{
-                    fontSize: "clamp(80px, 8vw, 200px)",
-                  }}
+                  className=" font-bold select-none text-[75px] md:text-[45px]"
                 >
                   TV PROJECT
                 </motion.h1>
@@ -227,7 +224,7 @@ export default function HomeClient({
           </Link>
         </div>
 
-        <div className="grid grid-cols-4 gap-8 md:grid-cols-2 sm:grid-cols-1">
+        <div className="grid grid-cols-4 gap-8 md:grid-cols-2 sm:grid-cols-1 pb-20">
           {sortedBlogs.slice(0, 4).map((blog) => {
             const date = blog.created_at.split("T")[0];
 

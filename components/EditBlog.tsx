@@ -17,12 +17,16 @@ interface BlogClientProps {
 export default function EditBlog({ blogData }: BlogClientProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview URL
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const t = useI18n();
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setPreviewImage(null); // Reset preview image when modal is closed
+  };
 
   const initialValues: PostData = {
     id: blogData.id,
@@ -44,14 +48,10 @@ export default function EditBlog({ blogData }: BlogClientProps) {
     image_url: Yup.string().required(t("imageRequired")),
   });
 
-  const handleSubmit = async (
-    values: PostData,
-    { setSubmitting, resetForm }: any
-  ) => {
+  const handleSubmit = async (values: PostData, { setSubmitting }: any) => {
     try {
       await updateBlog(values);
       console.log("Blog updated successfully");
-      resetForm();
       handleClose();
       router.refresh();
     } catch (error) {
@@ -81,6 +81,7 @@ export default function EditBlog({ blogData }: BlogClientProps) {
 
       const newBlob = await response.json();
       setFieldValue("image_url", newBlob.url);
+      setPreviewImage(URL.createObjectURL(file)); // Set preview image URL
       setLoading(false);
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -170,12 +171,29 @@ export default function EditBlog({ blogData }: BlogClientProps) {
                 </div>
                 {initialValues.image_url && (
                   <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      {t("currentImage")}
+                    </label>
                     <Image
                       src={initialValues.image_url}
                       alt="Blog Image"
-                      className="max-w-full h-auto"
                       width={100}
                       height={100}
+                      className="rounded-lg"
+                    />
+                  </div>
+                )}
+                {previewImage && (
+                  <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      {t("previewImage")}
+                    </label>
+                    <Image
+                      src={previewImage}
+                      alt="Preview Image"
+                      width={100}
+                      height={100}
+                      className="rounded-lg"
                     />
                   </div>
                 )}

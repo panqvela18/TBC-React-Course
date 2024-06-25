@@ -46,7 +46,7 @@ export default function ShareOnSocials({
             url={`https://tbc-react-course-nu.vercel.app/product/${product.id}`}
             title={product.title}
           >
-            <button className="bg-[#2596be] w-[120px] h-[32px] flex items-center justify-center rounded-lg md:mt-2">
+            <button className="bg-[#2596be] w-[120px] h-[32px] flex items-center justify-center rounded-lg">
               <FaLinkedinIn fontSize={16} color="white" />
               <span className="text-[11px] ml-1 text-white">Share</span>
             </button>

@@ -18,9 +18,9 @@ function DropdownMenu() {
 
   const toggleDropdown = () => {
     if (!user) {
-      window.location.href = "/api/auth/login"; // Redirect to login if user is not authenticated
+      window.location.href = "/api/auth/login";
     } else {
-      setIsOpen(!isOpen); // Toggle dropdown if user is authenticated
+      setIsOpen(!isOpen);
     }
   };
   const handleItemClick = () => {
@@ -74,20 +74,6 @@ function DropdownMenu() {
               >
                 {t("profile")}
               </Link>
-              <Link
-                onClick={handleItemClick}
-                href={"profile/orders"}
-                className="block w-full px-4 py-2 text-center text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                {t("myOrders")}
-              </Link>
-              <Link
-                onClick={handleItemClick}
-                href={"profile/reviews"}
-                className="block w-full px-4 py-2 text-center text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                {t("myReviews")}
-              </Link>
 
               {isAdmin && (
                 <Link
@@ -98,6 +84,20 @@ function DropdownMenu() {
                   {t("admin")}
                 </Link>
               )}
+              <Link
+                onClick={handleItemClick}
+                href={"/profile/orders"}
+                className="block w-full px-4 py-2 text-center text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                {t("myOrders")}
+              </Link>
+              <Link
+                onClick={handleItemClick}
+                href={"/profile/reviews"}
+                className="block w-full px-4 py-2 text-center text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                {t("myReviews")}
+              </Link>
               <button
                 onClick={handleItemClick}
                 className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"

@@ -47,33 +47,33 @@ export default function BlogClient({ postData }: BlogClientProps) {
             width: 300,
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "inherit", // Inherit border color
+                borderColor: "inherit",
               },
               "&:hover fieldset": {
-                borderColor: "inherit", // Inherit border color on hover
+                borderColor: "inherit",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "inherit", // Inherit border color when focused
+                borderColor: "inherit",
               },
             },
             "& .MuiInputBase-input": {
-              color: "inherit", // Inherit text color
+              color: "inherit",
             },
             "& .MuiInputBase-input::placeholder": {
-              color: "inherit", // Inherit placeholder color
-              opacity: 1, // Ensures the placeholder is visible
+              color: "inherit",
+              opacity: 1,
             },
             "& .MuiFormLabel-root": {
-              color: "black", // Black label color in light mode
+              color: "black",
             },
             "&.Mui-focused .MuiFormLabel-root": {
-              color: "black", // Black label color when focused in light mode
+              color: "black",
             },
             "& .dark .MuiFormLabel-root": {
-              color: "white", // White label color in dark mode
+              color: "white",
             },
             "& .dark.Mui-focused .MuiFormLabel-root": {
-              color: "white", // White label color when focused in dark mode
+              color: "white",
             },
           }}
           renderInput={(params) => (

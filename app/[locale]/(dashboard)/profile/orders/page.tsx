@@ -3,6 +3,11 @@ import { Order } from "@/app/interface";
 import { getSession } from "@auth0/nextjs-auth0";
 import { unstable_noStore as noStore } from "next/cache";
 
+export const metadata = {
+  title: "Orders",
+  description: "Orders by Next",
+};
+
 export default async function Orders() {
   const orders = await getOrders();
 

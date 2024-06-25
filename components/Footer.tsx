@@ -62,7 +62,7 @@ export default function Footer() {
         <div className="flex items-center md:mb-4">
           <input
             type="email"
-            className="min-h-12 max-w-48 px-4 text-[#003049] dark:text-white  hover:text-[#1A5A77] text-base border border-white rounded-l bg-transparent focus:outline-none"
+            className="min-h-12 max-w-48 px-4 text-[#003049] dark:text-white  hover:text-[#1A5A77] text-base border border-white rounded-l bg-transparent focus:outline-none md:mr-2"
             id="Email"
             name="Email"
             placeholder="example@gmail.com"

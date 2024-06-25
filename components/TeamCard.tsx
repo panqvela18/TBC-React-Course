@@ -1,5 +1,12 @@
 import Image from "next/image";
 
+export interface team {
+  id: number;
+  img: string;
+  name: string;
+  position: string;
+}
+
 const TeamCard = ({ member }: { member: any }) => {
   return (
     <div className="w-[300px] group relative cursor-pointer overflow-hidden rounded-lg shadow-lg">

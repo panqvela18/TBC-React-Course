@@ -83,17 +83,17 @@ export default function StarRating({
         <span style={{ color: "rgba(255, 255, 255, 0.4)" }}>
           (Rated by {reviews.length})
         </span>
-        {userAlreadyWriteReview || userName === undefined ? (
-          ""
-        ) : (
-          <button
-            className="text-black dark:text-white"
-            onClick={() => setOpen(true)}
-          >
-            {t("addReview")}
-          </button>
-        )}
       </label>
+      {userAlreadyWriteReview || userName === undefined ? (
+        ""
+      ) : (
+        <button
+          className="text-black dark:text-white w-[100px] mt-2"
+          onClick={() => setOpen(true)}
+        >
+          {t("addReview")}
+        </button>
+      )}
 
       <Modal
         open={open}

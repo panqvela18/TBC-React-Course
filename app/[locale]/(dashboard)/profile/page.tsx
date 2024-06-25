@@ -5,7 +5,6 @@ import { getUserImage, getUserInfo } from "@/app/api";
 import ProfileInfo from "@/components/ProfileInfo";
 import { getI18n } from "@/locales/server";
 import { unstable_noStore as noStore } from "next/cache";
-import Link from "next/link";
 
 export const metadata = {
   title: "Profile",
@@ -32,7 +31,6 @@ export default async function Profile() {
         <div className="flex flex-col justify-center gap-8">
           <ProfileInfo user={userInfo} />
         </div>
-        <Link href={"/profile/reviews"}>Reviews</Link>
       </div>
     </main>
   );

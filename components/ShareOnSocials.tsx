@@ -1,4 +1,5 @@
 "use client";
+import { ProductFromVercel } from "@/app/interface";
 import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -9,7 +10,11 @@ import {
   LinkedinShareButton,
 } from "react-share";
 
-export default function ShareOnSocials({ product }: { product: any }) {
+export default function ShareOnSocials({
+  product,
+}: {
+  product: ProductFromVercel;
+}) {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -18,7 +23,7 @@ export default function ShareOnSocials({ product }: { product: any }) {
   return (
     <>
       {isClient ? (
-        <div className="flex items-center justify-center mb-5">
+        <div className="flex items-center justify-center mb-5 md:flex-wrap">
           <TwitterShareButton
             url={`https://tbc-react-course-nu.vercel.app/product/${product.id}`}
             title={product.title}
@@ -41,7 +46,7 @@ export default function ShareOnSocials({ product }: { product: any }) {
             url={`https://tbc-react-course-nu.vercel.app/product/${product.id}`}
             title={product.title}
           >
-            <button className="bg-[#2596be] w-[120px] h-[32px] flex items-center justify-center rounded-lg">
+            <button className="bg-[#2596be] w-[120px] h-[32px] flex items-center justify-center rounded-lg md:mt-2">
               <FaLinkedinIn fontSize={16} color="white" />
               <span className="text-[11px] ml-1 text-white">Share</span>
             </button>

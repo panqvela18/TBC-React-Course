@@ -7,7 +7,7 @@ import {
   getUserId,
   getUserInfo,
 } from "@/app/api";
-import { ProductFromVercel } from "@/app/interface";
+import { ProductFromVercel, Reviews } from "@/app/interface";
 import { unstable_noStore as noStore } from "next/cache";
 import { FaStar } from "react-icons/fa";
 import Title from "@/components/Title";
@@ -17,12 +17,23 @@ import Link from "next/link";
 import AddToCartButton from "@/components/AddToCartButton";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EditReview from "@/components/EditReview";
+import DeleteReview from "@/components/DeleteReview";
 
 interface ProductsDetailsProps {
   params: {
     id: number;
     locale: string;
   };
+}
+
+interface Review {
+  id: number;
+  name: string;
+  star: number;
+  message: string;
+  product_id: number;
+  user_id: number;
 }
 
 export async function generateMetadata({ params }: ProductsDetailsProps) {
@@ -49,12 +60,12 @@ export default async function ProductDetail({
   const user = await getUserInfo();
   const userName = user?.name;
   const user_id = await getUserId();
-  const userReviewIds = reviews.map((review: any) => review.user_id);
+  const userReviewIds = reviews.map((review: Reviews) => review.user_id);
   const userAlreadyWriteReview = userReviewIds.includes(user_id);
   const t = await getI18n();
   noStore();
 
-  console.log(reviews);
+  console.log(userReviewIds);
 
   const renderStars = (numberOfStars: number) => {
     const stars = [];
@@ -67,7 +78,7 @@ export default async function ProductDetail({
   return (
     <section className="bg-gray-100 dark:bg-slate-900 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 rounded-xl py-5 px-10  bg-white dark:bg-slate-900">
+        <div className="mb-8 rounded-xl py-5 px-10 md:px-0  bg-white dark:bg-slate-900">
           <div className="bg-gray-200 dark:bg-gray-700 w-48 h-28 flex flex-col items-center justify-center rounded-3xl mb-5 text-center">
             <span className="dark:text-white mb-2 text-sm uppercase font-semibold">
               {t("category")}
@@ -111,7 +122,7 @@ export default async function ProductDetail({
                       </span>
                     )}
                   </div>
-                  <p className="dark:text-gray-400 text-lg mb-5 md:w-2/3">
+                  <p className="dark:text-gray-400 text-lg mb-5">
                     {product.description}
                   </p>
                   <ShareOnSocials product={product} />
@@ -124,23 +135,44 @@ export default async function ProductDetail({
 
                   {reviews.length > 0 ? (
                     <div className="space-y-4">
-                      {reviews.map((review: any, index: number) => (
-                        <div
-                          key={index}
-                          className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6"
-                        >
-                          <div className="flex items-center mb-2">
-                            <div className="stars mr-2 flex">
-                              {renderStars(review.star)}
+                      {reviews.map((review: Review, index: number) => (
+                        <>
+                          <div
+                            key={index}
+                            className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6"
+                          >
+                            <div className="flex justify-between">
+                              <div>
+                                <div className="flex items-center mb-2">
+                                  <div className="stars mr-2 flex">
+                                    {renderStars(review.star)}
+                                  </div>
+                                  <h5 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                    {review.name}
+                                  </h5>
+                                </div>
+                                <p className="text-gray-700 dark:text-gray-300">
+                                  {review.message}
+                                </p>
+                              </div>
+                              <div>
+                                {user_id === review.user_id && (
+                                  <>
+                                    <EditReview
+                                      user_id={user_id}
+                                      product_id={review.product_id}
+                                      id={review.id}
+                                      userName={userName}
+                                      star={review.star}
+                                      reviewMessage={review.message}
+                                    />
+                                    <DeleteReview id={review.id} />
+                                  </>
+                                )}
+                              </div>
                             </div>
-                            <h5 className="text-lg font-semibold text-gray-900 dark:text-white">
-                              {review.name}
-                            </h5>
                           </div>
-                          <p className="text-gray-700 dark:text-gray-300">
-                            {review.message}
-                          </p>
-                        </div>
+                        </>
                       ))}
                     </div>
                   ) : (
